@@ -1,0 +1,34 @@
+services:
+  # back
+  # back:
+  #   build: ./back
+  
+  # keycloak
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0.5
+    container_name: keycloak
+    env_file:
+      - ./db.env
+      - ./keycloak.env
+    ports:
+      - 9090:8080
+      - 9000:9000
+    depends_on:
+      - postgres
+    restart: on-failure:3
+    command: start
+
+  # postgres
+  postgres:
+    image: postgres:14-alpine
+    container_name: postgres
+    ports:
+      - 9876:5432
+    env_file:
+      - ./db.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: on-failure:3
+
+volumes:
+  postgres_data:
