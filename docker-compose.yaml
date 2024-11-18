@@ -1,12 +1,23 @@
 services:
   # back
-  # back:
-  #   build: ./back
-  
+  back:
+    container_name: tecflix_back
+    build: ./back
+    env_file:
+      - ./db.env
+      - ./back/.env
+    ports:
+      - 8081:8081
+    depends_on:
+      - postgres
+    networks:
+      - app
+    restart: on-failure:3
+
   # keycloak
   keycloak:
     image: quay.io/keycloak/keycloak:26.0.5
-    container_name: keycloak
+    container_name: tecflix_keycloak
     env_file:
       - ./db.env
       - ./keycloak.env
@@ -16,12 +27,14 @@ services:
     depends_on:
       - postgres
     restart: on-failure:3
+    networks:
+      - app
     command: start
 
   # postgres
   postgres:
     image: postgres:14-alpine
-    container_name: postgres
+    container_name: tecflix_postgres
     ports:
       - 9876:5432
     env_file:
@@ -29,6 +42,11 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     restart: on-failure:3
+    networks:
+      - app
 
 volumes:
   postgres_data:
+
+networks:
+  app:

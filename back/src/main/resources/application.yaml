@@ -1,3 +1,16 @@
+server:
+  port: 8081
+
 spring:
   application:
     name: tecflix-app
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    jpa:
+      open-in-view: false
+      hibernate:
+        ddl-auto: none
+      show-sql: false
