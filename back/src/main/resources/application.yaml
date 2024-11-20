@@ -1,5 +1,9 @@
+security:
+  api:
+    key: ${API_KEY:password123}
+
 server:
-  port: 8081
+  port: ${SERVER_PORT:8081}
 
 spring:
   application:

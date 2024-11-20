@@ -28,6 +28,10 @@
 	</scm>
 	<properties>
 		<java.version>21</java.version>
+		
+		<!-- dependencies versions -->
+		<lombok.version>1.18.36</lombok.version>
+		<auth0.version>4.4.0</auth0.version>
 	</properties>
 	<dependencies>
 		<!-- start web -->
@@ -65,10 +69,19 @@
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 		
-		<!-- OAuth2.0 -->
+		<!-- Auth0 JWT -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+			<version>${auth0.version}</version>
+		</dependency>
+
+		<!-- lombok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<!-- HATEOAS -->
@@ -77,6 +90,12 @@
 			<artifactId>spring-boot-starter-hateoas</artifactId>
 		</dependency>
 
+		<!-- dotenv -->
+		<dependency>
+			<groupId>me.paulschwarz</groupId>
+			<artifactId>spring-dotenv</artifactId>
+			<version>4.0.0</version>
+    	</dependency>
 
 
 		<!-- tests -->

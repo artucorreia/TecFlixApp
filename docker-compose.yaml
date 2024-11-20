@@ -14,29 +14,12 @@ services:
       - app
     restart: on-failure:3
 
-  # keycloak
-  keycloak:
-    image: quay.io/keycloak/keycloak:26.0.5
-    container_name: tecflix_keycloak
-    env_file:
-      - ./db.env
-      - ./keycloak.env
-    ports:
-      - 9090:8080
-      - 9000:9000
-    depends_on:
-      - postgres
-    restart: on-failure:3
-    networks:
-      - app
-    command: start
-
   # postgres
   postgres:
     image: postgres:14-alpine
     container_name: tecflix_postgres
     ports:
-      - 9876:5432
+      - 2345:5432
     env_file:
       - ./db.env
     volumes:
