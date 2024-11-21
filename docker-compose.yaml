@@ -12,24 +12,24 @@ services:
       - postgres
     networks:
       - app
-    restart: on-failure:3
+    restart: on-failure:2
 
   # postgres
   postgres:
-    image: postgres:14-alpine
+    image: postgres:17-alpine
     container_name: tecflix_postgres
     ports:
       - 2345:5432
     env_file:
       - ./db.env
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    restart: on-failure:3
+    # volumes:
+    #   - postgres_data:/var/lib/postgresql/data
+    restart: on-failure:2
     networks:
       - app
 
-volumes:
-  postgres_data:
+# volumes:
+#   postgres_data:
 
 networks:
   app:
