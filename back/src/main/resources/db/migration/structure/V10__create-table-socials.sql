@@ -1,6 +1,0 @@
-CREATE TABLE socials(
-    id BIGINT PRIMARY KEY,
-    name SOCIALNAME NOT NULL,
-    url VARCHAR(255) NOT NULL,
-    user_id UUID REFERENCES users(id) NOT NULL
-);

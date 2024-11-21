@@ -1,1 +1,0 @@
-create type CATEGORY as ENUM('CATEGORY_A', 'CATEGORY_B', 'CATEGORY_C');
