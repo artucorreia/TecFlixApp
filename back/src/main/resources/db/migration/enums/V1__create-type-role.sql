@@ -1,0 +1,1 @@
+create type ROLE as ENUM('ADMIN', 'USER', 'PROFESSOR');

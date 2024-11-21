@@ -1,0 +1,1 @@
+create type SOCIALNAME as ENUM('X', 'YOUTUBE', 'FACEBOOK', 'INSTAGRAM', 'BLOG', 'OTHER');
