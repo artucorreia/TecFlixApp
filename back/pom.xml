@@ -90,13 +90,6 @@
 			<artifactId>spring-boot-starter-hateoas</artifactId>
 		</dependency>
 
-		<!-- dotenv -->
-		<dependency>
-			<groupId>me.paulschwarz</groupId>
-			<artifactId>spring-dotenv</artifactId>
-			<version>4.0.0</version>
-    	</dependency>
-
 
 		<!-- tests -->
 		<dependency>
@@ -117,6 +110,14 @@
       		<artifactId>h2</artifactId>
       		<scope>runtime</scope>
     	</dependency>
+
+		<!-- devtools -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
 	</dependencies>
 
 	<build>
