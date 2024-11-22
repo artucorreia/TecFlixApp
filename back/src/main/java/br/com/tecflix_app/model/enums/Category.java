@@ -1,9 +1,9 @@
 package br.com.tecflix_app.model.enums;
 
 public enum Category {
-    CATEGORIA_A("CATEGORIA_A"),
-    CATEGORIA_B("CATEGORIA_B"),
-    CATEGORIA_C("CATEGORIA_C");
+    CATEGORY_A("category a"),
+    CATEGORY_B("category b"),
+    CATEGORY_C("category c");
     
     private String category;
 

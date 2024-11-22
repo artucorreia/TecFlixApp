@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 import br.com.tecflix_app.model.enums.Gender;
@@ -18,7 +19,7 @@ import br.com.tecflix_app.model.enums.Occupation;
 @AllArgsConstructor
 @Getter @Setter
 @EqualsAndHashCode(of = "id")
-public class ProfessorData {
+public class ProfessorData implements Serializable {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,9 +39,6 @@ public class ProfessorData {
 
     @Column(length = 13, unique = true, nullable = false)
     private String contact;
-
-    @Column(nullable = false)
-    private Boolean active;
 
     @Enumerated(EnumType.STRING)
     private Occupation occupation;

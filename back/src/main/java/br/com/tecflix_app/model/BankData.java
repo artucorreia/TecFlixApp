@@ -1,5 +1,7 @@
 package br.com.tecflix_app.model;
 
+import java.io.Serializable;
+
 import br.com.tecflix_app.model.enums.Account;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,12 +11,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Table
-@Entity(name = "bank_account")
+@Entity(name = "bank_data")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter @Setter
 @EqualsAndHashCode(of = "id")
-public class BankData {
+public class BankData implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

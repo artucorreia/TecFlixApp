@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 import br.com.tecflix_app.model.enums.SocialName;
 
 @Table
@@ -15,7 +17,7 @@ import br.com.tecflix_app.model.enums.SocialName;
 @AllArgsConstructor
 @Getter @Setter
 @EqualsAndHashCode(of = "id")
-public class Social {
+public class Social implements Serializable {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
