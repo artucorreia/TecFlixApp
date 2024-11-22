@@ -1,6 +1,10 @@
 security:
   api:
     key: ${API_KEY:password123}
+  jwt:
+    token:
+      secret: ${JWT_SECRET:mySecret}
+      duration: ${JWT_DURATION:7200} # in seconds
 
 server:
   port: ${SERVER_PORT:8081}
@@ -18,3 +22,6 @@ spring:
       hibernate:
         ddl-auto: none
       show-sql: false
+  flyway:
+    locations:
+      filesystem: src/test/resources/db/migration
