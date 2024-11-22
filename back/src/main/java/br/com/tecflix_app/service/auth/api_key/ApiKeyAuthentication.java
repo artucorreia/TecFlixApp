@@ -1,4 +1,4 @@
-package br.com.tecflix_app.service.auth;
+package br.com.tecflix_app.service.auth.api_key;
 
 import java.util.Collection;
 

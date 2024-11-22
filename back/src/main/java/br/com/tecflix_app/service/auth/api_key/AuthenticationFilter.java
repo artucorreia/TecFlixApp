@@ -1,4 +1,4 @@
-package br.com.tecflix_app.service.auth;
+package br.com.tecflix_app.service.auth.api_key;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -48,13 +48,16 @@ public class AuthenticationFilter extends GenericFilterBean{
         }
     }
     
-    
     private void handleException(
             HttpServletResponse response,
             InvalidApiKeyException e
     ) throws IOException {
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType("application/json");
-        response.getWriter().write("{\"timestamp\":\"" + LocalDateTime.now() + "\",\"title\":\"" + e.getMessage() + "\",\"details\":\"null or incorrect API KEY\"}");
+        response.getWriter().write(
+            "{\"timestamp\":\"" + LocalDateTime.now() + 
+            "\",\"title\":\"" + e.getMessage() + 
+            "\",\"details\":\"null or incorrect API KEY\"}"
+        );
     }    
 }

@@ -1,4 +1,4 @@
-package br.com.tecflix_app.service.auth;
+package br.com.tecflix_app.service.auth.api_key;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;

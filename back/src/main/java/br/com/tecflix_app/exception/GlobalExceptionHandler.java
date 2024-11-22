@@ -14,24 +14,18 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import br.com.tecflix_app.exception.auth.InactiveUserException;
 import br.com.tecflix_app.exception.auth.InvalidApiKeyException;
+import br.com.tecflix_app.exception.auth.InvalidTokenException;
+import br.com.tecflix_app.exception.auth.JwtCreationTokenException;
+import br.com.tecflix_app.exception.auth.WrongPasswordException;
 
 @RestController
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
-    
-    @ExceptionHandler(Exception.class)
-    public final ResponseEntity<ExceptionResponse> handleAllExceptions(
-        Exception exception,
-        WebRequest request
-    ) {
-        ExceptionResponse response = ExceptionResponse.builder()
-            .timestamp(LocalDateTime.now())
-            .title(exception.getMessage())
-            .details(request.getDescription(false))
-            .build();
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    /* 
+     * Validators Exceptions 
+    */
 
     @SuppressWarnings("null")
     @Override
@@ -56,6 +50,27 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
+    /*
+     * General Exceptions 
+    */
+
+    @ExceptionHandler(Exception.class)
+    public final ResponseEntity<ExceptionResponse> handleAllExceptions(
+        Exception exception,
+        WebRequest request
+    ) {
+        ExceptionResponse response = ExceptionResponse.builder()
+            .timestamp(LocalDateTime.now())
+            .title(exception.getMessage())
+            .details(request.getDescription(false))
+            .build();
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    /* 
+     * Authentication Exceptions
+    */
+
     @ExceptionHandler(InvalidApiKeyException.class)
     public final ResponseEntity<ExceptionResponse> handleInvalidApiKeyExceptions(
         Exception exception,
@@ -67,5 +82,57 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
             .details(request.getDescription(false))
             .build();
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+    }
+    
+    @ExceptionHandler(JwtCreationTokenException.class)
+    public final ResponseEntity<ExceptionResponse> handleJwtCreationTokenExceptions(
+        Exception exception,
+        WebRequest request
+    ) {
+        ExceptionResponse response = ExceptionResponse.builder()
+            .timestamp(LocalDateTime.now())
+            .title(exception.getMessage())
+            .details(request.getDescription(false))
+            .build();
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(InvalidTokenException.class)
+    public final ResponseEntity<ExceptionResponse> handleInvalidTokenExceptions(
+        Exception exception,
+        WebRequest request
+    ) {
+        ExceptionResponse response = ExceptionResponse.builder()
+            .timestamp(LocalDateTime.now())
+            .title(exception.getMessage())
+            .details(request.getDescription(false))
+            .build();
+        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(InactiveUserException.class)
+    public final ResponseEntity<ExceptionResponse> handleInactiveUserExceptions(
+        Exception exception,
+        WebRequest request
+    ) {
+        ExceptionResponse response = ExceptionResponse.builder()
+            .timestamp(LocalDateTime.now())
+            .title(exception.getMessage())
+            .details(request.getDescription(false))
+            .build();
+        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+    }
+    
+    @ExceptionHandler(WrongPasswordException.class)
+    public final ResponseEntity<ExceptionResponse> handleWrongPasswordExceptions(
+        Exception exception,
+        WebRequest request
+    ) {
+        ExceptionResponse response = ExceptionResponse.builder()
+            .timestamp(LocalDateTime.now())
+            .title(exception.getMessage())
+            .details(request.getDescription(false))
+            .build();
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }
