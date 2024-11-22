@@ -1,5 +1,5 @@
 CREATE TABLE professors_data(
-    id BIGINT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     user_id UUID REFERENCES users(id) NOT NULL,
     cpf VARCHAR(11) UNIQUE NOT NULL,
     occupation OCCUPATION NOT NULL,

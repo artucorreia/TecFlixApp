@@ -18,6 +18,7 @@ import br.com.tecflix_app.exception.auth.InactiveUserException;
 import br.com.tecflix_app.exception.auth.InvalidApiKeyException;
 import br.com.tecflix_app.exception.auth.InvalidTokenException;
 import br.com.tecflix_app.exception.auth.JwtCreationTokenException;
+import br.com.tecflix_app.exception.auth.RefreshTokenException;
 import br.com.tecflix_app.exception.auth.WrongPasswordException;
 
 @RestController
@@ -134,5 +135,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
             .details(request.getDescription(false))
             .build();
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(RefreshTokenException.class)
+    public final ResponseEntity<ExceptionResponse> handleRefreshTokenExceptions(
+        Exception exception,
+        WebRequest request
+    ) {
+        ExceptionResponse response = ExceptionResponse.builder()
+            .timestamp(LocalDateTime.now())
+            .title(exception.getMessage())
+            .details(request.getDescription(false))
+            .build();
+        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
 }

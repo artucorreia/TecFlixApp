@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +15,11 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 
 import br.com.tecflix_app.data.DTO.v1.auth.TokenDTO;
 import br.com.tecflix_app.exception.auth.JwtCreationTokenException;
-import br.com.tecflix_app.model.User;
 
 @Service
 public class TokenService {
-    private final Logger LOGGER = Logger.getLogger(TokenService.class.getName());
+    private final Logger LOGGER = Logger.getLogger(TokenService.class.getName());    
+    
     private String subject;
 
     @Value("${security.jwt.token.secret}")
@@ -27,7 +28,14 @@ public class TokenService {
     @Value("${security.jwt.token.duration}")
     private Long tokenDuration;
 
-    public TokenDTO generateToken(User user) {
+    private final RefreshTokenService refreshTokenService;
+
+    @Autowired
+    public TokenService(RefreshTokenService refreshTokenService) {
+        this.refreshTokenService = refreshTokenService;
+    }
+
+    public TokenDTO generateToken(UUID userId) {
         LOGGER.info("Generating token");
 
         try {
@@ -36,12 +44,21 @@ public class TokenService {
             Instant expireAt = generateExpirationDate(createdAt);
             String token = JWT.create()
                     .withIssuer("grafmarques")
-                    .withSubject(user.getId().toString())
+                    .withSubject(userId.toString())
                     .withIssuedAt(createdAt)
                     .withExpiresAt(expireAt)
                     .sign(algorithm);
 
-            return new TokenDTO(user.getId(), user.getRole(), token, createdAt, expireAt);
+
+            return TokenDTO.builder()
+                .userId(userId)
+                .accessToken(token)
+                .refreshToken(
+                    refreshTokenService.create(userId).getToken()
+                )
+                .createdAt(createdAt)
+                .expiresAt(expireAt)
+                .build();
         }
         catch (Exception e) {
             throw new JwtCreationTokenException("Erro durante a geração do token");
@@ -67,7 +84,7 @@ public class TokenService {
     }
 
     private Instant generateExpirationDate(Instant createdAt) { 
-        return createdAt.plus(Duration.ofSeconds(tokenDuration)); 
+        return createdAt.plus(Duration.ofMillis(tokenDuration)); 
     }
 
     private Instant getIssueDate() { return Instant.now(); }

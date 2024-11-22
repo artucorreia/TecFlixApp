@@ -1,5 +1,5 @@
 CREATE TABLE addresses(
-    id BIGINT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     CEP VARCHAR(8) NOT NULL,
     number VARCHAR(8) NOT NULL,
     state VARCHAR(30) NOT NULL,

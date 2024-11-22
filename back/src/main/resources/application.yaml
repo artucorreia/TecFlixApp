@@ -1,13 +1,15 @@
-security:
-  api:
-    key: ${API_KEY:password123}
-  jwt:
-    token:
-      secret: ${JWT_SECRET:mySecret}
-      duration: ${JWT_DURATION:7200} # in seconds
-
 server:
   port: ${SERVER_PORT:8081}
+
+security:
+  api:
+    key: ${API_KEY:password}
+  jwt:
+    token:
+      secret: ${TOKEN_SECRET:mySecret}
+      duration: ${TOKEN_DURATION:43200000} # 12 hours
+      refresh:
+        duration: ${REFRESH_TOKEN_DURATION:604800000} # 168 hours
 
 spring:
   application:

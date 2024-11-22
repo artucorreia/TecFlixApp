@@ -29,6 +29,6 @@ public class Social implements Serializable {
     private String url;
 
     @ManyToOne 
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 }
