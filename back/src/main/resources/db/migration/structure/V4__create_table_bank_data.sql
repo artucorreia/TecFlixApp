@@ -3,6 +3,6 @@ CREATE TABLE bank_data(
     user_id UUID REFERENCES users(id) NOT NULL,
     account_number VARCHAR(12) NOT NULL,
     dv CHAR NOT NULL,
-    account ACCOUNT NOT NULL,
+    account VARCHAR(11) NOT NULL,
     agency VARCHAR(5) NOT NULL
 );

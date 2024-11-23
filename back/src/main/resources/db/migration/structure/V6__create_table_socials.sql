@@ -1,6 +1,6 @@
 CREATE TABLE socials(
     id SERIAL PRIMARY KEY,
-    name SOCIALNAME NOT NULL,
+    name VARCHAR(11) NOT NULL,
     url VARCHAR(255) NOT NULL,
     user_id UUID REFERENCES users(id) NOT NULL
 );
