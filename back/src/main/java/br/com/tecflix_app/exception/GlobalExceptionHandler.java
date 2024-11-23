@@ -20,6 +20,8 @@ import br.com.tecflix_app.exception.auth.InvalidTokenException;
 import br.com.tecflix_app.exception.auth.JwtCreationTokenException;
 import br.com.tecflix_app.exception.auth.RefreshTokenException;
 import br.com.tecflix_app.exception.auth.WrongPasswordException;
+import br.com.tecflix_app.exception.general.RepeatedDataException;
+import br.com.tecflix_app.exception.general.ResourceNotFoundException;
 
 @RestController
 @ControllerAdvice
@@ -67,6 +69,33 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
             .build();
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+    
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public final ResponseEntity<ExceptionResponse> handleResourceNotFoundExceptions(
+        Exception exception,
+        WebRequest request
+    ) {
+        ExceptionResponse response = ExceptionResponse.builder()
+            .timestamp(LocalDateTime.now())
+            .title(exception.getMessage())
+            .details(request.getDescription(false))
+            .build();
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+    
+    @ExceptionHandler(RepeatedDataException.class)
+    public final ResponseEntity<ExceptionResponse> handleRepeatedDataExceptions(
+        Exception exception,
+        WebRequest request
+    ) {
+        ExceptionResponse response = ExceptionResponse.builder()
+            .timestamp(LocalDateTime.now())
+            .title(exception.getMessage())
+            .details(request.getDescription(false))
+            .build();
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
 
     /* 
      * Authentication Exceptions

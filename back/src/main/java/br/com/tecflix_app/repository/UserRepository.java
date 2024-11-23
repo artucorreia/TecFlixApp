@@ -1,5 +1,6 @@
 package br.com.tecflix_app.repository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,4 +21,7 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     
     @Query("SELECT u.email FROM User u WHERE u.id = :id")
     String findEmailById(UUID id);
+
+    @Query("SELECT u.id FROM User u WHERE u.email = :email")
+    Optional<UUID> findIdByEmail(String email);
 }

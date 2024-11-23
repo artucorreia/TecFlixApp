@@ -21,6 +21,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +33,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Setter @Getter
 @EqualsAndHashCode(of = "id")
+@Builder
 public class User implements UserDetails {
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;

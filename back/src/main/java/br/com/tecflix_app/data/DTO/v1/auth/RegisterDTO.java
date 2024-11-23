@@ -8,12 +8,9 @@ import br.com.tecflix_app.model.enums.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
-@AllArgsConstructor
-@Getter @Setter
+@Getter
 public class RegisterDTO {
     @NotBlank
     @Size(min = 3, max = 30)

@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.*;
 
 import br.com.tecflix_app.data.DTO.v1.auth.AuthenticationDTO;
 import br.com.tecflix_app.data.DTO.v1.auth.RefreshTokenDTO;
+import br.com.tecflix_app.data.DTO.v1.auth.RegisterDTO;
 import br.com.tecflix_app.data.DTO.v1.auth.TokenDTO;
+import br.com.tecflix_app.data.DTO.v1.response.CreateResponseDTO;
 import br.com.tecflix_app.exception.auth.InactiveUserException;
 import br.com.tecflix_app.exception.auth.WrongPasswordException;
 import br.com.tecflix_app.model.User;
@@ -78,5 +81,14 @@ public class AuthController {
     public ResponseEntity<TokenDTO> refreshToken(@Valid @RequestBody RefreshTokenDTO data) {
         UUID userId = refreshTokenService.resolve(data.getToken());        
         return ResponseEntity.ok(tokenService.generateToken(userId));
+    }
+    
+    @PostMapping(
+        value = "/register",
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<CreateResponseDTO<UUID>> register(@Valid @RequestBody RegisterDTO data) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.register(data));
     }
 }
