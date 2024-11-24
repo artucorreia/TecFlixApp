@@ -1,4 +1,4 @@
-CREATE TABLE bank_data(
+CREATE TABLE IF NOT EXISTS bank_accounts_data(
     id SERIAL PRIMARY KEY,
     user_id UUID REFERENCES users(id) NOT NULL,
     account_number VARCHAR(12) NOT NULL,

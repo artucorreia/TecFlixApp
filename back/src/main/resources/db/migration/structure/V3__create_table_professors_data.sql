@@ -1,4 +1,4 @@
-CREATE TABLE professors_data(
+CREATE TABLE IF NOT EXISTS professors_data(
     id SERIAL PRIMARY KEY,
     user_id UUID REFERENCES users(id) NOT NULL,
     cpf VARCHAR(11) UNIQUE NOT NULL,
