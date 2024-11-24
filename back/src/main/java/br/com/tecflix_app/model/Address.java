@@ -26,16 +26,16 @@ public class Address implements Serializable {
     @Column(nullable = false, length = 8)
     private String number;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 50)
     private String street;
 
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 20)
     private String city;
 
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 20)
     private String state;
 
-    @Column(length = 100)
+    @Column(length = 50)
     private String complement;
 
     @OneToOne 

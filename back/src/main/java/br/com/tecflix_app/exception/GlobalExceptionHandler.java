@@ -20,6 +20,7 @@ import br.com.tecflix_app.exception.auth.InvalidTokenException;
 import br.com.tecflix_app.exception.auth.JwtCreationTokenException;
 import br.com.tecflix_app.exception.auth.RefreshTokenException;
 import br.com.tecflix_app.exception.auth.WrongPasswordException;
+import br.com.tecflix_app.exception.general.ActionNotAllowedException;
 import br.com.tecflix_app.exception.general.RepeatedDataException;
 import br.com.tecflix_app.exception.general.ResourceNotFoundException;
 
@@ -94,6 +95,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
             .details(request.getDescription(false))
             .build();
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ActionNotAllowedException.class)
+    public final ResponseEntity<ExceptionResponse> handleActionNotAllowedExceptions(
+        Exception exception,
+        WebRequest request
+    ) {
+        ExceptionResponse response = ExceptionResponse.builder()
+            .timestamp(LocalDateTime.now())
+            .title(exception.getMessage())
+            .details(request.getDescription(false))
+            .build();
+        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
 

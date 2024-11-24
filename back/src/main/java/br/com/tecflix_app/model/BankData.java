@@ -26,8 +26,8 @@ public class BankData implements Serializable {
     @Column(name = "account_number", nullable = false, length = 12)
     private String accountNumber;
 
-    @Column(nullable = false, length = 1)
-    private String dv;
+    @Column(nullable = false)
+    private Character dv;
 
     @Enumerated(EnumType.STRING)
     private Account account;

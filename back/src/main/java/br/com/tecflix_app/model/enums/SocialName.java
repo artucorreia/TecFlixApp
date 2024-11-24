@@ -1,6 +1,7 @@
 package br.com.tecflix_app.model.enums;
 
 public enum SocialName {
+    LINKEDIN("linkedin"),
     X("X"),
     YOUTUBE("youtube"),
     FACEBOOK("facebook"),

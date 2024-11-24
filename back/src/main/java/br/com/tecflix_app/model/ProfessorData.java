@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import br.com.tecflix_app.model.enums.Gender;
 import br.com.tecflix_app.model.enums.Occupation;
@@ -50,5 +51,5 @@ public class ProfessorData implements Serializable {
     private String profileImage;
 
     @Column(name = "created_at")
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 }

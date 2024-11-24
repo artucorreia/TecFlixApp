@@ -26,6 +26,7 @@ import br.com.tecflix_app.service.UserService;
 import br.com.tecflix_app.service.auth.jwt.RefreshTokenService;
 import br.com.tecflix_app.service.auth.jwt.TokenService;
 
+@CrossOrigin(origins = {"http://localhost:8080", "http://localhost:4200"})
 @RestController
 @RequestMapping("/auth")
 public class AuthController {

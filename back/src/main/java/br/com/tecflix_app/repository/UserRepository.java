@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
 import br.com.tecflix_app.model.User;
+import br.com.tecflix_app.model.enums.Role;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID> {
@@ -17,10 +18,13 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     UserDetails findUserDetailsByEmail(String email);
     
     @Query("SELECT u.active FROM User u WHERE u.email = :email")
-    boolean findActiveByEmail(String email);
+    Optional<Boolean> findActiveByEmail(String email);
     
     @Query("SELECT u.email FROM User u WHERE u.id = :id")
-    String findEmailById(UUID id);
+    Optional<String> findEmailById(UUID id);
+    
+    @Query("SELECT u.role FROM User u WHERE u.id = :id")
+    Optional<Role> findRoleById(UUID id);
 
     @Query("SELECT u.id FROM User u WHERE u.email = :email")
     Optional<UUID> findIdByEmail(String email);

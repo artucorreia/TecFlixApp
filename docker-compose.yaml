@@ -16,7 +16,7 @@ services:
 
   # postgres
   postgres:
-    image: postgres:17-alpine
+    image: postgres:16-alpine
     container_name: tecflix_postgres
     ports:
       - 2345:5432
