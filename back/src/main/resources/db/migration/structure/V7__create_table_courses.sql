@@ -1,9 +1,9 @@
 CREATE TABLE IF NOT EXISTS courses(
     id UUID PRIMARY KEY,
-    title VARCHAR(30) NOT NULL,
+    title VARCHAR(40) NOT NULL,
     description TEXT NOT NULL,
     cape_image VARCHAR(255) NOT NULL,
-    professor_id UUID REFERENCES users(id) NOT NULL,
+    user_id UUID REFERENCES users(id) NOT NULL,
     price DECIMAL(5,2) NOT NULL,
     active BOOLEAN DEFAULT TRUE NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL

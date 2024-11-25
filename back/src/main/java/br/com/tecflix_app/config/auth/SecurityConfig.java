@@ -50,7 +50,7 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.POST, "/auth/refresh-token").permitAll()
                     
                     // users
-                    .requestMatchers(HttpMethod.POST, "/api/v1/users/{userId}/make-professor").hasAnyRole("ADMIN", "USER", "PROFESSOR")
+                    .requestMatchers(HttpMethod.POST, "/api/v1/users/{userId}/make-professor").hasAnyRole("ADMIN", "SUBSCRIBER", "PROFESSOR")
                     
                     .anyRequest().authenticated()
             )

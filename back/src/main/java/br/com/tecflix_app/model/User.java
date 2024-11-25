@@ -70,6 +70,12 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user")
     private List<Social> socials;
+    
+    @OneToMany(mappedBy = "user")
+    private List<Course> coursesTaught;
+    
+    @OneToMany(mappedBy = "user")
+    private List<Payment> payments;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

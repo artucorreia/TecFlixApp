@@ -44,12 +44,12 @@ public class ProfessorData implements Serializable {
     @Enumerated(EnumType.STRING)
     private Occupation occupation;
 
-    @Column(length = 1000, nullable = false)
+    @Column(length = 2000, nullable = false)
     private String biography;
 
     @Column(name = "profile_image", length = 255)
     private String profileImage;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 }
