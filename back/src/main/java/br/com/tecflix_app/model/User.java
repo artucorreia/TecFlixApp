@@ -66,7 +66,7 @@ public class User implements UserDetails {
     private Address address;
 
     @OneToOne(mappedBy = "user")
-    private BankData bankData;
+    private BankAccountData bankAccountData;
 
     @OneToMany(mappedBy = "user")
     private List<Social> socials;

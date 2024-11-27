@@ -15,6 +15,7 @@ import br.com.tecflix_app.data.DTO.v1.create.RegisterProfessorDTO;
 import br.com.tecflix_app.data.DTO.v1.create.CreateSocialDTO;
 import br.com.tecflix_app.data.DTO.v1.response.CreateResponseDTO;
 import br.com.tecflix_app.data.DTO.v1.response.UserDTO;
+import br.com.tecflix_app.exception.auth.UserAlreadyIsActive;
 import br.com.tecflix_app.exception.general.ResourceNotFoundException;
 import br.com.tecflix_app.mapper.Mapper;
 import br.com.tecflix_app.model.User;
@@ -30,7 +31,7 @@ public class UserService {
     private final UserValidatorService validatorService;
     private final ProfessorDataService professorDataService;
     private final AddressService addressService;
-    private final BankDataService bankDataService;
+    private final BankAccountDataService bankDataService;
     private final SocialService socialService;
     private final Mapper mapper;
 
@@ -40,7 +41,7 @@ public class UserService {
         UserValidatorService validatorService,
         ProfessorDataService professorDataService,
         AddressService addressService,
-        BankDataService bankDataService,
+        BankAccountDataService bankDataService,
         SocialService socialService,
         Mapper mapper
     ) {
@@ -65,6 +66,10 @@ public class UserService {
             ),
     UserDTO.class
         );
+    }
+
+    public User findEntityById(UUID id) {
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Nenhum usuário encontrado para este id"));
     }
     
     public String findEmailById(UUID id) { 
@@ -96,7 +101,7 @@ public class UserService {
         .email(data.getEmail().trim())
         .password(passwordEncoded)
         .role(data.getRole())
-        .active(data.getActive())
+        .active(false)
         .createdAt(data.getCreatedAt())
         .build();
     }
@@ -113,8 +118,15 @@ public class UserService {
             userId, 
             "user created successfuly",
             LocalDateTime.now()
-            );
-        }
+        );
+    }
+
+    public void activateUser(UUID userId) {
+        User entity = findEntityById(userId);
+        if (entity.getActive()) throw new UserAlreadyIsActive("Usuário já está ativo");
+        entity.setActive(true);
+        repository.save(entity);
+    }
         
     @Transactional(rollbackFor = Exception.class)
     public CreateResponseDTO<UUID> createProfessor(UserDTO user, RegisterProfessorDTO data) {

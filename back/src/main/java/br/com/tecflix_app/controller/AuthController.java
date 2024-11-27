@@ -22,6 +22,7 @@ import br.com.tecflix_app.data.DTO.v1.response.CreateResponseDTO;
 import br.com.tecflix_app.exception.auth.InactiveUserException;
 import br.com.tecflix_app.exception.auth.WrongPasswordException;
 import br.com.tecflix_app.model.User;
+import br.com.tecflix_app.service.EmailCodeService;
 import br.com.tecflix_app.service.UserService;
 import br.com.tecflix_app.service.auth.jwt.RefreshTokenService;
 import br.com.tecflix_app.service.auth.jwt.TokenService;
@@ -32,6 +33,7 @@ import br.com.tecflix_app.service.auth.jwt.TokenService;
 public class AuthController {
     
     private final UserService userService;
+    private final EmailCodeService emailCodeService;
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
     private final RefreshTokenService refreshTokenService;
@@ -39,11 +41,13 @@ public class AuthController {
     @Autowired
     public AuthController(
         UserService userService,
+        EmailCodeService emailCodeService,
         AuthenticationManager authenticationManager,
         TokenService tokenService,
         RefreshTokenService refreshTokenService
     ) {
         this.userService = userService;
+        this.emailCodeService = emailCodeService;
         this.authenticationManager = authenticationManager;
         this.tokenService = tokenService;
         this.refreshTokenService = refreshTokenService;
@@ -91,5 +95,15 @@ public class AuthController {
     )
     public ResponseEntity<CreateResponseDTO<UUID>> register(@Valid @RequestBody RegisterDTO data) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.register(data));
+    }
+    
+    @PostMapping(value = "/send-code/{userId}")
+    public ResponseEntity<CreateResponseDTO<Long>> sendEmailCode(@PathVariable UUID userId) {
+        return ResponseEntity.ok().body(emailCodeService.create(userId));
+    }
+
+    @PostMapping(value = "/validate-code/{code}")
+    public ResponseEntity<CreateResponseDTO<UUID>> validateEmailCode(@PathVariable String code) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(emailCodeService.validate(code));
     }
 }

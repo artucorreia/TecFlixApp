@@ -1,0 +1,46 @@
+server:
+  port: ${SERVER_PORT:8081}
+
+stripe:
+  api:
+    key: ${STRIPE_SECRET_KEY}
+  public:
+    key: ${STRIPE_PUBLIC_KEY}
+
+security:
+  api:
+    key: ${API_KEY:password}
+  jwt:
+    token:
+      secret: ${TOKEN_SECRET:mySecret}
+      duration: ${TOKEN_DURATION:43200000} # 12 hours
+      refresh:
+        duration: ${REFRESH_TOKEN_DURATION:604800000} # 168 hours
+
+spring:
+  application:
+    name: tecflix-app
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    jpa:
+      open-in-view: false
+      hibernate:
+        ddl-auto: none
+      show-sql: false
+  flyway:
+    locations:
+      filesystem: src/test/resources/db/migration
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_USER}
+    password: ${EMAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true

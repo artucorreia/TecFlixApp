@@ -1,0 +1,48 @@
+server:
+  port: ${SERVER_PORT:8081}
+
+website:
+  url: http://localhosto:4200
+
+email:
+  code:
+    validation:
+      time: ${CODE_VALIDATION_TIME:600000000000} # 10 minutes in nanos
+
+security:
+  api:
+    key: ${API_KEY:password}
+  jwt:
+    token:
+      secret: ${TOKEN_SECRET:mySecret}
+      duration: ${TOKEN_DURATION:43200000} # 12 hours
+      refresh:
+        duration: ${REFRESH_TOKEN_DURATION:604800000} # 168 hours
+
+spring:
+  application:
+    name: tecflix-app
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:1234/tecflix
+    username: developer
+    password: 01092209
+    jpa:
+      open-in-view: false
+      hibernate:
+        ddl-auto: none
+      show-sql: false
+  flyway:
+    locations:
+      filesystem: src/test/resources/db/migration
+  mail:
+    host: sandbox.smtp.mailtrap.io
+    port: 587
+    username: ${MAILTRAP_USER}
+    password: ${MAILTRAP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true

@@ -7,18 +7,18 @@ import org.springframework.stereotype.Service;
 import br.com.tecflix_app.data.DTO.v1.create.CreateBackDataDTO;
 import br.com.tecflix_app.data.DTO.v1.response.UserDTO;
 import br.com.tecflix_app.mapper.Mapper;
-import br.com.tecflix_app.model.BankData;
-import br.com.tecflix_app.repository.BankDataRepository;
+import br.com.tecflix_app.model.BankAccountData;
+import br.com.tecflix_app.repository.BankAccountDataRepository;
 
 @Service
-public class BankDataService {
-    private final Logger LOGGER = Logger.getLogger(BankDataService.class.getName());
+public class BankAccountDataService {
+    private final Logger LOGGER = Logger.getLogger(BankAccountDataService.class.getName());
 
-    private final BankDataRepository repository;
+    private final BankAccountDataRepository repository;
     private final Mapper mapper;
 
-    public BankDataService(
-        BankDataRepository repository,
+    public BankAccountDataService(
+        BankAccountDataRepository repository,
         Mapper mapper
     ) {
         this.repository = repository;
@@ -35,7 +35,7 @@ public class BankDataService {
         data.setAccountNumber(data.getAccountNumber().trim());
         data.setDv(data.getDv());
 
-        BankData entity = mapper.map(data, BankData.class);
+        BankAccountData entity = mapper.map(data, BankAccountData.class);
 
         repository.save(entity);
     }

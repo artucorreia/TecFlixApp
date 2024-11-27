@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS email_codes(
+    id SERIAL PRIMARY KEY,
+    user_id UUID REFERENCES users(id) NOT NULL,
+    code VARCHAR(32) UNIQUE NOT NULL,
+    created_at TIMESTAMP NOT NULL
+);

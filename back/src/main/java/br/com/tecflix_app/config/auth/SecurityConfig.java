@@ -48,6 +48,7 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                     .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                     .requestMatchers(HttpMethod.POST, "/auth/refresh-token").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/auth//send-code/{userId}").permitAll()
                     
                     // users
                     .requestMatchers(HttpMethod.POST, "/api/v1/users/{userId}/make-professor").hasAnyRole("ADMIN", "SUBSCRIBER", "PROFESSOR")
