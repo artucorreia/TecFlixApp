@@ -1,11 +1,13 @@
 server:
   port: ${SERVER_PORT:8081}
 
-stripe:
-  api:
-    key: ${STRIPE_SECRET_KEY}
-  public:
-    key: ${STRIPE_PUBLIC_KEY}
+website:
+  url: ${WEBSTIE_URL}
+
+email:
+  code:
+    validation:
+      time: ${CODE_VALIDATION_TIME:600000000000} # 10 minutes in nanos
 
 security:
   api:

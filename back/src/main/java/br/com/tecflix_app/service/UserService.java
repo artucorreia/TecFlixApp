@@ -116,7 +116,7 @@ public class UserService {
         
         return new CreateResponseDTO<>(
             userId, 
-            "user created successfuly",
+            "Usuário criado com sucesso",
             LocalDateTime.now()
         );
     }
@@ -154,7 +154,7 @@ public class UserService {
         
         return new CreateResponseDTO<>(
             user.getId(), 
-            "user is a professor",
+            "Usuário cadastrado como professor",
             LocalDateTime.now()
         );
     }
