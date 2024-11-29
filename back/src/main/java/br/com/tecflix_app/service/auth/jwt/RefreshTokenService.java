@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.tecflix_app.exception.auth.RefreshTokenException;
 import br.com.tecflix_app.exception.general.ResourceNotFoundException;
@@ -34,7 +35,9 @@ public class RefreshTokenService {
         this.userRepository = userRepository;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public RefreshToken create(UUID userId) {
+        deleteByUserId(userId);
         LOGGER.info("Creating refresh token");
         RefreshToken entity = RefreshToken.builder()
             .id(null)
@@ -54,7 +57,6 @@ public class RefreshTokenService {
 
     public UUID resolve(String token) {
         RefreshToken refreshToken = findByToken(token);
-        delete(refreshToken);
         verifyTokenExpiration(refreshToken);
         return refreshToken.getUser().getId();
     }
@@ -72,8 +74,8 @@ public class RefreshTokenService {
         if (refreshToken.getExpiresAt().isBefore(Instant.now())) throw new RefreshTokenException("Token expirado");
     }
 
-    private void delete(RefreshToken refreshToken) {
-        LOGGER.info("Deleting old refresh token");
-        repository.delete(refreshToken);
+    private void deleteByUserId(UUID userId) {
+        LOGGER.info("Deleting old user refresh token");
+        repository.deleteByUserId(userId);
     }
 }
