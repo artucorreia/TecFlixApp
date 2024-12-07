@@ -9,6 +9,12 @@
 # env
 .env
 
+# certs
+certs/
+
+# credentials
+credentials.json
+
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 

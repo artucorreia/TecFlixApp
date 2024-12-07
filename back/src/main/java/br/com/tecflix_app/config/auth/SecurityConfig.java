@@ -53,6 +53,9 @@ public class SecurityConfig {
                     // users
                     .requestMatchers(HttpMethod.POST, "/api/v1/users/{userId}/make-professor").hasAnyRole("ADMIN", "SUBSCRIBER", "PROFESSOR")
                     
+                    // payment
+                    .requestMatchers(HttpMethod.POST, "/api/v1/payments").authenticated()
+
                     .anyRequest().authenticated()
             )
             // api key filter

@@ -4,6 +4,14 @@ server:
 website:
   url: ${WEBSTIE_URL}
 
+payment:
+  pix:
+    efi:
+      key: ${RANDOM_KEY}
+      client:
+        id: ${CLIENT_ID}
+        secret: ${CLIENT_SECRET}
+
 email:
   code:
     validation:

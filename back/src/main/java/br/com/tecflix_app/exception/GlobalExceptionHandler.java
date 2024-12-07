@@ -25,6 +25,9 @@ import br.com.tecflix_app.exception.email.EmailSendingException;
 import br.com.tecflix_app.exception.general.ActionNotAllowedException;
 import br.com.tecflix_app.exception.general.RepeatedDataException;
 import br.com.tecflix_app.exception.general.ResourceNotFoundException;
+import br.com.tecflix_app.exception.payment.EVPGenerationException;
+import br.com.tecflix_app.exception.payment.PixGenerationException;
+import br.com.tecflix_app.exception.payment.QRCodeGenerationException;
 
 @RestController
 @ControllerAdvice
@@ -214,6 +217,49 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 
     @ExceptionHandler(EmailSendingException.class)
     public final ResponseEntity<ExceptionResponse> handleEmailSendingExceptions(
+        Exception exception,
+        WebRequest request
+    ) {
+        ExceptionResponse response = ExceptionResponse.builder()
+            .timestamp(LocalDateTime.now())
+            .title(exception.getMessage())
+            .details(request.getDescription(false))
+            .build();
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    /* 
+     * Payment Exceptions
+    */
+    
+    @ExceptionHandler(EVPGenerationException.class)
+    public final ResponseEntity<ExceptionResponse> handleEVPGenerationExceptions(
+        Exception exception,
+        WebRequest request
+    ) {
+        ExceptionResponse response = ExceptionResponse.builder()
+            .timestamp(LocalDateTime.now())
+            .title(exception.getMessage())
+            .details(request.getDescription(false))
+            .build();
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(PixGenerationException.class)
+    public final ResponseEntity<ExceptionResponse> handlePixGenerationExceptions(
+        Exception exception,
+        WebRequest request
+    ) {
+        ExceptionResponse response = ExceptionResponse.builder()
+            .timestamp(LocalDateTime.now())
+            .title(exception.getMessage())
+            .details(request.getDescription(false))
+            .build();
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+    
+    @ExceptionHandler(QRCodeGenerationException.class)
+    public final ResponseEntity<ExceptionResponse> handleQRCodeGenerationExceptions(
         Exception exception,
         WebRequest request
     ) {

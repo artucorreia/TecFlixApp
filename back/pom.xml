@@ -32,6 +32,8 @@
 		<!-- dependencies versions -->
 		<lombok.version>1.18.36</lombok.version>
 		<auth0.version>4.4.0</auth0.version>
+		<json.version>20231013</json.version>
+		<efi.version>1.0.3</efi.version>
 	</properties>
 	<dependencies>
 		<!-- start web -->
@@ -107,6 +109,20 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+
+		<!-- json -->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>${json.version}</version>
+		</dependency>
+
+		<!-- efi bank -->
+		<dependency>
+			<groupId>br.com.efipay.efisdk</groupId>
+			<artifactId>sdk-java-apis-efi</artifactId>
+			<version>${efi.version}</version>
 		</dependency>
 
 
