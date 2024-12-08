@@ -6,5 +6,6 @@ import br.com.tecflix_app.data.DTO.v1.create.PixChargeRequest;
 
 public interface Pix {
     JSONObject createEVP();
+    JSONObject getPixKey();
     JSONObject createCharge(PixChargeRequest pixChargeRequest);
 }

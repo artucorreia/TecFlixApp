@@ -54,7 +54,8 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.POST, "/api/v1/users/{userId}/make-professor").hasAnyRole("ADMIN", "SUBSCRIBER", "PROFESSOR")
                     
                     // payment
-                    .requestMatchers(HttpMethod.POST, "/api/v1/payments").authenticated()
+                    .requestMatchers(HttpMethod.GET, "/api/v1/payments/pix").authenticated()
+                    .requestMatchers(HttpMethod.POST, "/api/v1/payments/pix").authenticated()
 
                     .anyRequest().authenticated()
             )

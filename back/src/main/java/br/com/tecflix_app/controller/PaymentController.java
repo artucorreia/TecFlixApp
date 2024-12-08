@@ -26,8 +26,8 @@ public class PaymentController {
     }
     
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> pixCreateEVP() {
-        JSONObject response = pixService.createEVP();
+    public ResponseEntity<String> getPixKey() {
+        JSONObject response = pixService.getPixKey();
         return ResponseEntity
             .ok()
             .contentType(MediaType.APPLICATION_JSON)

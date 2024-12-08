@@ -7,7 +7,7 @@ website:
 payment:
   pix:
     efi:
-      key: ${RANDOM_KEY}
+      key: ${PIX_KEY}
       client:
         id: ${CLIENT_ID}
         secret: ${CLIENT_SECRET}

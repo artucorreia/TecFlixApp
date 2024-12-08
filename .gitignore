@@ -3,4 +3,6 @@
 
 # env
 db.env
-keycloak.env
+
+# qr codes
+qrcodes/*.png
