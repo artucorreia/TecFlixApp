@@ -57,7 +57,6 @@ public class EfiPixImpl implements Pix {
         this.userService = userService;
     }
 
-
     @Override
     public JSONObject createEVP() {
         LOGGER.info("Creating EVP");
@@ -92,7 +91,7 @@ public class EfiPixImpl implements Pix {
         UserDTO user = userService.findById(tokenService.getUserId());
 
         JSONObject options = configuringJsonObject();
-        JSONObject body = createChargeBody(user.getName(), user.getEmail(), pixChargeRequest);
+        JSONObject body = createChargeBody(pixChargeRequest);
         JSONArray infoAdicionais = createAdditionalInfo(user.getId().toString()); 
         body.put("infoAdicionais", infoAdicionais);
 
@@ -114,8 +113,7 @@ public class EfiPixImpl implements Pix {
         }
     }
 
-    // TODO: add user info
-    private JSONObject createChargeBody(String userName, String userEmail, PixChargeRequest pixChargeRequest) {
+    private JSONObject createChargeBody(PixChargeRequest pixChargeRequest) {
         LOGGER.info("Creating charge body");
         
         JSONObject body = new JSONObject();
@@ -126,16 +124,6 @@ public class EfiPixImpl implements Pix {
                 3600
             )
         );
-        // body.put(
-        //     "devedor",
-        //     new JSONObject().put(
-        //         "email",
-        //         userEmail
-        //     ).put(
-        //         "nome",
-        //         userName
-        //     )
-        // );
         body.put(
             "valor", 
             new JSONObject().put(
@@ -147,26 +135,25 @@ public class EfiPixImpl implements Pix {
         return body;
     }
 
-    // TODO: add info
     private JSONArray createAdditionalInfo(String userId) {
         LOGGER.info("Creating additional info");
         
         JSONArray infoAdicionais = new JSONArray();
-        // infoAdicionais.put(
-        //     new JSONObject()
-        //         .put("nome", "ID Usuário")
-        //         .put("valor", userId)
-        // );
         infoAdicionais.put(
             new JSONObject()
-                .put("nome", "Proposito")
+                .put("nome", "ID Usuário")
+                .put("valor", userId)
+        );
+        infoAdicionais.put(
+            new JSONObject()
+                .put("nome", "Propósito")
                 .put("valor", "Apoio ao desenvolvimento da plataforma TecFlix")
         );
-        // infoAdicionais.put(
-        //     new JSONObject()
-        //         .put("nome", "Mensagem")
-        //         .put("valor", "Sua contribuição faz a TecFlix continuar crescendo!")
-        // );
+        infoAdicionais.put(
+            new JSONObject()
+                .put("nome", "Mensagem")
+                .put("valor", "Sua contribuição faz a TecFlix continuar crescendo!")
+        );
         return infoAdicionais;
     }
 
