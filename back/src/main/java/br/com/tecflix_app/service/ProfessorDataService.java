@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.tecflix_app.data.DTO.v1.create.CreateProfessorDataDTO;
 import br.com.tecflix_app.data.DTO.v1.response.UserDTO;
-import br.com.tecflix_app.mapper.contract.IMapper;
+import br.com.tecflix_app.mapper.contract.IMapperService;
 import br.com.tecflix_app.model.ProfessorData;
 import br.com.tecflix_app.repository.ProfessorDataRepository;
 
@@ -18,11 +18,11 @@ public class ProfessorDataService {
     private final Logger LOGGER = Logger.getLogger(ProfessorDataService.class.getName());
 
     private final ProfessorDataRepository repository;
-    private final IMapper mapper;
+    private final IMapperService mapper;
 
     public ProfessorDataService(
         ProfessorDataRepository repository,
-        IMapper mapper
+        IMapperService mapper
     ) {
         this.repository = repository;
         this.mapper = mapper;

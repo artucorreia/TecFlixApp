@@ -11,7 +11,7 @@ import br.com.tecflix_app.data.DTO.v1.response.GenericResponseDTO;
 import br.com.tecflix_app.data.DTO.v1.response.UserDTO;
 import br.com.tecflix_app.exception.auth.UserAlreadyIsActive;
 import br.com.tecflix_app.exception.general.ResourceNotFoundException;
-import br.com.tecflix_app.mapper.contract.IMapper;
+import br.com.tecflix_app.mapper.contract.IMapperService;
 import br.com.tecflix_app.model.EmailCode;
 import br.com.tecflix_app.model.User;
 import br.com.tecflix_app.repository.EmailCodeRepository;
@@ -24,14 +24,14 @@ public class EmailCodeService {
     private final EmailCodeRepository repository;
     private final UserService userService;
     private final EmailSenderService emailSenderService;
-    private final IMapper mapper;
+    private final IMapperService mapper;
 
     @Autowired
     public EmailCodeService(
         EmailCodeRepository repository,
         UserService userService,
         EmailSenderService emailSenderService,
-        IMapper mapper
+        IMapperService mapper
     ) {
         this.repository = repository;
         this.userService = userService;

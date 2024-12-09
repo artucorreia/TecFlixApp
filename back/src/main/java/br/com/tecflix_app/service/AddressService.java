@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.tecflix_app.data.DTO.v1.create.CreateAddressDTO;
 import br.com.tecflix_app.data.DTO.v1.response.UserDTO;
-import br.com.tecflix_app.mapper.contract.IMapper;
+import br.com.tecflix_app.mapper.contract.IMapperService;
 import br.com.tecflix_app.model.Address;
 import br.com.tecflix_app.repository.AddressRepository;
 
@@ -15,11 +15,11 @@ public class AddressService {
     private final Logger LOGGER = Logger.getLogger(AddressService.class.getName());
 
     private final AddressRepository repository;
-    private final IMapper mapper;
+    private final IMapperService mapper;
 
     public AddressService(
         AddressRepository repository,
-        IMapper mapper
+        IMapperService mapper
     ) {
         this.repository = repository;
         this.mapper = mapper;

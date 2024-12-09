@@ -5,14 +5,14 @@ import java.util.List;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
-
-import br.com.tecflix_app.mapper.contract.IMapper;
+import org.modelmapper.ModelMapper;
+import br.com.tecflix_app.mapper.contract.IMapperService;
 
 @Service
 @Primary
-public class ModelMapper implements IMapper {
+public class ModelMapperService implements IMapperService {
 
-    private static final ModelMapper modelMapper = new ModelMapper();
+    private static final  ModelMapper modelMapper = new ModelMapper();
 
     @Override
     public <O, D> D map(O object, Class<D> destiny) {
