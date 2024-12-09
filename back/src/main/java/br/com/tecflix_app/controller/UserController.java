@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.tecflix_app.data.DTO.v1.create.RegisterProfessorDTO;
-import br.com.tecflix_app.data.DTO.v1.response.CreateResponseDTO;
+import br.com.tecflix_app.data.DTO.v1.response.GenericResponseDTO;
 import br.com.tecflix_app.data.DTO.v1.response.UserDTO;
 import br.com.tecflix_app.service.UserService;
 import jakarta.validation.Valid;
@@ -35,7 +35,7 @@ public class UserController {
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public CreateResponseDTO<UUID> createProfessor(@PathVariable UUID userId, @Valid @RequestBody RegisterProfessorDTO data) {
+    public GenericResponseDTO<UUID> createProfessor(@PathVariable UUID userId, @Valid @RequestBody RegisterProfessorDTO data) {
         UserDTO user = new UserDTO();
         user.setId(userId);
         return userService.createProfessor(user, data);

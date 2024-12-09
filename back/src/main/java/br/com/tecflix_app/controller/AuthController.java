@@ -18,7 +18,7 @@ import br.com.tecflix_app.data.DTO.v1.auth.AuthenticationDTO;
 import br.com.tecflix_app.data.DTO.v1.auth.RefreshTokenDTO;
 import br.com.tecflix_app.data.DTO.v1.auth.RegisterDTO;
 import br.com.tecflix_app.data.DTO.v1.auth.TokenDTO;
-import br.com.tecflix_app.data.DTO.v1.response.CreateResponseDTO;
+import br.com.tecflix_app.data.DTO.v1.response.GenericResponseDTO;
 import br.com.tecflix_app.exception.auth.InactiveUserException;
 import br.com.tecflix_app.exception.auth.WrongPasswordException;
 import br.com.tecflix_app.model.User;
@@ -93,17 +93,17 @@ public class AuthController {
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<CreateResponseDTO<UUID>> register(@Valid @RequestBody RegisterDTO data) {
+    public ResponseEntity<GenericResponseDTO<UUID>> register(@Valid @RequestBody RegisterDTO data) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.register(data));
     }
     
     @PostMapping(value = "/send-code/{userId}")
-    public ResponseEntity<CreateResponseDTO<Long>> sendEmailCode(@PathVariable UUID userId) {
+    public ResponseEntity<GenericResponseDTO<Long>> sendEmailCode(@PathVariable UUID userId) {
         return ResponseEntity.ok().body(emailCodeService.create(userId));
     }
 
     @PostMapping(value = "/validate-code/{code}")
-    public ResponseEntity<CreateResponseDTO<UUID>> validateEmailCode(@PathVariable String code) {
+    public ResponseEntity<GenericResponseDTO<UUID>> validateEmailCode(@PathVariable String code) {
         return ResponseEntity.status(HttpStatus.CREATED).body(emailCodeService.validate(code));
     }
 }

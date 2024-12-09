@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.tecflix_app.data.DTO.v1.response.CreateResponseDTO;
+import br.com.tecflix_app.data.DTO.v1.response.GenericResponseDTO;
 import br.com.tecflix_app.data.DTO.v1.response.UserDTO;
 import br.com.tecflix_app.exception.auth.UserAlreadyIsActive;
 import br.com.tecflix_app.exception.general.ResourceNotFoundException;
@@ -44,7 +44,7 @@ public class EmailCodeService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public CreateResponseDTO<Long> create(UUID userId) {
+    public GenericResponseDTO<Long> create(UUID userId) {
         UserDTO user = userService.findById(userId);
         
         if (user.getActive()) throw new UserAlreadyIsActive("Usuário já está ativo");
@@ -65,7 +65,7 @@ public class EmailCodeService {
             result.getCode()
         );
 
-        return new CreateResponseDTO<>(
+        return new GenericResponseDTO<>(
             result.getId(), 
             "Código enviado com sucesso, verifique sua caixa de entrada",
             LocalDateTime.now()
@@ -73,11 +73,11 @@ public class EmailCodeService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public CreateResponseDTO<UUID> validate(String code) {
+    public GenericResponseDTO<UUID> validate(String code) {
         UUID userId = findByCode(code).getUser().getId();
         userService.activateUser(userId);
 
-        return new CreateResponseDTO<>(
+        return new GenericResponseDTO<>(
             userId,
             "Usuário validado com sucesso",
             LocalDateTime.now()
