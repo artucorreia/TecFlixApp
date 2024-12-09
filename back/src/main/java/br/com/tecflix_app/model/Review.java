@@ -35,9 +35,11 @@ public class Review {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @ManyToOne @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne 
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
-    @ManyToOne @JoinColumn(name = "course_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne 
+    @JoinColumn(name = "course_id", referencedColumnName = "id", nullable = false)
     private Course course;
 }

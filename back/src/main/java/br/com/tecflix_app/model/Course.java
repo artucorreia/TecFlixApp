@@ -1,6 +1,5 @@
 package br.com.tecflix_app.model;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -37,11 +36,8 @@ public class Course {
     @Column(name = "description", nullable = false, length = 2000)
     private String description;
 
-    @Column(name = "cape_image", nullable = false)
+    @Column(name = "cape_image")
     private String capeImage;
-
-    @Column(nullable = false, precision = 5, scale = 2)
-    private BigDecimal price;
 
     @Column(nullable = false)
     private Boolean active;

@@ -32,6 +32,9 @@ public class Class {
     
     @Column(nullable = false, name = "video_path")
     private String videoPath;
+    
+    @Column(nullable = false)
+    private Boolean active;
 
     @Column(nullable = false, name = "created_at", updatable = false)
     private LocalDateTime created_at;

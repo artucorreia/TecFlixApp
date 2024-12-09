@@ -1,5 +1,6 @@
 package br.com.tecflix_app.model;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -30,6 +31,12 @@ public class Tag {
     
     @Column(nullable = false, length = 30, unique = true)
     private String name;
+    
+    @Column(nullable = false)
+    private Boolean active;
+    
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -38,5 +45,4 @@ public class Tag {
         inverseJoinColumns = @JoinColumn(name = "course_id")
     )
     private List<Course> courses;
-
 }

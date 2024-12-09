@@ -28,8 +28,11 @@ public class Module {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 40)
     private String title;
+
+    @Column(nullable = false)
+    private Boolean active;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
