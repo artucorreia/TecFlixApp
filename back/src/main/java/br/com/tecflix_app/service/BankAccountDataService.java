@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.tecflix_app.data.DTO.v1.create.CreateBackDataDTO;
 import br.com.tecflix_app.data.DTO.v1.response.UserDTO;
-import br.com.tecflix_app.mapper.IMapper;
+import br.com.tecflix_app.mapper.contract.IMapper;
 import br.com.tecflix_app.model.BankAccountData;
 import br.com.tecflix_app.repository.BankAccountDataRepository;
 

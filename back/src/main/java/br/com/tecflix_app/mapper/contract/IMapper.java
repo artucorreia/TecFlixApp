@@ -1,4 +1,4 @@
-package br.com.tecflix_app.mapper;
+package br.com.tecflix_app.mapper.contract;
 
 import java.util.List;
 

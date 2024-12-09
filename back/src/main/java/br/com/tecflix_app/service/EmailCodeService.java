@@ -11,7 +11,7 @@ import br.com.tecflix_app.data.DTO.v1.response.GenericResponseDTO;
 import br.com.tecflix_app.data.DTO.v1.response.UserDTO;
 import br.com.tecflix_app.exception.auth.UserAlreadyIsActive;
 import br.com.tecflix_app.exception.general.ResourceNotFoundException;
-import br.com.tecflix_app.mapper.IMapper;
+import br.com.tecflix_app.mapper.contract.IMapper;
 import br.com.tecflix_app.model.EmailCode;
 import br.com.tecflix_app.model.User;
 import br.com.tecflix_app.repository.EmailCodeRepository;
