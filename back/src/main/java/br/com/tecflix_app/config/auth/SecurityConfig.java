@@ -51,13 +51,25 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.POST, "/auth//send-code/{userId}").permitAll()
                     
                     // users
-                    .requestMatchers(HttpMethod.POST, "/api/v1/users/{userId}/make-professor").hasAnyRole("ADMIN", "SUBSCRIBER", "PROFESSOR")
+                    // .requestMatchers(HttpMethod.POST, "/api/v1/users/{userId}/make-professor").hasAnyRole("ADMIN", "USER", "PROFESSOR")
                     
                     // payment
-                    .requestMatchers(HttpMethod.GET, "/api/v1/payments/pix").authenticated()
-                    .requestMatchers(HttpMethod.POST, "/api/v1/payments/pix").authenticated()
+                    // .requestMatchers(HttpMethod.GET, "/api/v1/payments/pix").hasAnyRole("ADMIN", "USER", "PROFESSOR")
+                    // .requestMatchers(HttpMethod.POST, "/api/v1/payments/pix").hasAnyRole("ADMIN", "USER", "PROFESSOR")
 
-                    .anyRequest().authenticated()
+                    // tags
+                    // .requestMatchers(HttpMethod.GET, "/api/v1/tags").hasAnyRole("ADMIN", "USER", "PROFESSOR")
+                    // .requestMatchers(HttpMethod.GET, "/api/v1/tags/{id}").hasAnyRole("ADMIN", "USER", "PROFESSOR")
+                    
+                    // courses
+                    // .requestMatchers(HttpMethod.GET, "/api/v1/courses").hasAnyRole("ADMIN", "USER", "PROFESSOR")
+                    // .requestMatchers(HttpMethod.GET, "/api/v1/courses/{id}").hasAnyRole("ADMIN", "USER", "PROFESSOR")
+                    
+                    // classes
+                    // .requestMatchers(HttpMethod.GET, "/api/v1/classes").hasAnyRole("ADMIN", "USER", "PROFESSOR")
+                    // .requestMatchers(HttpMethod.GET, "/api/v1/classes/{id}").hasAnyRole("ADMIN", "USER", "PROFESSOR")
+
+                    .anyRequest().hasAnyRole("ADMIN", "USER", "PROFESSOR")
             )
             // api key filter
             .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
