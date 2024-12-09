@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.tecflix_app.data.DTO.v1.create.CreateSocialDTO;
 import br.com.tecflix_app.data.DTO.v1.response.UserDTO;
-import br.com.tecflix_app.mapper.Mapper;
+import br.com.tecflix_app.mapper.contract.IMapper;
 import br.com.tecflix_app.model.Social;
 import br.com.tecflix_app.repository.SocialRepository;
 
@@ -15,11 +15,11 @@ public class SocialService {
     private final Logger LOGGER = Logger.getLogger(SocialService.class.getName());
 
     private final SocialRepository repository;
-    private final Mapper mapper;
+    private final IMapper mapper;
 
     public SocialService(
         SocialRepository repository,
-        Mapper mapper
+        IMapper mapper
     ) {
         this.repository = repository;
         this.mapper = mapper;

@@ -17,7 +17,7 @@ import br.com.tecflix_app.data.DTO.v1.response.GenericResponseDTO;
 import br.com.tecflix_app.data.DTO.v1.response.UserDTO;
 import br.com.tecflix_app.exception.auth.UserAlreadyIsActive;
 import br.com.tecflix_app.exception.general.ResourceNotFoundException;
-import br.com.tecflix_app.mapper.Mapper;
+import br.com.tecflix_app.mapper.contract.IMapper;
 import br.com.tecflix_app.model.User;
 import br.com.tecflix_app.model.enums.Role;
 import br.com.tecflix_app.repository.UserRepository;
@@ -33,7 +33,7 @@ public class UserService {
     private final AddressService addressService;
     private final BankAccountDataService bankDataService;
     private final SocialService socialService;
-    private final Mapper mapper;
+    private final IMapper mapper;
 
     @Autowired
     public UserService(
@@ -43,7 +43,7 @@ public class UserService {
         AddressService addressService,
         BankAccountDataService bankDataService,
         SocialService socialService,
-        Mapper mapper
+        IMapper mapper
     ) {
         this.repository = repository;
         this.validatorService = validatorService;

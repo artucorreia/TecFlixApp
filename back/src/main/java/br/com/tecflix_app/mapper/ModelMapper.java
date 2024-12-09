@@ -1,17 +1,16 @@
-package br.com.tecflix_app.mapper.implementation;
+package br.com.tecflix_app.mapper;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
-import br.com.tecflix_app.mapper.Mapper;
+import br.com.tecflix_app.mapper.contract.IMapper;
 
 @Service
 @Primary
-public class ModelMapperImpl implements Mapper {
+public class ModelMapper implements IMapper {
 
     private static final ModelMapper modelMapper = new ModelMapper();
 

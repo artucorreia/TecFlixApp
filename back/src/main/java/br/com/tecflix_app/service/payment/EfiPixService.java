@@ -1,4 +1,4 @@
-package br.com.tecflix_app.service.payment.implementation;
+package br.com.tecflix_app.service.payment;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -27,13 +27,13 @@ import br.com.tecflix_app.exception.payment.PixGenerationException;
 import br.com.tecflix_app.exception.payment.QRCodeGenerationException;
 import br.com.tecflix_app.service.UserService;
 import br.com.tecflix_app.service.auth.jwt.TokenService;
-import br.com.tecflix_app.service.payment.Pix;
+import br.com.tecflix_app.service.payment.contract.IPixService;
 import br.com.tecflix_app.service.util.FileNameGenerator;
 
 @Primary
 @Service
-public class EfiPixImpl implements Pix {
-    private final Logger LOGGER = Logger.getLogger(EfiPixImpl.class.getName());
+public class EfiPixService implements IPixService {
+    private final Logger LOGGER = Logger.getLogger(EfiPixService.class.getName());
 
     @Value("${payment.pix.efi.client.id}")
     private String clientId;
@@ -48,7 +48,7 @@ public class EfiPixImpl implements Pix {
     private final UserService userService;
 
     @Autowired
-    public EfiPixImpl(
+    public EfiPixService(
         TokenService tokenService,
         UserService userService
     

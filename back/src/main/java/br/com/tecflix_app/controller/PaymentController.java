@@ -12,16 +12,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.tecflix_app.data.DTO.v1.create.PixChargeRequest;
-import br.com.tecflix_app.service.payment.Pix;
+import br.com.tecflix_app.service.payment.contract.IPixService;
 
 @RestController
 @RequestMapping("/api/v1/payments/pix")
 public class PaymentController {
     
-    private final Pix pixService;
+    private final IPixService pixService;
     
     @Autowired
-    public PaymentController(Pix pixService) {
+    public PaymentController(IPixService pixService) {
         this.pixService = pixService;
     }
     

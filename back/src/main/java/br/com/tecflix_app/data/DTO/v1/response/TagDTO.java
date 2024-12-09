@@ -7,11 +7,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter @Setter
-public class CreateResponseDTO <T> {
-    private T id; 
-    private String message;
-    private LocalDateTime timestamp;
+public class TagDTO {
+    private Long id;
+    private String name;
+    // private List<CourseDTO> courses;
+    private Boolean active;
+    private LocalDateTime createdAt;
 }
