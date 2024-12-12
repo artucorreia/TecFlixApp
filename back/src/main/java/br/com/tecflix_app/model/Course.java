@@ -1,15 +1,18 @@
 package br.com.tecflix_app.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -26,7 +29,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter @Setter
 @EqualsAndHashCode(of = "id")
-public class Course {
+public class Course implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
@@ -44,6 +47,12 @@ public class Course {
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
+    
+    @Column(name = "total_score_reviews")
+    private Double totalScoreReviews;
+    
+    @Column(name = "total_reviews")
+    private Long totalReviews;
 
     @ManyToOne 
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
@@ -52,6 +61,11 @@ public class Course {
     @OneToMany(mappedBy = "course")
     private List<Module> modules;
 
-    @ManyToMany(mappedBy = "courses")
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "courses_tags",
+        joinColumns = @JoinColumn(name = "course_id"),
+        inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
     private List<Tag> tags;
 }

@@ -1,5 +1,6 @@
 package br.com.tecflix_app.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -23,7 +24,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter @Setter
 @EqualsAndHashCode(of = "id")
-public class Class {
+public class Class implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 

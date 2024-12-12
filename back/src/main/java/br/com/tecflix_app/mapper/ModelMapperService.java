@@ -1,7 +1,9 @@
 package br.com.tecflix_app.mapper;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,15 @@ public class ModelMapperService implements IMapperService {
     @Override
     public <O, D> List<D> map(List<O> objects, Class<D> destiny) {
         List<D> destinyList = new ArrayList<>();
+        for (O object : objects) {
+            destinyList.add(modelMapper.map(object, destiny));
+        }
+        return destinyList;
+    }
+
+    @Override
+    public <O, D> Set<D> map(Set<O> objects, Class<D> destiny) {
+        Set<D> destinyList = new HashSet<>();
         for (O object : objects) {
             destinyList.add(modelMapper.map(object, destiny));
         }

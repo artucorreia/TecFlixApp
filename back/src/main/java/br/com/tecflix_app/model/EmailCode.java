@@ -1,5 +1,6 @@
 package br.com.tecflix_app.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -24,7 +25,7 @@ import lombok.Setter;
 @Getter @Setter
 @EqualsAndHashCode(of = "id")
 @Builder
-public class EmailCode {
+public class EmailCode implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

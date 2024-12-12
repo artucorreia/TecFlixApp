@@ -50,24 +50,14 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.POST, "/auth/refresh-token").permitAll()
                     .requestMatchers(HttpMethod.POST, "/auth//send-code/{userId}").permitAll()
                     
-                    // users
-                    // .requestMatchers(HttpMethod.POST, "/api/v1/users/{userId}/make-professor").hasAnyRole("ADMIN", "USER", "PROFESSOR")
-                    
-                    // payment
-                    // .requestMatchers(HttpMethod.GET, "/api/v1/payments/pix").hasAnyRole("ADMIN", "USER", "PROFESSOR")
-                    // .requestMatchers(HttpMethod.POST, "/api/v1/payments/pix").hasAnyRole("ADMIN", "USER", "PROFESSOR")
-
-                    // tags
-                    // .requestMatchers(HttpMethod.GET, "/api/v1/tags").hasAnyRole("ADMIN", "USER", "PROFESSOR")
-                    // .requestMatchers(HttpMethod.GET, "/api/v1/tags/{id}").hasAnyRole("ADMIN", "USER", "PROFESSOR")
-                    
                     // courses
-                    // .requestMatchers(HttpMethod.GET, "/api/v1/courses").hasAnyRole("ADMIN", "USER", "PROFESSOR")
-                    // .requestMatchers(HttpMethod.GET, "/api/v1/courses/{id}").hasAnyRole("ADMIN", "USER", "PROFESSOR")
+                    .requestMatchers(HttpMethod.POST, "/api/v1/courses").hasAnyRole("ADMIN", "PROFESSOR")
                     
+                    // modules
+                    .requestMatchers(HttpMethod.POST, "/api/v1/modules").hasAnyRole("ADMIN", "PROFESSOR")
+
                     // classes
-                    // .requestMatchers(HttpMethod.GET, "/api/v1/classes").hasAnyRole("ADMIN", "USER", "PROFESSOR")
-                    // .requestMatchers(HttpMethod.GET, "/api/v1/classes/{id}").hasAnyRole("ADMIN", "USER", "PROFESSOR")
+                    .requestMatchers(HttpMethod.POST, "/api/v1/classes").hasAnyRole("ADMIN", "PROFESSOR")
 
                     .anyRequest().hasAnyRole("ADMIN", "USER", "PROFESSOR")
             )
