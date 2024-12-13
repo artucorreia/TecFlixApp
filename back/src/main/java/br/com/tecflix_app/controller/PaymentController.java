@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.tecflix_app.data.DTO.v1.create.PixChargeRequest;
 import br.com.tecflix_app.service.payment.contract.IPixService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/payments/pix")
@@ -38,7 +39,7 @@ public class PaymentController {
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<String> createCharge(@RequestBody PixChargeRequest pixChargeRequest) {
+    public ResponseEntity<String> createCharge(@Valid @RequestBody PixChargeRequest pixChargeRequest) {
         JSONObject response = pixService.createCharge(pixChargeRequest);
         return ResponseEntity
             .status(HttpStatus.CREATED)

@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -68,4 +69,21 @@ public interface CourseRepository extends JpaRepository<Course, UUID> {
                 """
     )
     Set<Course> findByTagIdsAndTerm(Long[] tagIds, String term);
+
+    @Modifying
+    @Query(
+        nativeQuery = true,
+        value = """
+                    UPDATE 
+                        courses 
+                    SET 
+                        total_score_reviews = (
+                            SELECT COUNT(r.id) FROM reviews r WHERE r.course_id = courses.id
+                        ), 
+                        total_reviews = (
+                            SELECT SUM(r.score) FROM reviews r WHERE r.course_id = courses.id
+                        );
+                """
+    )
+    void updateCourseReviews();
 }

@@ -21,7 +21,6 @@ public class CourseDTO {
     private LocalDateTime createdAt;
     private Double totalScoreReviews;
     private Long totalReviews;
-    private Long durationMinutes;
     private UserDTO user;
     private List<ModuleDTO> modules;
     private List<TagDTO> tags;

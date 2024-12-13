@@ -2,7 +2,7 @@ package br.com.tecflix_app.projection;
 
 import java.util.UUID;
 
-public interface UserCourseProjection {
+public interface UserBasicProjection {
     UUID getId();
     String getName();
 }
