@@ -1,0 +1,25 @@
+<main class="card-ads padding">
+    <p-carousel 
+        [value]="adverts" 
+        [numVisible]="1" 
+        [numScroll]="1" 
+        [circular]="true" 
+        autoplayInterval="3000">
+        <ng-template let-ads pTemplate="item">
+                <div class="border-1 surface-border border-round m-2 p-3">
+                    <div class="mb-3">
+                        <div class="relative mx-auto">
+                            <article class="ads" [ngStyle]="{'background-color': ads.backgroundColor}">
+                                <div class="ads-element title">
+                                    <h1>{{ads.name}}</h1>
+                                </div>
+                                <div class="ads-element description">
+                                    <p>{{ads.description}}</p>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+    </p-carousel>
+</main>

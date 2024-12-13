@@ -1,0 +1,13 @@
+@import './config-scss/reset.scss';
+@import './config-scss/variables.scss';
+@import "primeicons/primeicons.css";
+@import "primeng/resources/primeng.css";
+
+* {
+    font-family: $font-family;
+}
+
+body {
+    background-color: $off-white;
+    color: $text-color;
+}

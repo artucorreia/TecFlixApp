@@ -1,0 +1,100 @@
+<app-header-version-one></app-header-version-one>
+
+<main class="container" *ngIf="allData">
+    <section class="course-card">
+        <div class="course-info">
+            <h1 class="course-title">{{ allData.course.title}}</h1>
+            <p class="course-description">{{allData.course.description}}</p>
+            
+            <div class="rating-container">
+                <span class="course-rating">
+                    {{ averageRating(allData.ratings)  }}
+                </span>
+            
+                <span class="stars-container">
+                    <i class="pi pi-star-fill"></i>
+                    <i class="pi pi-star-fill"></i>
+                    <i class="pi pi-star-fill"></i>
+                    <i class="pi pi-star-fill"></i>
+                    <i class="pi pi-star"></i>
+                </span>
+            
+                <span class="total-ratings">
+                    ({{allData.ratings.length}})
+                </span>
+            </div>
+            <div class="course-professor">
+                Professor: <a href="#">{{allData.user.full_name}}</a>
+            </div>
+            <div class="course-cetegorys">
+                Categorias:
+                @for (category of allData.categories; track category) {
+                    <a href="#" class="category-link">{{category.name }}</a> 
+                }
+            </div>
+            
+            <div class="course-hours">
+                Tempo total: {{allData.course.course_duration}}
+            </div>
+            @if (true) {
+                <div class="course-price">
+                    {{allData.course.price| currency }}
+                </div>
+            }
+            <div class="buy-options-container">
+                <button (click)="navigate('/join/login')" class="buy-button">comprar</button>
+                <div (click)="navigate('/join/login')" class="cart-container">
+                    <i class="pi pi-cart-plus" style="font-size: 1.3em;"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="img-container">
+            <img [src]="allData.course.image_cape" [alt]="'imagem capa ' + allData.course.title" class="img-course">
+        </div>
+    </section>
+
+    <section class="modules-container padding">
+        <div class="header-modules-container">
+            <h1>Conteúdo do curso</h1>
+            @if (displayAllClasses) {
+                <span (click)="toggleAllClassesVisibility()">Esconder tudo</span>
+            } @else {
+                <span (click)="toggleAllClassesVisibility()">Exibir tudo</span>
+            }
+            
+        </div>
+        @for (group of allData.content; track group) {
+            <article class="module">
+                <div class="module-header" (click)="toggleClassesVisibility(group.module.id)">
+                    @if (
+                        hasTheId(group.module.id) || displayAllClasses
+                    ) {
+                        <i class="pi pi-angle-up"></i>
+                    } @else {
+                        <i class="pi pi-angle-down"></i>
+                    }
+
+                    <h2 class="module-title">
+                        {{group.module.title}}
+                    </h2>
+                </div>
+                @if (
+                    hasTheId(group.module.id) || displayAllClasses
+                ) {
+                    @for (class of group.classes; track class) {
+                        <div class="class">
+                            <i class="pi pi-video"></i>
+                            <h2 class="class-title">
+                                {{class.title}}
+                            </h2>
+                        </div>
+                    }
+                }
+            </article>
+        }
+    </section>
+
+</main>
+
+<app-footer></app-footer>

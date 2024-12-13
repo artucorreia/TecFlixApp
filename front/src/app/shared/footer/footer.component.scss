@@ -1,0 +1,109 @@
+@import '../../../config-scss/variables.scss';
+
+.footer {
+    cursor: default;
+
+    background-color: #303030;
+    color: $white;
+
+    padding: 50px 30px 30px 30px; 
+}
+
+.tecflix {
+    font-size: 1.7em;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding-bottom: 20px;
+
+    font-family: $font-family-monospace;
+}
+
+.mid-container {
+    display: flex;
+    justify-content: space-between;
+
+    padding-bottom: 100px;
+
+    > * {
+        max-width: 250px;
+    }
+
+    .social-title, .contact-title {
+        font-weight: 500;
+    }
+
+    .text-container, .social-title, .contact-title {
+        padding-bottom: 10px;
+    }
+
+    .slogan {
+        line-height: 1.3em;
+    }
+
+    .button-container {
+        .teach-tecflix {
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 1em;
+
+            outline: none;
+            border: 1px solid $white;
+            
+            padding: 5px 7px;
+
+            color: $white;
+            background-color: #303030;
+        }
+    }
+
+    .social-container {
+        .social-icons {
+            display: flex;
+            align-items: center;
+            .pi {
+                cursor: pointer;
+
+                font-size: 1.2em;
+
+                padding: 5px;
+
+                border: 1px solid $white;
+                border-radius: 50%;
+
+                margin-right: 5px;
+            }
+
+        }
+    }
+
+    .contact {
+        font-weight: 600;
+    }
+}   
+
+hr {
+    margin: 0;
+}
+
+.lower-container {
+    display: flex;
+    justify-content: space-between;
+    
+    padding-top: 30px;
+
+    .footer-links-container {
+        display: flex;
+
+        font-size: 0.8em;
+        font-weight: 600;
+        text-transform: uppercase;
+        .footer-link {
+            cursor: pointer;
+            padding-right: 10px;
+        }
+    }
+
+    .copyright {
+        font-size: 0.8em;
+    }
+}
