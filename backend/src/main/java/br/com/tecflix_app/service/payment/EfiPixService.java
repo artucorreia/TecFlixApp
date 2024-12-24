@@ -30,8 +30,8 @@ import br.com.tecflix_app.service.auth.jwt.TokenService;
 import br.com.tecflix_app.service.payment.contract.IPixService;
 import br.com.tecflix_app.service.util.FileNameGenerator;
 
-@Primary
 @Service
+@Primary
 public class EfiPixService implements IPixService {
     private final Logger LOGGER = Logger.getLogger(EfiPixService.class.getName());
 
