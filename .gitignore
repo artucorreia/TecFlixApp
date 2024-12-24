@@ -3,6 +3,3 @@
 
 # env
 db.env
-
-# qr codes
-qrcodes/*.png

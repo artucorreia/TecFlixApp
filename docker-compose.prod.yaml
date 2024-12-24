@@ -27,11 +27,11 @@ services:
       - 2345:5432
     env_file:
       - ./db.env
+    # volumes:
+    #   - postgres_data:/var/lib/postgresql/data
     restart: on-failure:2
     networks:
       - app
-    # volumes:
-    #   - postgres_data:/var/lib/postgresql/data
 
 # volumes:
 #   postgres_data:
