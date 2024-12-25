@@ -1,13 +1,13 @@
-@import './config-scss/reset.scss';
-@import './config-scss/variables.scss';
+/* You can add global styles to this file, and also import other style files */
+@use './dist/scss/reset.scss';
+@use './dist/scss/variables.scss' as variables;
+@use './dist/scss/tailwind.scss';
 @import "primeicons/primeicons.css";
-@import "primeng/resources/primeng.css";
 
 * {
-    font-family: $font-family;
+    font-family: variables.$font-family;
 }
 
 body {
-    background-color: $off-white;
-    color: $text-color;
+    background-color: variables.$bg-color;
 }

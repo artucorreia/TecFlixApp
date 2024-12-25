@@ -1,45 +1,76 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
-import { User } from '../../model/user';
+import { inject, Injectable } from '@angular/core';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { Login } from '../../interface/resquest/login';
+import { Register } from '../../interface/resquest/register';
+import { catchError, map, Observable, of } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { ApiError } from '../../interface/response/api-error';
+import { Token } from '../../interface/response/token';
+import { GenericResponse } from '../../interface/response/generic-response';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private url: string = 'http://localhost:3000/';
+  private _http = inject(HttpClient);
+  private _baseHeaders = new HttpHeaders().set('X-API-KEY', environment.apiKey);
 
-  constructor(private http: HttpClient) { }
-
-  public user(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.url}users`);
+  ngOnInit() {
+    fetch(environment.apiUrl);
+    fetch(environment.apiKey);
   }
 
-  public userByEmail(email: string): Observable<User[]> {
-    const params = {email: email};
-    return this.http.get<User[]>(`${this.url}users`, {params: params});
+  public login(data: Login): Observable<Token | ApiError> {
+    return this._http.post<Token>(
+      `${environment.apiUrl}/auth/login`,
+      data,
+      { headers: this._baseHeaders }
+    ).pipe(
+      map((response: Token) => response),
+      catchError((error: HttpErrorResponse) => {
+        const apiError: ApiError = {
+          title: error.error.title,
+          timestamp: error.error.timestamp,
+          details: error.error.details
+        }
+        return of(apiError);
+      })
+    );
   }
-
-  public singUp(fullName: string, email: string, password: string): Observable<User> {
-    return this.http.post<User>(`${this.url}users`, {
-      fullName: fullName,
-      email: email,
-      password: this.hashCode(password),
-      ativo: true
-    });
+  
+  public register(data: Register): Observable<GenericResponse | ApiError> {
+    return this._http.post<GenericResponse>(
+      `${environment.apiUrl}/auth/register`,
+      data,
+      { headers: this._baseHeaders }
+    ).pipe(
+      map((response: GenericResponse) => response),
+      catchError((error: HttpErrorResponse) => {
+        const apiError: ApiError = {
+          title: error.error.title,
+          timestamp: error.error.timestamp,
+          details: error.error.details
+        }
+        return of(apiError);
+      })
+    );
   }
-
-  public hashCode(string: string): string {
-    var hash = 0, i, chr;
-    
-    if (string.length === 0) return hash.toString();
-    
-    for (i = 0; i < string.length; i++) {
-      chr = string.charCodeAt(i);
-      hash = ((hash << 5) - hash) + chr;
-      hash |= 0;
-    }
-
-    return hash.toString();
+  
+  public sendEmailCode(userId: string): Observable<GenericResponse | ApiError> {
+    return this._http.post<GenericResponse>(
+      `${environment.apiUrl}/auth/send-code/${userId}`,
+      null,
+      { headers: this._baseHeaders }
+    ).pipe(
+      map((response: GenericResponse) => response),
+      catchError((error: HttpErrorResponse) => {
+        const apiError: ApiError = {
+          title: error.error.title,
+          timestamp: error.error.timestamp,
+          details: error.error.details
+        }
+        return of(apiError);
+      })
+    );
   }
 }

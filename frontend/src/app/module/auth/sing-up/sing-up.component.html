@@ -1,0 +1,56 @@
+<app-message #message></app-message>
+
+<main class="card">
+    <div class="form_container">
+        <div class="header">
+            <h1 class="logo">TecFlix</h1>
+            <h2 class="title">Cadastro</h2>
+            <p>Ja possui conta? <a routerLink="/sing-in" class="url">Entrar</a></p>
+        </div>
+        <form [formGroup]="singUpForm" (submit)="singUp()" class="form">
+        
+            <p-floatlabel class="input_container">
+                <input pInputText formControlName="name" autocomplete="off" class="input" psize="large" minlength="3" maxlength="30" />
+                <label for="over_label">Nome</label>
+            </p-floatlabel>
+            
+            <p-floatlabel class="input_container">
+                <input pInputText formControlName="email" autocomplete="off" class="input" psize="large" maxlength="50"/>
+                <label for="over_label">Email</label>
+            </p-floatlabel>
+        
+            <p-floatlabel class="input_container">
+                <p-password formControlName="password" autocomplete="off" [toggleMask]="true" size="large" minlength="8" maxLength="50">
+                    <ng-template #header>
+                        <div class="font-semibold text-xm mb-4">Escolha uma senha</div>
+                    </ng-template>
+                    <ng-template #footer>
+                        <p-divider />
+                        <ul class="pl-2 ml-2 my-0 leading-normal">
+                            <li>Ao menos uma letra minuscula</li>
+                            <li>Ao menos uma lentra maiscula</li>
+                            <li>Ao menos um numero</li>
+                            <li>Minimo de 8 caracteres</li>
+                        </ul>
+                    </ng-template>
+                </p-password>
+                <label for="over_label">Senha</label>
+            </p-floatlabel>
+        
+            <button type="submit" class="button" [disabled]="singUpForm.invalid || singUpForm.disabled">
+                @if (!loading) {
+                    Criar conta
+                } @else {
+                    <i class="pi pi-spinner pi-spin" style="font-size: 1.1em;"></i>
+                }    
+            </button>
+        </form>
+    </div>
+    
+    <section class="description">
+        <div>
+            <h1>Bem-vindo a <span class="logo">TecFlix</span></h1>
+            <p>Bem-vindo(a) ao nosso app de cursos de tecnologia! Com o nosso aplicativo, você terá acesso a grande variedades de cursos e materiais voltado para area de tecnologia. Faça login agora para começar a explorar!</p>
+        </div>
+    </section>
+</main>

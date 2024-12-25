@@ -1,47 +1,34 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './guards/auth.guard';
+import { HomeComponent } from './module/landing/home/home.component';
+import { authGuard } from './guard/auth/auth.guard';
+import { SingInComponent } from './module/auth/sing-in/sing-in.component';
+import { SingUpComponent } from './module/auth/sing-up/sing-up.component';
 
 export const routes: Routes = [
     {
+        path: 'sing-in',
+        loadComponent: () => import('./module/auth/sing-in/sing-in.component').then(c => SingInComponent),
+    },
+    {
+        path: 'sing-up',
+        loadComponent: () => import('./module/auth/sing-up/sing-up.component').then(c => SingUpComponent),
+    },
+    {
+        path: 'sing-up/authenticate-code',
+        loadComponent: () => import('./module/auth/sing-up/sing-up.component').then(c => SingUpComponent),
+    },
+    {
+        path: 'home',
+        loadComponent: () => import('./module/landing/home/home.component').then(c => HomeComponent),
+        canActivate: [authGuard]
+    },
+    {
         path: '',
-        loadComponent: () => 
-            import('./pages/home/home.component').then(p => p.HomeComponent),
-        pathMatch: 'full'
+        pathMatch: 'full',
+        redirectTo: 'home'
     },
     {
-        path: 'course/:id',
-        loadComponent: () => 
-            import('./pages/course-details/course-details.component').then(p => p.CourseDetailsComponent),
-    },
-    {
-        path: 'join',
-        children: [
-            {
-                path: 'login',
-                loadComponent: () => 
-                    import('./pages/sing-in/sing-in.component').then(p => p.SingInComponent)
-            },
-            {
-                path: 'singup',
-                loadComponent: () => 
-                    import('./pages/sing-up/sing-up.component').then(p => p.SingUpComponent)
-            }
-        ]
-    },
-    {
-        path: 'in',
-        canActivate: [authGuard],
-        children: [
-            {
-                path: '',
-                loadComponent: () => 
-                    import('./dashboard/home/home.component').then(p => p.HomeComponent)
-            },
-            {
-                path: 'course/:id',
-                loadComponent: () => 
-                    import('./dashboard/course-details/course-details.component').then(p => p.CourseDetailsComponent)               
-            }
-        ]
-    },
+        path: '**',
+        redirectTo: 'sing-in'
+    }
 ];

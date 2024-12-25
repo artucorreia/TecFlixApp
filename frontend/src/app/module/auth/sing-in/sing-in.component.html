@@ -1,0 +1,39 @@
+<main class="card">
+    <div class="form_container">
+        <div class="header">
+            <h1 class="logo">TecFlix</h1>
+            <h2 class="title">Entre</h2>
+            <p>Ainda nao possui conta? <a routerLink="/sing-up" class="url">Cadastra-se</a></p>
+            <p>Nao validou seu e-mail? <a routerLink="/sing-up" class="url">Validar e-mail</a></p>
+        </div>
+        <form [formGroup]="singInForm" (submit)="singIn()" class="form">
+        
+            <p-floatlabel class="input_container">
+                <input pInputText formControlName="email" autocomplete="off" class="input" psize="large" />
+                <label for="over_label">Email</label>
+            </p-floatlabel>
+        
+            <p-floatlabel class="input_container">
+                <p-password formControlName="password" [feedback]="false" [toggleMask]="true" size="large" minlength="8" maxLength="50"/>
+                <label for="over_label">Senha</label>
+            </p-floatlabel>
+        
+            <button type="submit" class="button" [disabled]="singInForm.invalid">Entrar</button>
+            
+            <div class="footer">
+                <div>
+                    <input type="checkbox" class="checkbox" formControlName="rememberMe">
+                    <span>Lembrar</span>
+                </div>
+                <a routerLink="/forgot-password" class="url">Esqueceu a senha</a>
+            </div>
+        </form>
+    </div>
+    
+    <section class="description">
+        <div>
+            <h1>Bem-vindo a <span class="logo">TecFlix</span></h1>
+            <p>Bem-vindo(a) ao nosso app de cursos de tecnologia! Com o nosso aplicativo, você terá acesso a grande variedades de cursos e materiais voltado para area de tecnologia. Faça login agora para começar a explorar!</p>
+        </div>
+    </section>
+</main>
