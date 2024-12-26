@@ -2,7 +2,7 @@ server:
   port: ${SERVER_PORT:8081}
 
 website:
-  url: http://localhosto:4200
+  url: http://localhost:4200
 
 payment:
   pix:
@@ -32,9 +32,9 @@ spring:
     name: tecflix-app
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:1234/tecflix
-    username: developer
-    password: 01092209
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
     jpa:
       open-in-view: false
       hibernate:
