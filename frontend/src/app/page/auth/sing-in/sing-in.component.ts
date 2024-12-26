@@ -1,35 +1,43 @@
+// angular
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
+
+// primeng
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { PasswordModule } from 'primeng/password';
 import { DividerModule } from 'primeng/divider'
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabel } from 'primeng/floatlabel';
-import { Router, RouterModule } from '@angular/router';
+
 import { AuthService } from '../../../service/auth/auth.service';
 import { Login } from '../../../interface/resquest/login';
 import { TecFlixApiUtilService } from '../../../service/util/api/tec-flix-api-util.service';
-import { MessageService } from '../../../service/util/message/message.service';
-import { MessageType } from '../../../enums/message-type';
+
 
 @Component({
   selector: 'app-sing-in',
   imports: [
     ReactiveFormsModule,
     RouterModule,
+    
     // primeng
     ButtonModule,
     InputTextModule,
     FloatLabel,
     PasswordModule,
-    DividerModule
+    DividerModule,
+    ToastModule
   ],
+  providers: [MessageService],
   templateUrl: './sing-in.component.html',
   styleUrl: '../sing-up/sing-up.component.scss'
 })
 export class SingInComponent {
   private _router: Router = inject(Router);
-  private _message: MessageService = inject(MessageService);
+  private _messageService: MessageService = inject(MessageService);
   private _authService: AuthService = inject(AuthService);
   private _apiUtil: TecFlixApiUtilService = inject(TecFlixApiUtilService);
   public rember: boolean = false;
@@ -61,7 +69,7 @@ export class SingInComponent {
     this._authService.login(login).subscribe({
       next: (response) => {
         if (this._apiUtil.isApiError(response)) {
-          this._message.show(response.title, MessageType.NEGATIVE)
+          this._messageService.add({ severity: 'error', summary: 'Error', detail: response.title, life: 3000 });
           return;
         };
         this._authService.clearStorage();

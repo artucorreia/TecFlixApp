@@ -1,31 +1,36 @@
-import { Component, inject, ViewChild } from '@angular/core';
+// angular
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+
+// primeng
 import { ButtonModule } from 'primeng/button';
 import { PasswordModule } from 'primeng/password';
 import { DividerModule } from 'primeng/divider'
 import { InputTextModule } from 'primeng/inputtext';
+import { ToastModule } from 'primeng/toast';
 import { FloatLabel } from 'primeng/floatlabel';
-import { RouterModule } from '@angular/router';
+import { MessageService } from 'primeng/api';
+
 import { AuthService } from '../../../service/auth/auth.service';
 import { Register } from '../../../interface/resquest/register';
 import { TecFlixApiUtilService } from '../../../service/util/api/tec-flix-api-util.service';
-import { MessageType } from '../../../enums/message-type';
-import { MessageService } from '../../../service/util/message/message.service';
 
 @Component({
   selector: 'app-sing-up',
   imports: [
     ReactiveFormsModule,
     RouterModule,
-    // MessageComponent,
 
     // primeng
     ButtonModule,
     InputTextModule,
     FloatLabel,
     PasswordModule,
-    DividerModule
+    DividerModule,
+    ToastModule
   ],
+  providers: [MessageService],
   templateUrl: './sing-up.component.html',
   styleUrl: './sing-up.component.scss'
 })
@@ -67,7 +72,7 @@ export class SingUpComponent {
     .subscribe({
       next: response => {
         if (this._apiUtil.isApiError(response)) {
-          this._messageService.show(response.title, MessageType.NEGATIVE);
+          this._messageService.add({ severity: 'error', summary: 'Error', detail: response.title, life: 3000 });
           this.resetForm();
           return;
         }
@@ -86,11 +91,11 @@ export class SingUpComponent {
       next: response => {
         this.resetForm();
         if (this._apiUtil.isApiError(response)) {
-          this._messageService.show(response.title, MessageType.NEGATIVE);
+          this._messageService.add({ severity: 'error', summary: 'Error', detail: response.title, life: 3000 });
           this.resetForm();
           return;
         }
-        this._messageService.show(response.message, MessageType.POSITIVE);
+        this._messageService.add({ severity: 'success', summary: 'Success', detail: response.message, life: 3000 });
       },
       error: error => {
         this.resetForm();

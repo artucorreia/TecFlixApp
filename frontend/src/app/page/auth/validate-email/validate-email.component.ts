@@ -3,8 +3,8 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { AuthService } from '../../../service/auth/auth.service';
 import { TecFlixApiUtilService } from '../../../service/util/api/tec-flix-api-util.service';
-import { MessageType } from '../../../enums/message-type';
-import { MessageService } from '../../../service/util/message/message.service';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-validate-email',
@@ -12,16 +12,18 @@ import { MessageService } from '../../../service/util/message/message.service';
     RouterModule,
       
     // primeng
-    ButtonModule
+    ButtonModule,
+    ToastModule
   ],
+  providers: [MessageService],
   templateUrl: './validate-email.component.html',
   styleUrl: './validate-email.component.scss'
 })
 export class ValidateEmailComponent {
   private _apiUtil: TecFlixApiUtilService = inject(TecFlixApiUtilService);
   private _authService: AuthService = inject(AuthService);
-  private _message: MessageService = inject(MessageService);
   private _http: ActivatedRoute = inject(ActivatedRoute);
+  private _messageService: MessageService = inject(MessageService);
 
   private _code: string = '';
   private _userId: string = '';
@@ -47,7 +49,7 @@ export class ValidateEmailComponent {
     this._authService.validateEmailCode(code).subscribe({
       next: response => {
         if (this._apiUtil.isApiError(response)) {
-          this._message.show(response.title, MessageType.NEGATIVE);
+          this._messageService.add({ severity: 'error', summary: 'Error', detail: response.title, life: 3000 });
           this.codeIsValid.set(false);
           this.loading.set(false)
           if (response.title === "Usuário já está ativo"){ 
@@ -58,7 +60,7 @@ export class ValidateEmailComponent {
           this.message.set("Ocorreu um erro ao validar seu e-mail. Por favor envie o código novamente")
           return;
         }
-        this._message.show(response.message, MessageType.POSITIVE);
+        this._messageService.add({ severity: 'success', summary: 'Success', detail: response.message, life: 3000 });
         this.codeIsValid.set(true);
         this.loading.set(false)
         this.message.set("Seu e-mail foi validado com sucesso, entre agora e comece a explorar")
@@ -77,7 +79,7 @@ export class ValidateEmailComponent {
     this._authService.sendEmailCode(this._userId).subscribe({
       next: response => {
         if (this._apiUtil.isApiError(response)) {
-          this._message.show(response.title, MessageType.NEGATIVE);
+          this._messageService.add({ severity: 'error', summary: 'Error', detail: response.title, life: 3000 });
           if (response.title === "Usuário já está ativo"){ 
             this.codeIsValid.set(true);
             this.message.set("Seu usuário já está ativo, entre agora e comece a explorar")
@@ -87,7 +89,7 @@ export class ValidateEmailComponent {
           this.codeIsValid.set(false);
           return;
         }
-        this._message.show(response.message, MessageType.POSITIVE);
+        this._messageService.add({ severity: 'success', summary: 'Success', detail: response.message, life: 3000 });
       },
       error: error => {
         console.log("unexpected error", error);
