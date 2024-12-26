@@ -1,0 +1,17 @@
+<main class="container center">
+    <h1 class="logo">TecFlix</h1>
+    <p class="content"> {{ message() }} </p>
+    <div class="card flex justify-center gap-4 text-white">
+        @if (loading()) {
+            <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+        } @else {
+            @if (codeIsValid()) {
+                <button routerLink="/sing-in" [disabled]="loading()" class="button">Entrar</button>
+            } @else {
+                <button (click)="resendCode()" [disabled]="loading() || timerIsActive()" class="button">
+                    {{ buttonMessage() }}
+                </button>
+            }
+        }
+    </div>
+</main>

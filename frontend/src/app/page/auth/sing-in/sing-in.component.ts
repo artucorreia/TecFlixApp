@@ -8,8 +8,9 @@ import { FloatLabel } from 'primeng/floatlabel';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../service/auth/auth.service';
 import { Login } from '../../../interface/resquest/login';
-import { Token } from '../../../interface/response/token';
-import { TecFlixApiUtilService } from '../../../service/util/tec-flix-api-util.service';
+import { TecFlixApiUtilService } from '../../../service/util/api/tec-flix-api-util.service';
+import { MessageService } from '../../../service/util/message/message.service';
+import { MessageType } from '../../../enums/message-type';
 
 @Component({
   selector: 'app-sing-in',
@@ -24,10 +25,11 @@ import { TecFlixApiUtilService } from '../../../service/util/tec-flix-api-util.s
     DividerModule
   ],
   templateUrl: './sing-in.component.html',
-  styleUrl: './sing-in.component.scss'
+  styleUrl: '../sing-up/sing-up.component.scss'
 })
 export class SingInComponent {
   private _router: Router = inject(Router);
+  private _message: MessageService = inject(MessageService);
   private _authService: AuthService = inject(AuthService);
   private _apiUtil: TecFlixApiUtilService = inject(TecFlixApiUtilService);
   public rember: boolean = false;
@@ -58,22 +60,16 @@ export class SingInComponent {
     };
     this._authService.login(login).subscribe({
       next: (response) => {
-        if (this._apiUtil.isApiError(response)) return console.log("Errorrrr");
-        this.clearStorage();
-        return this.saveToken(response, this.singInForm.controls.rememberMe.value)
+        if (this._apiUtil.isApiError(response)) {
+          this._message.show(response.title, MessageType.NEGATIVE)
+          return;
+        };
+        this._authService.clearStorage();
+        this._authService.saveToken(response, this.singInForm.controls.rememberMe.value)
+        this._router.navigate(['/home']);
+        return;
       },
       error: (error) => console.log("unexpected error", error)
     });
-  }
-
-  private clearStorage() {
-    localStorage.removeItem("token");
-    sessionStorage.removeItem("token");
-  }
-
-  saveToken(token: Token, rememberMe: boolean | null): void {
-    const storage: Storage = rememberMe ? localStorage : sessionStorage;    
-    storage.setItem("token", JSON.stringify(token));
-    this._router.navigate(['/home']);
   }
 }

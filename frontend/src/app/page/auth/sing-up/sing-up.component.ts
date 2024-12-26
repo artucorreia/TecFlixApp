@@ -8,15 +8,16 @@ import { FloatLabel } from 'primeng/floatlabel';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../../service/auth/auth.service';
 import { Register } from '../../../interface/resquest/register';
-import { TecFlixApiUtilService } from '../../../service/util/tec-flix-api-util.service';
-import { MessageComponent } from '../../../shared/message/message.component';
+import { TecFlixApiUtilService } from '../../../service/util/api/tec-flix-api-util.service';
+import { MessageType } from '../../../enums/message-type';
+import { MessageService } from '../../../service/util/message/message.service';
 
 @Component({
   selector: 'app-sing-up',
   imports: [
     ReactiveFormsModule,
     RouterModule,
-    MessageComponent,
+    // MessageComponent,
 
     // primeng
     ButtonModule,
@@ -29,8 +30,7 @@ import { MessageComponent } from '../../../shared/message/message.component';
   styleUrl: './sing-up.component.scss'
 })
 export class SingUpComponent {
-  @ViewChild('message') private message!: MessageComponent;
-  
+  private _messageService: MessageService = inject(MessageService);
   private _apiUtil: TecFlixApiUtilService = inject(TecFlixApiUtilService);
   private _authService: AuthService = inject(AuthService);
   
@@ -67,7 +67,7 @@ export class SingUpComponent {
     .subscribe({
       next: response => {
         if (this._apiUtil.isApiError(response)) {
-          this.message.show(response.title, 'negative');
+          this._messageService.show(response.title, MessageType.NEGATIVE);
           this.resetForm();
           return;
         }
@@ -86,11 +86,11 @@ export class SingUpComponent {
       next: response => {
         this.resetForm();
         if (this._apiUtil.isApiError(response)) {
-          this.message.show(response.title, 'negative');
+          this._messageService.show(response.title, MessageType.NEGATIVE);
           this.resetForm();
           return;
         }
-        this.message.show(response.message, 'positive');
+        this._messageService.show(response.message, MessageType.POSITIVE);
       },
       error: error => {
         this.resetForm();

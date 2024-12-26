@@ -20,6 +20,16 @@ export class AuthService {
     fetch(environment.apiKey);
   }
 
+  public clearStorage() {
+    localStorage.removeItem("token");
+    sessionStorage.removeItem("token");
+  }
+
+  public saveToken(token: Token, rememberMe: boolean | null): void {
+    const storage: Storage = rememberMe ? localStorage : sessionStorage;    
+    storage.setItem("token", JSON.stringify(token));
+  }
+
   public login(data: Login): Observable<Token | ApiError> {
     return this._http.post<Token>(
       `${environment.apiUrl}/auth/login`,
@@ -59,6 +69,24 @@ export class AuthService {
   public sendEmailCode(userId: string): Observable<GenericResponse | ApiError> {
     return this._http.post<GenericResponse>(
       `${environment.apiUrl}/auth/send-code/${userId}`,
+      null,
+      { headers: this._baseHeaders }
+    ).pipe(
+      map((response: GenericResponse) => response),
+      catchError((error: HttpErrorResponse) => {
+        const apiError: ApiError = {
+          title: error.error.title,
+          timestamp: error.error.timestamp,
+          details: error.error.details
+        }
+        return of(apiError);
+      })
+    );
+  }
+
+  public validateEmailCode(code: string): Observable<GenericResponse | ApiError> {
+    return this._http.post<GenericResponse>(
+      `${environment.apiUrl}/auth/validate-code/${code}`,
       null,
       { headers: this._baseHeaders }
     ).pipe(
