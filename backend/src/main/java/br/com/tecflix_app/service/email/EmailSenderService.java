@@ -3,6 +3,7 @@ package br.com.tecflix_app.service.email;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class EmailSenderService {
         this.javaMailSender = javaMailSender;
     }
 
-    public void sendEmailCode(String email, String name, String code) {
+    public void sendEmailCode(String email, String name, UUID userId, String code) {
         LOGGER.info("Sending email code to user");
 
         try {
@@ -41,7 +42,10 @@ public class EmailSenderService {
 
             String template = getTemplate("templates/code-mail-template.html");
             template = template.replace("${name}", name);
-            template = template.replace("${url}", WEBSITE_URL + "/register/authenticate-code?code=" + code);
+            
+            String url = WEBSITE_URL + "/sing-up/authenticate-code?code=" + code + "&userId=" + userId;
+            
+            template = template.replace("${url}", url);
             template = template.replace("${currentYear}", String.valueOf(LocalDateTime.now().getYear()));
 
             helper.setText(

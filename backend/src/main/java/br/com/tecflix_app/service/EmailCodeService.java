@@ -61,7 +61,8 @@ public class EmailCodeService {
 
         emailSenderService.sendEmailCode(
             user.getEmail(), 
-            user.getName(), 
+            user.getName(),
+            userId, 
             result.getCode()
         );
 

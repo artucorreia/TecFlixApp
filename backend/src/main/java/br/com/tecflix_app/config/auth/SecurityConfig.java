@@ -48,7 +48,8 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                     .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                     .requestMatchers(HttpMethod.POST, "/auth/refresh-token").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/auth//send-code/{userId}").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/auth/send-code/{userId}").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/auth/validate-code/{code}").permitAll()
                     
                     // courses
                     .requestMatchers(HttpMethod.POST, "/api/v1/courses").hasAnyRole("ADMIN", "PROFESSOR")
