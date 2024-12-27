@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS courses(
     title VARCHAR(40) NOT NULL,
     description TEXT NOT NULL,
     cape_image VARCHAR(255),
-    user_id UUID REFERENCES users(id) NOT NULL,
+    professor_id UUID REFERENCES users(id) NOT NULL,
     total_score_reviews FLOAT,
     total_reviews BIGINT,
     active BOOLEAN DEFAULT TRUE NOT NULL,

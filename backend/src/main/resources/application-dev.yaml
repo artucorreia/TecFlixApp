@@ -32,9 +32,9 @@ spring:
     name: tecflix-app
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: ${DB_URL}
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
+    url: ${DB_URL:jdbc:postgresql://localhost:2345/tecflixapp_db}
+    username: ${DB_USER:developer}
+    password: ${DB_PASSWORD:01092209}
     jpa:
       open-in-view: false
       hibernate:

@@ -20,14 +20,6 @@ public class RegisterProfessorDTO {
     @Valid
     private CreateProfessorDataDTO professorData;
     
-    @NotNull
-    @Valid
-    private CreateAddressDTO address;
-    
-    @NotNull
-    @Valid
-    private CreateBackDataDTO bankData;
-    
     @Valid
     private List<CreateSocialDTO> socials;
 

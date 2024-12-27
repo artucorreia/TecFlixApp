@@ -6,6 +6,7 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.tecflix_app.data.DTO.v1.create.CreateProfessorDataDTO;
 import br.com.tecflix_app.data.DTO.v1.response.UserDTO;
@@ -32,6 +33,7 @@ public class ProfessorDataService {
         return repository.findIdByUserId(userId);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void create(
         UserDTO user, 
         LocalDateTime createdAt,

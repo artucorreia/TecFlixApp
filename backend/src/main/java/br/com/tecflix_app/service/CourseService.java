@@ -16,7 +16,6 @@ import br.com.tecflix_app.data.DTO.v1.response.UserDTO;
 import br.com.tecflix_app.exception.general.ResourceNotFoundException;
 import br.com.tecflix_app.mapper.contract.IMapperService;
 import br.com.tecflix_app.model.Course;
-import br.com.tecflix_app.model.Tag;
 import br.com.tecflix_app.repository.CourseRepository;
 import br.com.tecflix_app.service.auth.jwt.TokenService;
 import br.com.tecflix_app.service.util.CourseValidatorService;
@@ -94,13 +93,10 @@ public class CourseService {
         data.setTitle(data.getTitle().trim());
         data.setDescription(data.getDescription().trim());
         
-        UserDTO user = userService.findById(tokenService.getUserId());
-        data.setUser(user);
+        UserDTO professor = userService.findById(tokenService.getUserId());
+        data.setProfessor(professor);
 
         Course entity = mapper.map(data, Course.class);
-
-        List<Tag> tags = mapper.map(data.getTags(), Tag.class);
-        entity.setTags(tags);
 
         UUID id = repository.save(entity).getId();
 

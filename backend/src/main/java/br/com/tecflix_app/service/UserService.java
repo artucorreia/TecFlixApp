@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.tecflix_app.data.DTO.v1.auth.RegisterDTO;
 import br.com.tecflix_app.data.DTO.v1.create.RegisterProfessorDTO;
-import br.com.tecflix_app.data.DTO.v1.create.CreateSocialDTO;
 import br.com.tecflix_app.data.DTO.v1.response.GenericResponseDTO;
 import br.com.tecflix_app.data.DTO.v1.response.UserDTO;
 import br.com.tecflix_app.exception.auth.UserAlreadyIsActive;
@@ -30,8 +29,6 @@ public class UserService {
     private final UserRepository repository;
     private final UserValidatorService validatorService;
     private final ProfessorDataService professorDataService;
-    private final AddressService addressService;
-    private final BankAccountDataService bankDataService;
     private final SocialService socialService;
     private final IMapperService mapper;
 
@@ -40,16 +37,12 @@ public class UserService {
         UserRepository repository,
         UserValidatorService validatorService,
         ProfessorDataService professorDataService,
-        AddressService addressService,
-        BankAccountDataService bankDataService,
         SocialService socialService,
         IMapperService mapper
     ) {
         this.repository = repository;
         this.validatorService = validatorService;
         this.professorDataService = professorDataService;
-        this.addressService = addressService;
-        this.bankDataService = bankDataService;
         this.socialService = socialService;
         this.mapper = mapper;
     }
@@ -130,8 +123,14 @@ public class UserService {
         entity.setActive(true);
         repository.save(entity);
     }
-        
+
     @Transactional(rollbackFor = Exception.class)
+    private void updateUserRole(UUID userId, Role role) {
+        User entity = findEntityById(userId);
+        entity.setRole(role);
+        repository.save(entity);
+    }
+        
     public GenericResponseDTO<UUID> createProfessor(UserDTO user, RegisterProfessorDTO data) {
         LOGGER.info("Changing user type to 'professor'");
         
@@ -139,20 +138,14 @@ public class UserService {
         validatorService.checkIfUserAlreadyHasProfessorRegistration(user.getId());
         
         professorDataService.create(user, data.getCreatedAt(), data.getProfessorData());
-        addressService.create(user, data.getAddress());
-        bankDataService.create(user, data.getBankData());
         if (!data.getSocials().isEmpty()) {
-            for (CreateSocialDTO social : data.getSocials()) {
-                socialService.create(user, social);
-            }
+            socialService.createAll(user, data.getSocials());
         }
         
         if (
             findRoleById(user.getId()).equals(Role.USER)
         ) {
-            User entity = mapper.map(user, User.class);
-            entity.setRole(Role.PROFESSOR);
-            repository.save(entity);
+            updateUserRole(user.getId(), Role.PROFESSOR);
         }
         
         return new GenericResponseDTO<>(

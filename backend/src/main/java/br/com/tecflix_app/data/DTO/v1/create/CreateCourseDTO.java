@@ -33,7 +33,7 @@ public class CreateCourseDTO {
     private List<TagDTO> tags;
     
     @JsonIgnore
-    private UserDTO user;
+    private UserDTO professor;
     
     @JsonIgnore
     private Boolean active = true;

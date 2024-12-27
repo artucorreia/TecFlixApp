@@ -55,8 +55,16 @@ public class Course implements Serializable {
     private Long totalReviews;
 
     @ManyToOne 
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    private User user;
+    @JoinColumn(name = "professor_id", referencedColumnName = "id", nullable = false)
+    private User professor;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "courses_students",
+        joinColumns = @JoinColumn(name = "course_id"),
+        inverseJoinColumns = @JoinColumn(name = "student_id")
+    )
+    private List<User> students;
 
     @OneToMany(mappedBy = "course")
     private List<Module> modules;

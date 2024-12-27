@@ -17,6 +17,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -58,20 +59,17 @@ public class User implements UserDetails {
 
     @OneToOne(mappedBy = "user")
     private RefreshToken refreshToken;
-    
+
+    @ManyToMany(mappedBy = "students")
+    private List<Course> enrolledCourses;
+
     @OneToOne(mappedBy = "user")
     private ProfessorData professorData;
-
-    @OneToOne(mappedBy = "user")
-    private Address address;
-
-    @OneToOne(mappedBy = "user")
-    private BankAccountData bankAccountData;
 
     @OneToMany(mappedBy = "user")
     private List<Social> socials;
     
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "professor")
     private List<Course> coursesTaught;
     
     @OneToMany(mappedBy = "user")

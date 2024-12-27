@@ -13,7 +13,7 @@ public interface CourseDetailsProjection {
     LocalDateTime getCreatedAt();
     Double getTotalScoreReviews();
     Long getTotalReviews();
-    UserBasicProjection getUser();
+    UserBasicProjection getProfessor();
     List<ModuleCourseDetailsProjection> getModules();
     List<TagCourseDetailsProjection> getTags();
 

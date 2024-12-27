@@ -1,8 +1,10 @@
 package br.com.tecflix_app.service;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.tecflix_app.data.DTO.v1.create.CreateSocialDTO;
 import br.com.tecflix_app.data.DTO.v1.response.UserDTO;
@@ -25,16 +27,28 @@ public class SocialService {
         this.mapper = mapper;
     }
 
-    public void create(
-        UserDTO user, 
-        CreateSocialDTO data
-    ) {
-        LOGGER.info("Saving professor data");
+    @Transactional(rollbackFor = Exception.class)
+    public void create(UserDTO user, CreateSocialDTO data) {
+        LOGGER.info("Saving professor's social");
         data.setUser(user);
         data.setUrl(data.getUrl().trim());
 
         Social entity = mapper.map(data, Social.class);
 
         repository.save(entity);
+    }
+    
+    @Transactional(rollbackFor = Exception.class)
+    public void createAll(UserDTO user, List<CreateSocialDTO> data) {
+        LOGGER.info("Saving professor's socials");
+        
+        for (CreateSocialDTO social : data) {
+            social.setUser(user);
+            social.setUrl(social.getUrl().trim());
+        }
+        
+        List<Social> entities = mapper.map(data, Social.class);
+
+        repository.saveAll(entities);
     }
 }
