@@ -63,7 +63,7 @@ public class CourseService {
     // TODO: pagination (ordered by reviews)
     public List<CourseDTO> findAll() {
         LOGGER.info("Finding all courses");
-        return mapper.map(repository.findAll(), CourseDTO.class);
+        return mapper.map(repository.findAllBy(), CourseDTO.class);
     }
     
     // TODO: pagination (ordered by reviews)
