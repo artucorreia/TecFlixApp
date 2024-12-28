@@ -2,7 +2,6 @@ package br.com.tecflix_app.repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -40,7 +39,7 @@ public interface CourseRepository extends JpaRepository<Course, UUID> {
                 t.id IN :tagIds
         """
     )
-    Set<CourseProjection> findByTagIds(Long[] tagIds);
+    List<CourseProjection> findByTagIds(Long[] tagIds);
 
     @Query(
         """
@@ -54,7 +53,7 @@ public interface CourseRepository extends JpaRepository<Course, UUID> {
                 UPPER(CONCAT('%', :term, '%'))
         """
     )
-    Set<CourseProjection> findByTerm(String term);
+    List<CourseProjection> findByTerm(String term);
 
 
     @Query(
@@ -73,7 +72,7 @@ public interface CourseRepository extends JpaRepository<Course, UUID> {
                 UPPER(CONCAT('%', :term, '%'))
         """
     )
-    Set<CourseProjection> findByTagIdsAndTerm(Long[] tagIds, String term);
+    List<CourseProjection> findByTagIdsAndTerm(Long[] tagIds, String term);
 
     @Modifying
     @Query(

@@ -2,13 +2,13 @@ package br.com.tecflix_app.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Logger;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.tecflix_app.controller.CourseController;
 import br.com.tecflix_app.data.DTO.v1.create.CreateCourseDTO;
 import br.com.tecflix_app.data.DTO.v1.response.CourseDTO;
 import br.com.tecflix_app.data.DTO.v1.response.GenericResponseDTO;
@@ -19,6 +19,7 @@ import br.com.tecflix_app.model.Course;
 import br.com.tecflix_app.repository.CourseRepository;
 import br.com.tecflix_app.service.auth.jwt.TokenService;
 import br.com.tecflix_app.service.util.CourseValidatorService;
+import br.com.tecflix_app.service.util.HateoasService;
 
 @Service
 public class CourseService {
@@ -46,15 +47,16 @@ public class CourseService {
 
     public CourseDTO findById(UUID id) {
         LOGGER.info("Finding course by id");
-        return mapper.map(
+        CourseDTO courseDTO = mapper.map(
             repository.findDetailsById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Nenhum curso encontrado para este id")
             ),
     CourseDTO.class
         );
+        return HateoasService.addLiks(courseDTO, CourseController.class, CourseDTO::getId, "courses");
     }
 
-    public Set<CourseDTO> findByFilter(Long[] tagIds, String term) {
+    public List<CourseDTO> findByFilter(Long[] tagIds, String term) {
         if (tagIds != null && term != null) return findByTagIdsAndTerm(tagIds, term); 
         if (tagIds != null) return findByTagIds(tagIds);     
         return findByTerm(term);      
@@ -63,25 +65,29 @@ public class CourseService {
     // TODO: pagination (ordered by reviews)
     public List<CourseDTO> findAll() {
         LOGGER.info("Finding all courses");
-        return mapper.map(repository.findAllBy(), CourseDTO.class);
+        List<CourseDTO> courses = mapper.map(repository.findAllBy(), CourseDTO.class);
+        return HateoasService.addLiks(courses, CourseController.class, CourseDTO::getId, "courses");
     }
     
     // TODO: pagination (ordered by reviews)
-    public Set<CourseDTO> findByTagIds(Long[] tagIds) {
+    public List<CourseDTO> findByTagIds(Long[] tagIds) {
         LOGGER.info("Finding courses by tag ids");
-        return mapper.map(repository.findByTagIds(tagIds), CourseDTO.class);
+        List<CourseDTO> courses = mapper.map(repository.findByTagIds(tagIds), CourseDTO.class);
+        return HateoasService.addLiks(courses, CourseController.class, CourseDTO::getId, "courses");
     }
 
     // TODO: pagination (ordered by reviews)
-    public Set<CourseDTO> findByTerm(String term) {
+    public List<CourseDTO> findByTerm(String term) {
         LOGGER.info("Finding courses by term");
-        return mapper.map(repository.findByTerm(term), CourseDTO.class);
+        List<CourseDTO> courses = mapper.map(repository.findByTerm(term), CourseDTO.class);
+        return HateoasService.addLiks(courses, CourseController.class, CourseDTO::getId, "courses");
     }
 
     // TODO: pagination (ordered by reviews)
-    public Set<CourseDTO> findByTagIdsAndTerm(Long[] tagIds, String term) {
+    public List<CourseDTO> findByTagIdsAndTerm(Long[] tagIds, String term) {
         LOGGER.info("Finding courses by tag ids and term");
-        return mapper.map(repository.findByTagIdsAndTerm(tagIds, term), CourseDTO.class);
+        List<CourseDTO> courses = mapper.map(repository.findByTagIdsAndTerm(tagIds, term), CourseDTO.class);
+        return HateoasService.addLiks(courses, CourseController.class, CourseDTO::getId, "courses");
     }
 
     @Transactional(rollbackFor = Exception.class)

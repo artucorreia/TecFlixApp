@@ -1,6 +1,6 @@
 package br.com.tecflix_app.controller;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.tecflix_app.controller.contract.IController;
 import br.com.tecflix_app.data.DTO.v1.create.CreateCourseDTO;
 import br.com.tecflix_app.data.DTO.v1.response.CourseDTO;
 import br.com.tecflix_app.data.DTO.v1.response.GenericResponseDTO;
@@ -25,7 +26,7 @@ import jakarta.validation.Valid;
 @CrossOrigin(origins = {"http://localhost:8080", "http://localhost:4200"})
 @RestController
 @RequestMapping("api/v1/courses")
-public class CourseController {
+public class CourseController implements IController<CourseDTO, UUID>{
 
     private final CourseService service;
     
@@ -41,7 +42,15 @@ public class CourseController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<CourseDTO>> search(
+    public ResponseEntity<List<CourseDTO>> findAll() {
+        return ResponseEntity.ok(service.findAll());
+    }
+    
+    @GetMapping(
+        value = "/search",
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<List<CourseDTO>> search(
         @RequestParam(name = "tags", required = false) Long[] tags,
         @RequestParam(name = "term", required = false) String term
     ) {

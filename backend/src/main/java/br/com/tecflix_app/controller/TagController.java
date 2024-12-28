@@ -11,13 +11,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.tecflix_app.controller.contract.IController;
 import br.com.tecflix_app.data.DTO.v1.response.TagDTO;
 import br.com.tecflix_app.service.TagService;
 
 @CrossOrigin(origins = {"http://localhost:8080", "http://localhost:4200"})
 @RestController
 @RequestMapping("api/v1/tags")
-public class TagController {
+public class TagController implements IController<TagDTO, Long> {
 
     private final TagService service;
     
