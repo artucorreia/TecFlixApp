@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +19,6 @@ import br.com.tecflix_app.data.DTO.v1.response.ModuleDTO;
 import br.com.tecflix_app.service.ModuleService;
 import jakarta.validation.Valid;
 
-@CrossOrigin(origins = {"http://localhost:8080", "http://localhost:4200"})
 @RestController
 @RequestMapping("api/v1/modules")
 public class ModuleController {
