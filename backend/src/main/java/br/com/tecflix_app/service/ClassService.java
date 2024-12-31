@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.tecflix_app.controller.ClassController;
 import br.com.tecflix_app.data.DTO.v1.create.CreateClassDTO;
 import br.com.tecflix_app.data.DTO.v1.response.ClassDTO;
 import br.com.tecflix_app.data.DTO.v1.response.GenericResponseDTO;
@@ -15,6 +16,7 @@ import br.com.tecflix_app.exception.general.ResourceNotFoundException;
 import br.com.tecflix_app.mapper.contract.IMapperService;
 import br.com.tecflix_app.repository.ClassRepository;
 import br.com.tecflix_app.service.util.ClassValidatorService;
+import br.com.tecflix_app.service.util.HateoasService;
 import br.com.tecflix_app.model.Class;
 
 @Service
@@ -37,17 +39,19 @@ public class ClassService {
 
      public ClassDTO findById(UUID id) {
         LOGGER.info("Finding class by id");
-        return mapper.map(
+        ClassDTO classDTO = mapper.map(
             repository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Nenhuma aula encontrada para este id")
             ),
     ClassDTO.class
         );
+        return HateoasService.addLiks(classDTO, ClassController.class, ClassDTO::getId, "classes");
     }
     
     public List<ClassDTO> findByAll() {
         LOGGER.info("Finding all classes");
-        return mapper.map(repository.findAll(), ClassDTO.class);
+        List<ClassDTO> classes = mapper.map(repository.findAll(), ClassDTO.class);
+        return HateoasService.addLiks(classes, ClassController.class, ClassDTO::getId, "classes");
     }
 
     @Transactional(rollbackFor = Exception.class)
