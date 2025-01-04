@@ -10,13 +10,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.tecflix_app.controller.contract.IController;
 import br.com.tecflix_app.data.DTO.v1.response.TagDTO;
 import br.com.tecflix_app.service.TagService;
 
 @RestController
 @RequestMapping("api/v1/tags")
-public class TagController implements IController<TagDTO, Long> {
+public class TagController {
 
     private final TagService service;
     

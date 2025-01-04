@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.tecflix_app.controller.contract.IController;
 import br.com.tecflix_app.data.DTO.v1.create.CreateModuleDTO;
 import br.com.tecflix_app.data.DTO.v1.response.GenericResponseDTO;
 import br.com.tecflix_app.data.DTO.v1.response.ModuleDTO;
@@ -22,7 +21,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("api/v1/modules")
-public class ModuleController implements IController<ModuleDTO, Long> {
+public class ModuleController {
 
     private final ModuleService service;
     

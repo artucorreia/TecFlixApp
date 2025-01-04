@@ -15,8 +15,10 @@ import br.com.tecflix_app.data.DTO.v1.response.ModuleDTO;
 import br.com.tecflix_app.exception.general.ResourceNotFoundException;
 import br.com.tecflix_app.mapper.contract.IMapperService;
 import br.com.tecflix_app.repository.ModuleRepository;
-import br.com.tecflix_app.service.util.HateoasService;
 import br.com.tecflix_app.service.util.ModuleValidatorService;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
 public class ModuleService {
@@ -45,13 +47,13 @@ public class ModuleService {
             ModuleDTO.class
         );
 
-        return HateoasService.addLiks(module, ModuleController.class, ModuleDTO::getId, "modules");
+        return addLiks(module, "modules");
     }
     
     public List<ModuleDTO> findByAll() {
         LOGGER.info("Finding all modules");
         List<ModuleDTO> modules = mapper.map(repository.findAll(), ModuleDTO.class);
-        return HateoasService.addLiks(modules, ModuleController.class, ModuleDTO::getId, "modules");
+        return addLiks(modules, "modules");
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -70,5 +72,17 @@ public class ModuleService {
             "Módulo criado com sucesso",
             LocalDateTime.now()
         );
+    }
+
+    private ModuleDTO addLiks(ModuleDTO data, String rel) {
+        data.add(linkTo(methodOn(ModuleController.class).findById(data.getId())).withSelfRel());
+        data.add(linkTo(methodOn(ModuleController.class).findAll()).withRel(rel));
+        return data;
+    }
+    
+    private List<ModuleDTO> addLiks(List<ModuleDTO> data, String rel) {
+        return data.stream().map(
+            obj -> obj = addLiks(obj, rel)
+        ).toList();
     }
 }

@@ -1,9 +1,10 @@
 package br.com.tecflix_app.repository;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -17,7 +18,7 @@ import br.com.tecflix_app.projection.CourseProjection;
 public interface CourseRepository extends JpaRepository<Course, UUID> {
     Optional<CourseDetailsProjection> findDetailsById(UUID id);
     
-    List<CourseProjection> findAllBy();
+    Page<CourseProjection> findAllBy(Pageable pageable);
 
     @Query(
         """
@@ -39,7 +40,7 @@ public interface CourseRepository extends JpaRepository<Course, UUID> {
                 t.id IN :tagIds
         """
     )
-    List<CourseProjection> findByTagIds(Long[] tagIds);
+    Page<CourseProjection> findByTagIds(Long[] tagIds, Pageable pageable);
 
     @Query(
         """
@@ -53,7 +54,7 @@ public interface CourseRepository extends JpaRepository<Course, UUID> {
                 UPPER(CONCAT('%', :term, '%'))
         """
     )
-    List<CourseProjection> findByTerm(String term);
+    Page<CourseProjection> findByTerm(String term, Pageable pageable);
 
 
     @Query(
@@ -72,7 +73,7 @@ public interface CourseRepository extends JpaRepository<Course, UUID> {
                 UPPER(CONCAT('%', :term, '%'))
         """
     )
-    List<CourseProjection> findByTagIdsAndTerm(Long[] tagIds, String term);
+    Page<CourseProjection> findByTagIdsAndTerm(Long[] tagIds, String term, Pageable pageable);
 
     @Modifying
     @Query(

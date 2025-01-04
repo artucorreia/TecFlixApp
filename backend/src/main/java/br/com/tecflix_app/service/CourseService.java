@@ -1,10 +1,17 @@
 package br.com.tecflix_app.service;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,10 +23,10 @@ import br.com.tecflix_app.data.DTO.v1.response.UserDTO;
 import br.com.tecflix_app.exception.general.ResourceNotFoundException;
 import br.com.tecflix_app.mapper.contract.IMapperService;
 import br.com.tecflix_app.model.Course;
+import br.com.tecflix_app.projection.CourseProjection;
 import br.com.tecflix_app.repository.CourseRepository;
 import br.com.tecflix_app.service.auth.jwt.TokenService;
 import br.com.tecflix_app.service.util.CourseValidatorService;
-import br.com.tecflix_app.service.util.HateoasService;
 
 @Service
 public class CourseService {
@@ -30,19 +37,22 @@ public class CourseService {
     private final TokenService tokenService;
     private final UserService userService;
     private final IMapperService mapper;
+    private final PagedResourcesAssembler<CourseDTO> assembler;
 
     public CourseService(
         CourseRepository repository,
         CourseValidatorService courseValidatorService,
         TokenService tokenService,
         UserService userService,
-        IMapperService mapper
+        IMapperService mapper,
+        PagedResourcesAssembler<CourseDTO> assembler
     ) {
         this.repository = repository;
         this.courseValidatorService = courseValidatorService;
         this.tokenService = tokenService;
         this.userService = userService;
         this.mapper = mapper;
+        this.assembler = assembler;
     }
 
     public CourseDTO findById(UUID id) {
@@ -53,41 +63,90 @@ public class CourseService {
             ),
     CourseDTO.class
         );
-        return HateoasService.addLiks(courseDTO, CourseController.class, CourseDTO::getId, "courses");
+        return addLiks(courseDTO, "courses");
     }
 
-    public List<CourseDTO> findByFilter(Long[] tagIds, String term) {
-        if (tagIds != null && term != null) return findByTagIdsAndTerm(tagIds, term); 
-        if (tagIds != null) return findByTagIds(tagIds);     
-        return findByTerm(term);      
+    public PagedModel<EntityModel<CourseDTO>> findByFilter(Long[] tagIds, String term, Pageable pageable) {
+        if (tagIds != null && term != null) return findByTagIdsAndTerm(tagIds, term, pageable); 
+        if (tagIds != null) return findByTagIds(tagIds, pageable);     
+        return findByTerm(term, pageable);      
     }
 
-    // TODO: pagination (ordered by reviews)
-    public List<CourseDTO> findAll() {
+    public PagedModel<EntityModel<CourseDTO>> findAll(Pageable pageable) {
         LOGGER.info("Finding all courses");
-        List<CourseDTO> courses = mapper.map(repository.findAllBy(), CourseDTO.class);
-        return HateoasService.addLiks(courses, CourseController.class, CourseDTO::getId, "courses");
+        
+        Page<CourseProjection> entities = repository.findAllBy(pageable);
+        Page<CourseDTO> courses = entities.map(course -> mapper.map(course, CourseDTO.class));
+
+
+        courses = addLiks(courses, "courses");
+        return assembler.toModel(
+            courses,
+            linkTo(
+                methodOn(CourseController.class)
+                .findAll(
+                    pageable.getPageNumber(),
+                    pageable.getPageSize(),
+                    pageable.getSort().toString()
+                )).withSelfRel()
+        );
     }
     
-    // TODO: pagination (ordered by reviews)
-    public List<CourseDTO> findByTagIds(Long[] tagIds) {
+    public PagedModel<EntityModel<CourseDTO>> findByTagIds(Long[] tagIds, Pageable pageable) {
         LOGGER.info("Finding courses by tag ids");
-        List<CourseDTO> courses = mapper.map(repository.findByTagIds(tagIds), CourseDTO.class);
-        return HateoasService.addLiks(courses, CourseController.class, CourseDTO::getId, "courses");
+        
+        Page<CourseProjection> entities = repository.findByTagIds(tagIds, pageable);
+        Page<CourseDTO> courses = entities.map(course -> mapper.map(course, CourseDTO.class));
+
+        courses = addLiks(courses, "courses");
+        return assembler.toModel(
+            courses,
+            linkTo(
+                methodOn(CourseController.class)
+                .findAll(
+                    pageable.getPageNumber(),
+                    pageable.getPageSize(),
+                    pageable.getSort().toString()
+                )).withSelfRel()
+        );
     }
 
-    // TODO: pagination (ordered by reviews)
-    public List<CourseDTO> findByTerm(String term) {
+    public PagedModel<EntityModel<CourseDTO>> findByTerm(String term, Pageable pageable) {
         LOGGER.info("Finding courses by term");
-        List<CourseDTO> courses = mapper.map(repository.findByTerm(term), CourseDTO.class);
-        return HateoasService.addLiks(courses, CourseController.class, CourseDTO::getId, "courses");
+        
+        Page<CourseProjection> entities = repository.findByTerm(term, pageable);
+        Page<CourseDTO> courses = entities.map(course -> mapper.map(course, CourseDTO.class));
+
+        courses = addLiks(courses, "courses");
+        return assembler.toModel(
+            courses,
+            linkTo(
+                methodOn(CourseController.class)
+                .findAll(
+                    pageable.getPageNumber(),
+                    pageable.getPageSize(),
+                    pageable.getSort().toString()
+                )).withSelfRel()
+        );
     }
 
-    // TODO: pagination (ordered by reviews)
-    public List<CourseDTO> findByTagIdsAndTerm(Long[] tagIds, String term) {
+    public PagedModel<EntityModel<CourseDTO>> findByTagIdsAndTerm(Long[] tagIds, String term, Pageable pageable) {
         LOGGER.info("Finding courses by tag ids and term");
-        List<CourseDTO> courses = mapper.map(repository.findByTagIdsAndTerm(tagIds, term), CourseDTO.class);
-        return HateoasService.addLiks(courses, CourseController.class, CourseDTO::getId, "courses");
+        
+        Page<CourseProjection> entities = repository.findByTagIdsAndTerm(tagIds, term, pageable);
+        Page<CourseDTO> courses = entities.map(course -> mapper.map(course, CourseDTO.class));
+
+        courses = addLiks(courses, "courses");
+        return assembler.toModel(
+            courses,
+            linkTo(
+                methodOn(CourseController.class)
+                .findAll(
+                    pageable.getPageNumber(),
+                    pageable.getPageSize(),
+                    pageable.getSort().toString()
+                )).withSelfRel()
+        );
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -111,5 +170,18 @@ public class CourseService {
             "Curso criado com sucesso",
             LocalDateTime.now()
         );
+    }
+
+    private CourseDTO addLiks(CourseDTO data, String rel) {
+        data.add(linkTo(methodOn(CourseController.class).findById(data.getId())).withSelfRel());
+        data.add(linkTo(methodOn(CourseController.class).findAll(0, 0, "ASC")).withRel(rel));
+        return data;
+    }
+    
+    private Page<CourseDTO> addLiks(Page<CourseDTO> data, String rel) {
+        for (CourseDTO courseDTO : data) {
+            courseDTO = addLiks(courseDTO, rel);
+        }
+        return data;
     }
 }

@@ -16,8 +16,10 @@ import br.com.tecflix_app.exception.general.ResourceNotFoundException;
 import br.com.tecflix_app.mapper.contract.IMapperService;
 import br.com.tecflix_app.repository.ClassRepository;
 import br.com.tecflix_app.service.util.ClassValidatorService;
-import br.com.tecflix_app.service.util.HateoasService;
 import br.com.tecflix_app.model.Class;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
 public class ClassService {
@@ -45,13 +47,13 @@ public class ClassService {
             ),
     ClassDTO.class
         );
-        return HateoasService.addLiks(classDTO, ClassController.class, ClassDTO::getId, "classes");
+        return addLiks(classDTO, "classes");
     }
     
     public List<ClassDTO> findByAll() {
         LOGGER.info("Finding all classes");
         List<ClassDTO> classes = mapper.map(repository.findAll(), ClassDTO.class);
-        return HateoasService.addLiks(classes, ClassController.class, ClassDTO::getId, "classes");
+        return addLiks(classes, "classes");
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -68,5 +70,17 @@ public class ClassService {
             "Aula criada com sucesso",
             LocalDateTime.now()
         );
+    }
+
+    private ClassDTO addLiks(ClassDTO data, String rel) {
+        data.add(linkTo(methodOn(ClassController.class).findById(data.getId())).withSelfRel());
+        data.add(linkTo(methodOn(ClassController.class).findAll()).withRel(rel));
+        return data;
+    }
+    
+    private List<ClassDTO> addLiks(List<ClassDTO> data, String rel) {
+        return data.stream().map(
+            obj -> obj = addLiks(obj, rel)
+        ).toList();
     }
 }

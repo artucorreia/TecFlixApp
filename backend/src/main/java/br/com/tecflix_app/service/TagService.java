@@ -10,7 +10,10 @@ import br.com.tecflix_app.data.DTO.v1.response.TagDTO;
 import br.com.tecflix_app.exception.general.ResourceNotFoundException;
 import br.com.tecflix_app.mapper.contract.IMapperService;
 import br.com.tecflix_app.repository.TagRepository;
-import br.com.tecflix_app.service.util.HateoasService;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 
 @Service
 public class TagService {
@@ -29,18 +32,30 @@ public class TagService {
 
     public TagDTO findById(Long id) {
         LOGGER.info("Finding tag by id");
-        TagDTO tagDTO = mapper.map(
+        TagDTO tag = mapper.map(
             repository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Nenhuma tag encontrada para este id")
             ),
     TagDTO.class
         );
-        return HateoasService.addLiks(tagDTO, TagController.class, TagDTO::getId, "tags");
+        return addLiks(tag, "tags");
     }
     
     public List<TagDTO> findByAll() {
         LOGGER.info("Finding all tags");
         List<TagDTO> tags =  mapper.map(repository.findAll(), TagDTO.class);
-        return HateoasService.addLiks(tags, TagController.class, TagDTO::getId, "tags");
+        return addLiks(tags, "tags");
+    }
+
+    private TagDTO addLiks(TagDTO data, String rel) {
+        data.add(linkTo(methodOn(TagController.class).findById(data.getId())).withSelfRel());
+        data.add(linkTo(methodOn(TagController.class).findAll()).withRel(rel));
+        return data;
+    }
+    
+    private List<TagDTO> addLiks(List<TagDTO> data, String rel) {
+        return data.stream().map(
+            obj -> obj = addLiks(obj, rel)
+        ).toList();
     }
 }
