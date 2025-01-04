@@ -81,7 +81,7 @@ public interface CourseRepository extends JpaRepository<Course, UUID> {
                     UPDATE 
                         courses 
                     SET 
-                        total_score_reviews = (
+                        total_reviews = (
                             SELECT 
                                 COUNT(r.id) 
                             FROM 
@@ -89,7 +89,7 @@ public interface CourseRepository extends JpaRepository<Course, UUID> {
                             WHERE 
                                 r.course_id = courses.id
                         ), 
-                        total_reviews = (
+                        total_score_reviews = (
                             SELECT 
                                 SUM(r.score) 
                             FROM 

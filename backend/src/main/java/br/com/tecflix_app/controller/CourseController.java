@@ -17,9 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.tecflix_app.controller.contract.IController;
 import br.com.tecflix_app.data.DTO.v1.create.CreateCourseDTO;
+import br.com.tecflix_app.data.DTO.v1.create.CreateReviewDTO;
 import br.com.tecflix_app.data.DTO.v1.response.CourseDTO;
 import br.com.tecflix_app.data.DTO.v1.response.GenericResponseDTO;
+import br.com.tecflix_app.data.DTO.v1.response.ReviewDTO;
 import br.com.tecflix_app.service.CourseService;
+import br.com.tecflix_app.service.ReviewService;
 import jakarta.validation.Valid;
 
 @RestController
@@ -27,9 +30,16 @@ import jakarta.validation.Valid;
 public class CourseController implements IController<CourseDTO, UUID>{
 
     private final CourseService service;
-    
+    private final ReviewService reviewService;
+
     @Autowired
-    public CourseController(CourseService service) { this.service = service; }
+    public CourseController(
+        CourseService service,
+        ReviewService reviewService
+    ) {
+        this.service = service;
+        this.reviewService = reviewService;
+    }
 
     @GetMapping(
         value = "/{id}",
@@ -62,5 +72,27 @@ public class CourseController implements IController<CourseDTO, UUID>{
     )
     public ResponseEntity<GenericResponseDTO<UUID>> create(@Valid @RequestBody CreateCourseDTO data) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.create(data));
+    }
+
+
+    /*
+    * Reviews
+    */
+
+    @GetMapping(
+        value = "/{id}/reviews",
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<List<ReviewDTO>> findByCourseId(@PathVariable UUID id) {
+        return ResponseEntity.ok(reviewService.findByCourseId(id));
+    }
+
+    @PostMapping(
+        value = "/{id}/reviews",
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<GenericResponseDTO<Long>> create(@PathVariable UUID id, @Valid @RequestBody CreateReviewDTO data) {
+        return ResponseEntity.ok(reviewService.create(id, data));
     }
 }

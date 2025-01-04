@@ -28,7 +28,7 @@ public class Review implements Serializable {
     private Long id;
 
     @Column(nullable = false)
-    private Double score;
+    private Integer score;
 
     @Column
     private String comment;

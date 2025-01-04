@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter @Getter
 public class ReviewDTO {
     private Long id;
-    private Double score;
+    private Integer score;
     private String comment;
     private LocalDateTime createdAt;
     private UserDTO user;

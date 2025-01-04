@@ -24,16 +24,16 @@ public class CreateReviewDTO {
     @NotNull 
     @Positive 
     @Min(value = 1) @Max(value = 5)
-    private Double score;
+    private Integer score;
 
     @Size(max = 255)
     private String comment;
-    
-    @NotNull
-    private CourseDTO course;
 
     @JsonIgnore
     private UserDTO user;
+    
+    @JsonIgnore
+    private CourseDTO course;
     
     @JsonIgnore
     private LocalDateTime createdAt = LocalDateTime.now();
