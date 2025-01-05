@@ -8,18 +8,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.filter.GenericFilterBean;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import br.com.tecflix_app.exception.auth.InvalidApiKeyException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Component
-public class AuthenticationFilter extends GenericFilterBean{
+public class AuthenticationFilter extends OncePerRequestFilter {
     
     private final AuthenticationService authenticationService;
     
@@ -27,11 +25,19 @@ public class AuthenticationFilter extends GenericFilterBean{
     public AuthenticationFilter(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
     }
+
+    @Override
+    @SuppressWarnings("null")
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getRequestURI();
+        return path.startsWith("/swagger-ui") || path.startsWith("/v3/api-docs");
+    }
     
     @Override
-    public void doFilter(
-        ServletRequest request, 
-        ServletResponse response, 
+    @SuppressWarnings("null")
+    public void doFilterInternal(
+        HttpServletRequest request,
+        HttpServletResponse response,
         FilterChain filterChain
     ) throws IOException, ServletException {
         
