@@ -60,6 +60,11 @@ public class SecurityConfig {
                     // classes
                     .requestMatchers(HttpMethod.POST, "/api/v1/classes").hasAnyRole("ADMIN", "PROFESSOR")
 
+                    // swagger
+                    .requestMatchers("/v3/api-docs/**").permitAll()
+                    .requestMatchers("/swagger-ui/**").permitAll()
+                    .requestMatchers("/swagger-ui.html").permitAll()
+
                     .anyRequest().hasAnyRole("ADMIN", "USER", "PROFESSOR")
             )
             // api key filter

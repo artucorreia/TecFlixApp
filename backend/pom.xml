@@ -31,6 +31,7 @@
 		
 		<!-- dependencies versions -->
 		<lombok.version>1.18.36</lombok.version>
+		<swagger.version>2.6.0</swagger.version>
 		<auth0.version>4.4.0</auth0.version>
 		<json.version>20231013</json.version>
 		<efi.version>1.0.3</efi.version>
@@ -104,6 +105,13 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-hateoas</artifactId>
 		</dependency>
+
+		<!-- swagger -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>${swagger.version}</version>
+	   </dependency>
 
 		<!-- java mail -->
 		<dependency>

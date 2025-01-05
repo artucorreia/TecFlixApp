@@ -26,9 +26,17 @@ import br.com.tecflix_app.service.EmailCodeService;
 import br.com.tecflix_app.service.UserService;
 import br.com.tecflix_app.service.auth.jwt.RefreshTokenService;
 import br.com.tecflix_app.service.auth.jwt.TokenService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/auth")
+@Tag(name = "Authentication", description = "Endpoints for registration and login to the system")
 public class AuthController {
     
     private final UserService userService;
@@ -57,6 +65,39 @@ public class AuthController {
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
+    @Operation(
+        summary = "Log into the system",
+        description = "Log into the system",
+        tags = {"Authentication"},
+        method = "POST",
+        requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            content = @Content(
+                mediaType = "application/json",
+                examples = @ExampleObject(
+                    value = """
+                            { "email": "string", "password": "string" }
+                            """
+                )
+            )
+        )
+    )
+    @ApiResponses(
+        value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Success",
+                    content = @Content(
+                        mediaType = "application/json",
+                        schema = @Schema(implementation = TokenDTO.class)
+                    )
+            ),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
+        }
+    )
     public ResponseEntity<TokenDTO> login(@Valid @RequestBody AuthenticationDTO data) {
         if (!userService.findActiveByEmail(data.getEmail())) 
             throw new InactiveUserException("O usuário está inativo");
@@ -82,6 +123,39 @@ public class AuthController {
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
+    @Operation(
+        summary = "Refresh token",
+        description = "Refresh token",
+        tags = {"Authentication"},
+        method = "POST",
+        requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            content = @Content(
+                mediaType = "application/json",
+                examples = @ExampleObject(
+                    value = """
+                            { "token": "string" }
+                            """
+                )
+            )
+        )
+    )
+    @ApiResponses(
+        value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Success",
+                    content = @Content(
+                        mediaType = "application/json",
+                        schema = @Schema(implementation = TokenDTO.class)
+                    )
+            ),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
+        }
+    )
     public ResponseEntity<TokenDTO> refreshToken(@Valid @RequestBody RefreshTokenDTO data) {
         UUID userId = refreshTokenService.resolve(data.getToken());        
         return ResponseEntity.ok(tokenService.generateToken(userId));
@@ -92,16 +166,94 @@ public class AuthController {
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
+    @Operation(
+        summary = "Register in the system",
+        description = "Register in the system",
+        tags = {"Authentication"},
+        method = "POST",
+        requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            content = @Content(
+                mediaType = "application/json",
+                examples = @ExampleObject(
+                    value = """
+                            { "name": "string", "email": "string", "password": "string" }
+                            """
+                )
+            )
+        )
+    )
+    @ApiResponses(
+        value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "Success",
+                    content = @Content(
+                        mediaType = "application/json",
+                        schema = @Schema(implementation = GenericResponseDTO.class)
+                    )
+            ),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
+        }
+    )
     public ResponseEntity<GenericResponseDTO<UUID>> register(@Valid @RequestBody RegisterDTO data) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.register(data));
     }
     
     @PostMapping(value = "/send-code/{userId}")
+    @Operation(
+        summary = "Send email code",
+        description = "Send email code to validate email",
+        tags = {"Authentication"},
+        method = "POST"
+    )
+    @ApiResponses(
+        value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Success",
+                    content = @Content(
+                        mediaType = "application/json",
+                        schema = @Schema(implementation = GenericResponseDTO.class)
+                    )
+            ),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
+        }
+    )
     public ResponseEntity<GenericResponseDTO<Long>> sendEmailCode(@PathVariable UUID userId) {
         return ResponseEntity.ok().body(emailCodeService.create(userId));
     }
 
     @PostMapping(value = "/validate-code/{code}")
+    @Operation(
+        summary = "Validate email code",
+        description = "Validate email code",
+        tags = {"Authentication"},
+        method = "POST"
+    )
+    @ApiResponses(
+        value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "Success",
+                    content = @Content(
+                        mediaType = "application/json",
+                        schema = @Schema(implementation = GenericResponseDTO.class)
+                    )
+            ),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
+        }
+    )
     public ResponseEntity<GenericResponseDTO<UUID>> validateEmailCode(@PathVariable String code) {
         return ResponseEntity.status(HttpStatus.CREATED).body(emailCodeService.validate(code));
     }

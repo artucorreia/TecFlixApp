@@ -50,7 +50,7 @@ public class ClassService {
         return addLiks(classDTO, "classes");
     }
     
-    public List<ClassDTO> findByAll() {
+    public List<ClassDTO> findAll() {
         LOGGER.info("Finding all classes");
         List<ClassDTO> classes = mapper.map(repository.findAll(), ClassDTO.class);
         return addLiks(classes, "classes");

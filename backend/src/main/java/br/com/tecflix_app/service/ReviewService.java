@@ -45,6 +45,10 @@ public class ReviewService {
 
     public List<ReviewDTO> findByCourseId(UUID courseId) {
         LOGGER.info("Finding by course id");
+        
+        // check if courseId is valid
+        courseService.findById(courseId);
+
         return mapper.map(
             repository.findByCourseId(courseId),
             ReviewDTO.class

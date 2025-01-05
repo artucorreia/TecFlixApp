@@ -41,9 +41,9 @@ public class TagService {
         return addLiks(tag, "tags");
     }
     
-    public List<TagDTO> findByAll() {
+    public List<TagDTO> findAll() {
         LOGGER.info("Finding all tags");
-        List<TagDTO> tags =  mapper.map(repository.findAll(), TagDTO.class);
+        List<TagDTO> tags = mapper.map(repository.findAll(), TagDTO.class);
         return addLiks(tags, "tags");
     }
 
