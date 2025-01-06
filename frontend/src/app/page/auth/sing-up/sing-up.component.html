@@ -35,14 +35,18 @@
                 </p-password>
                 <label for="over_label">Senha</label>
             </p-floatlabel>
-        
-            <button type="submit" class="button" [disabled]="singUpForm.invalid || singUpForm.disabled">
-                @if (!loading) {
+            @if (!loading()) {
+                <button 
+                type="submit" 
+                class="button" 
+                [disabled]="singUpForm.invalid || singUpForm.disabled">
                     Criar conta
-                } @else {
-                    <i class="pi pi-spinner pi-spin" style="font-size: 1.1em;"></i>
-                }    
-            </button>
+                </button>
+            } @else {
+                <div class="spinner_container">
+                    <p-progress-spinner class="spinner" ariaLabel="loading" strokeWidth="8" [style]="{ width: '25px', height: '25px' }"/>
+                </div>
+            }    
         </form>
     </div>
     

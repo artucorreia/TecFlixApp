@@ -4,7 +4,9 @@
     <p class="content"> {{ message() }} </p>
     <div class="card flex justify-center gap-4 text-white">
         @if (loading()) {
-            <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+            <div class="spinner_container">
+                <p-progress-spinner class="spinner" ariaLabel="loading" strokeWidth="8" [style]="{ width: '30px', height: '30px' }"/>
+            </div>
         } @else {
             @if (codeIsValid()) {
                 <button routerLink="/sing-in" [disabled]="loading()" class="button">Entrar</button>
