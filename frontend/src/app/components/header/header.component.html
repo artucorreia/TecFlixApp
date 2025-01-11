@@ -1,21 +1,38 @@
-<p-menubar [model]="items">
-    <ng-template #start>
-        <svg width="33" height="35" viewBox="0 0 33 35" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="..." fill="var(--primary-color)" />
-        </svg>
-    </ng-template>
-    <ng-template #item let-item let-root="root">
-        <a pRipple class="flex items-center p-menubar-item-link">
-            <span>{{ item.label }}</span>
-            <p-badge *ngIf="item.badge" [ngClass]="{ 'ml-auto': !root, 'ml-2': root }" [value]="item.badge" />
-            <span *ngIf="item.shortcut" class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1">{{ item.shortcut }}</span>
-            <i *ngIf="item.items" [ngClass]="['ml-auto pi', root ? 'pi-angle-down' : 'pi-angle-right']"></i>
-        </a>
+<p-menubar [model]="items()">   
+    <ng-template #item let-item let-root="root" >
+        @if (item.route) {
+            <a [routerLink]="item.route" pRipple class="flex items-center p-menubar-item-link">
+                <span>{{ item.label }}</span>
+                <i *ngIf="item.items" [ngClass]="['ml-auto pi', root ? 'pi-angle-down' : 'pi-angle-right']"></i>
+            </a>
+        } @else {
+            <a pRipple class="flex items-center p-menubar-item-link">
+                <span>{{ item.label }}</span>
+                <i *ngIf="item.items" [ngClass]="['ml-auto pi', root ? 'pi-angle-down' : 'pi-angle-right']"></i>
+            </a>
+        }
     </ng-template>
     <ng-template #end>
         <div class="flex items-center gap-2">
-            <input type="text" pInputText placeholder="Search" class="w-36" />
-            <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle" />
+            <p-iconfield iconPosition="left">
+                <p-inputicon styleClass="pi pi-search" />
+                <input type="text" [(ngModel)]="term" pInputText placeholder="Search" (keyup)="search($event)" />
+            </p-iconfield>
+
+            <p-menu  #menu [model]="userMenuItems" [popup]="true" class="container_menu" styleClass="w-full md:w-60">
+                <ng-template #submenuheader let-item>
+                    <span class="text-primary font-bold">{{ item.label }}</span>
+                </ng-template>
+                <ng-template #item let-item>
+                    <a pRipple class="flex items-center p-menu-item-link">
+                        <span [class]="item.icon"></span>
+                        <span class="ml-2">{{ item.label }}</span>
+                        <p-badge *ngIf="item.badge" class="ml-auto" [value]="item.badge" />
+                    </a>
+                </ng-template>
+            </p-menu>
+
+            <p-avatar icon="pi pi-user" class="mr-2 avatar" size="normal" shape="circle" (click)="menu.toggle($event)"/>
         </div>
     </ng-template>
 </p-menubar>
