@@ -1,28 +1,28 @@
 // angular
-import { Component, inject, signal } from '@angular/core'
+import { Component, inject, signal } from '@angular/core';
 import {
     FormBuilder,
     FormControl,
     FormGroup,
     ReactiveFormsModule,
     Validators,
-} from '@angular/forms'
-import { RouterModule } from '@angular/router'
+} from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 // primeng
-import { ButtonModule } from 'primeng/button'
-import { PasswordModule } from 'primeng/password'
-import { DividerModule } from 'primeng/divider'
-import { InputTextModule } from 'primeng/inputtext'
-import { ToastModule } from 'primeng/toast'
-import { FloatLabel } from 'primeng/floatlabel'
-import { MessageService } from 'primeng/api'
-import { ProgressSpinner } from 'primeng/progressspinner'
+import { ButtonModule } from 'primeng/button';
+import { PasswordModule } from 'primeng/password';
+import { DividerModule } from 'primeng/divider';
+import { InputTextModule } from 'primeng/inputtext';
+import { ToastModule } from 'primeng/toast';
+import { FloatLabel } from 'primeng/floatlabel';
+import { MessageService } from 'primeng/api';
+import { ProgressSpinner } from 'primeng/progressspinner';
 
-import { AuthService } from '../../../service/auth/auth.service'
-import { Register } from '../../../interface/resquest/register'
-import { TecFlixApiUtilService } from '../../../service/util/api/tec-flix-api-util.service'
-import { MessageUtilService } from '../../../service/util/message/message-util.service'
+import { AuthService } from '../../../service/auth/auth.service';
+import { Register } from '../../../interface/resquest/register';
+import { TecFlixApiUtilService } from '../../../service/util/api/tec-flix-api-util.service';
+import { MessageUtilService } from '../../../service/util/message/message-util.service';
 
 @Component({
     selector: 'app-sing-up',
@@ -44,17 +44,18 @@ import { MessageUtilService } from '../../../service/util/message/message-util.s
     styleUrl: './sing-up.component.scss',
 })
 export class SingUpComponent {
-    private _messageUtilService: MessageUtilService = inject(MessageUtilService)
-    private _apiUtil: TecFlixApiUtilService = inject(TecFlixApiUtilService)
-    private _authService: AuthService = inject(AuthService)
+    private _messageUtilService: MessageUtilService =
+        inject(MessageUtilService);
+    private _apiUtil: TecFlixApiUtilService = inject(TecFlixApiUtilService);
+    private _authService: AuthService = inject(AuthService);
 
-    public loading = signal(false)
+    public loading = signal(false);
 
     public singUpForm: FormGroup<{
-        name: FormControl<string | null>
-        email: FormControl<string | null>
-        password: FormControl<string | null>
-    }>
+        name: FormControl<string | null>;
+        email: FormControl<string | null>;
+        password: FormControl<string | null>;
+    }>;
 
     constructor(private _fb: FormBuilder) {
         this.singUpForm = _fb.group({
@@ -82,78 +83,78 @@ export class SingUpComponent {
                     Validators.required,
                 ],
             ],
-        })
+        });
     }
 
     public singUp(): void {
-        if (this.singUpForm.invalid) throw new Error('Formulario invalido')
+        if (this.singUpForm.invalid) throw new Error('Formulario invalido');
 
-        this.closeForm()
+        this.closeForm();
 
         const register: Register = {
             name: this.singUpForm.controls.name.value,
             email: this.singUpForm.controls.email.value,
             password: this.singUpForm.controls.password.value,
-        }
+        };
 
         this._authService.register(register).subscribe({
             next: (response) => {
                 if (this._apiUtil.isApiError(response)) {
                     this._messageUtilService.display({
                         severity: 'error',
-                        summary: 'Errror',
+                        summary: 'Error',
                         detail: response.title,
                         life: 3000,
-                    })
-                    this.resetForm()
-                    return
+                    });
+                    this.resetForm();
+                    return;
                 }
 
-                this.sendCode(response.id || '')
+                this.sendCode(response.id || '');
             },
             error: (error) => {
-                this.resetForm()
-                console.log('unexpected error', error)
+                this.resetForm();
+                console.log('unexpected error', error);
             },
-        })
+        });
     }
 
     public sendCode(userId: string): void {
         this._authService.sendEmailCode(userId).subscribe({
             next: (response) => {
-                this.resetForm()
+                this.resetForm();
                 if (this._apiUtil.isApiError(response)) {
                     this._messageUtilService.display({
                         severity: 'error',
-                        summary: 'Errror',
+                        summary: 'Error',
                         detail: response.title,
                         life: 3000,
-                    })
-                    this.resetForm()
-                    return
+                    });
+                    this.resetForm();
+                    return;
                 }
                 this._messageUtilService.display({
                     severity: 'success',
                     summary: 'Success',
                     detail: response.message,
                     life: 3000,
-                })
+                });
             },
             error: (error) => {
-                this.resetForm()
-                console.log('unexpected error', error)
+                this.resetForm();
+                console.log('unexpected error', error);
             },
-        })
+        });
     }
 
     private resetForm(): void {
-        this.singUpForm.reset()
-        this.singUpForm.enable()
-        this.loading.update((value) => (value = !value))
+        this.singUpForm.reset();
+        this.singUpForm.enable();
+        this.loading.update((value) => (value = !value));
     }
 
     private closeForm(): void {
-        this.singUpForm.disable()
-        this.loading.update((value) => (value = !value))
+        this.singUpForm.disable();
+        this.loading.update((value) => (value = !value));
     }
 }
