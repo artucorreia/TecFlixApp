@@ -1,0 +1,117 @@
+@use '../../../dist/scss/variables.scss' as variables;
+
+.container_footer {
+    cursor: default;
+
+    background-color: variables.$primary-color;
+    color: white;
+
+    padding: 50px 30px 30px 30px; 
+}
+
+.logo {
+    font-size: 1.7em;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding-bottom: 20px;
+
+    font-family: variables.$font-family-logo;
+}
+
+.mid_container {
+
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    padding-bottom: 100px;
+
+    > * {
+        max-width: 250px;
+    }
+
+    .social_title, .contact-title {
+        font-weight: 500;
+    }
+
+    .text_container, .social_title, .contact-title {
+        padding-bottom: 10px;
+    }
+
+    .slogan {
+        line-height: 1.3em;
+    }
+
+    .button {
+        cursor: pointer;
+        text-transform: uppercase;
+        font-size: 1em;
+        font-weight: 500;
+
+        outline: none;
+        border: 1.5px solid #fff;
+        border-radius: 3px;
+        
+        padding: 5px 7px;
+
+        color: #fff;
+        // background-color: #f0f0f0;
+
+        transition-duration: 0.4s;
+
+        &:hover {
+            background-color: #fff;
+            color: variables.$primary-color;
+        }
+    }
+
+    .social_container {
+        .social_title {
+            text-transform: uppercase;
+        }
+        .social_icons {
+            display: flex;
+            align-items: center;
+            .pi {
+                cursor: pointer;
+
+                font-size: 1.2em;
+
+                padding: 5px;
+
+                border: 1px solid #fff;
+                border-radius: 50%;
+
+                margin-right: 5px;
+            }
+
+        }
+    }
+
+    .contact {
+        font-weight: 600;
+    }
+}
+
+.lower_container {
+    display: flex;
+    justify-content: space-between;
+    
+    padding-top: 30px;
+
+    .footer_links_container {
+        display: flex;
+
+        font-size: 0.8em;
+        font-weight: 600;
+        text-transform: uppercase;
+        .footer_link {
+            cursor: pointer;
+            padding-right: 10px;
+        }
+    }
+
+    .copyright {
+        font-size: 0.8em;
+    }
+}
