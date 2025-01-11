@@ -1,0 +1,63 @@
+<main class="container">
+    <ng-content select="h1" class="title"></ng-content>
+    @if (pagination().content.length == 0) {
+        <div class="card">
+            <p-carousel [value]="[0, 1, 2, 3]" [numVisible]="4" [numScroll]="4" [circular]="false" [responsiveOptions]="responsiveOptions">
+                <ng-template let-item #item>
+                    <div class="border border-surface rounded-border m-2 p-4">
+                        <div class="mb-4">
+                            <div class="relative mx-auto">
+                                <p-skeleton size="15rem" />
+                            </div>
+                        </div>
+                        <div class="mt-0">
+                            <p-skeleton width="10rem" styleClass="mb-2" />
+                        </div>
+                        <div class="mb-4">
+                            <p-skeleton width="5rem" styleClass="mb-2" />
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <p-skeleton width="8rem" styleClass="mb-2" />
+                        </div>
+                    </div>
+                </ng-template>
+            </p-carousel>
+        </div>
+    } @else {
+        <div class="card">
+            <p-carousel [value]="pagination().content" [numVisible]="4" [numScroll]="4" [circular]="true" [responsiveOptions]="responsiveOptions">
+                <ng-template let-course #item>
+                    <div class="border border-surface rounded-border m-2 p-4">
+                        <div class="mb-4">
+                            <div class="relative mx-auto container_image" routerLink="/course/{{course.id}}">
+                                <img src="./test.jpg" [alt]="course.title" class="w-full rounded-border" />
+                                @if (
+                                    getScore(course.totalScoreReviews, course.totalReviews) >= 4.5
+                                ) {
+                                    <p-tag value="Bem avalidado" class="absolute" styleClass="dark:!bg-surface-900" [ngStyle]="{ 'left.px': 5, 'top.px': 5 }" />
+                                }
+                            </div>
+                        </div>
+                        <div class="mt-0 font-semibold text-xl">
+                            <a routerLink="/course/{{course.id}}">{{ course.title }}</a>
+                        </div>
+        
+                        <div class="mb-4">
+                            <a routerLink="/profile/{{course.professor.id}}" class="url">{{ course.professor.name }}</a>
+                        </div>
+        
+                        <div class="flex justify-between items-center">
+                            <div class="container_rating">
+                                <span class="score"> {{ this.value }} </span>
+                                <p-rating [(ngModel)]="value" [readonly]="true" />
+                                <span class="total_reviews">
+                                    ( {{ course.totalReviews }} )
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-carousel>
+        </div>
+    }
+</main>
