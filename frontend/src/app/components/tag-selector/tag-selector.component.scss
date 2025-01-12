@@ -1,0 +1,16 @@
+@use '../../../dist/scss/variables.scss' as variables;
+@use '../../../dist/scss/classes.scss' as classes;
+
+.container_tags {
+    padding: 20px;
+}
+
+.container_button {
+    padding-left: 1rem;
+}
+
+.button {
+    width: 5rem;
+    text-transform: uppercase;
+    border-radius: 0.4rem;
+}

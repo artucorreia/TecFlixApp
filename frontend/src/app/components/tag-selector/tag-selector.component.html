@@ -1,0 +1,9 @@
+<main class="container_tags">
+    <div class="card flex justify-end">
+        <p-multiselect [options]="tags()" [(ngModel)]="selectedTags" optionLabel="name" placeholder="Selecionar Tags" [maxSelectedLabels]="3" styleClass="w-full md:w-80" />
+
+        <div class="container_button">
+            <button class="button" (click)="filter()">filtrar</button>
+        </div>
+    </div>
+</main>

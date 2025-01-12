@@ -12,7 +12,7 @@ import { TecFlixApiUtilService } from '../../service/util/api/tec-flix-api-util.
 import { Tag } from '../../interface/response/tag';
 import { TagsService } from '../../service/api/tecflix/tags.service';
 
-// prime ng
+// primeng
 import { MenuItem } from 'primeng/api';
 import { InputTextModule } from 'primeng/inputtext';
 import { Menubar } from 'primeng/menubar';
@@ -61,7 +61,7 @@ export class HeaderComponent {
 
     constructor() {}
 
-    async ngOnInit() {
+    ngOnInit() {
         this.items.set([
             {
                 label: 'Inicio',
@@ -69,7 +69,14 @@ export class HeaderComponent {
             },
             {
                 label: 'Todos os Cursos',
-                route: '/search',
+                command: () =>
+                    this._router.navigate(['/search'], {
+                        queryParams: {
+                            page: 0,
+                            size: 10,
+                            direction: 'totalReviews,desc',
+                        },
+                    }),
             },
         ]);
 
@@ -104,14 +111,14 @@ export class HeaderComponent {
     }
 
     public search(event: KeyboardEventInit): void {
-        let tags: string = '';
-        this._http.queryParams.subscribe((params) => {
-            if (params['tags']) tags = params['tags'];
-        });
-
-        if (event.key == 'Enter' && this.term() != '')
+        if (event.key == 'Enter')
             this._router.navigate(['/search'], {
-                queryParams: { term: this.term(), tags: tags },
+                queryParams: this.getQueryParams({
+                    term: this.term(),
+                    page: 0,
+                    size: 10,
+                    direction: 'totalReviews,desc',
+                }),
             });
     }
 
@@ -141,7 +148,9 @@ export class HeaderComponent {
                 command: (item) => {
                     if (item.item) {
                         this._router.navigate(['/search'], {
-                            queryParams: { tags: item.item.id },
+                            queryParams: this.getQueryParams({
+                                tags: item.item.id,
+                            }),
                         });
                     }
                 },
@@ -159,5 +168,24 @@ export class HeaderComponent {
     private logout(): void {
         this._authService.clearStorage();
         this._router.navigate(['/sing-in']);
+    }
+
+    private getQueryParams(defaultParams: {
+        term?: string;
+        tags?: string;
+        page?: number;
+        size?: number;
+        direction?: string;
+    }) {
+        let queryParams = defaultParams;
+        this._http.queryParams.subscribe((params) => {
+            if (!queryParams.term) queryParams.term = params['term'];
+            if (!queryParams.tags) queryParams.tags = params['tags'];
+            if (!queryParams.page) queryParams.page = params['page'];
+            if (!queryParams.size) queryParams.size = params['size'];
+            if (!queryParams.direction)
+                queryParams.direction = params['direction'];
+        });
+        return queryParams;
     }
 }

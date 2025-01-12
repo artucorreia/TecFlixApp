@@ -1,0 +1,12 @@
+<div class="card flex justify-center container_paginator">
+    <p-paginator 
+        (onPageChange)="onPageChange($event)" 
+        [first]="first()" 
+        [rows]="rows()" 
+        [totalRecords]="totalElements()" 
+        [rowsPerPageOptions]="[10, 20, 30]" 
+        [showCurrentPageReport]="false"
+        [showPageLinks]="false"
+        [showJumpToPageDropdown]="false"
+        currentPageReportTemplate="{first} - {last} de {totalRecords}"/>
+</div>

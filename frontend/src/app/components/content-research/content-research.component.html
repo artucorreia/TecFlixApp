@@ -1,0 +1,53 @@
+<main class="container">
+    @if (pagination().content.length === 0) {
+        <div class="container_not_found">
+            <h1>Infelizmente, não encontramos resultados <br> para sua pesquisa</h1>
+            <h2>Recomendamos ajustar sua busca. Aqui estão algumas ideias:</h2>
+            <ul>
+                <li>Verifique se todas as palavras estão escritas corretamente</li>
+                <li>Tente usar termos de pesquisa diferentes</li>
+                <li>Tente usar termos de pesquisa mais genéricos</li>
+                <li>Tente selecionar outras tags</li>
+            </ul>
+        </div>
+    } @else {
+        <ng-content select="h1" class="title"></ng-content>
+        <div class="card">
+            @for (item of pagination().content; track $index) {
+                <div class="border border-surface rounded-border m-2 p-4">
+                    <div class="mb-4">
+                        <div class="relative mx-auto container_image" routerLink="/course/{{item.id}}">
+                            <img src="./test.jpg" [alt]="item.title" class="rounded-border image" />
+                            @if (
+                                getScore(item.totalScoreReviews, item.totalReviews) >= 4.5
+                            ) {
+                                <p-tag value="Bem avalidado" class="absolute" styleClass="dark:!bg-surface-900" [ngStyle]="{ 'left.px': 5, 'top.px': 5 }" />
+                            }
+                        </div>
+                    </div>
+                    <div class="mt-0 font-semibold text-xl">
+                        <a routerLink="/course/{{item.id}}">{{ item.title }}</a>
+                    </div>
+    
+                    <div class="mb-4">
+                        <a routerLink="/profile/{{item.professor.id}}" class="url">{{ item.professor.name }}</a>
+                    </div>
+    
+                    <div class="flex justify-between items-center">
+                        <div class="container_rating">
+                            <span class="score"> {{ this.value }} </span>
+                            <p-rating [(ngModel)]="value" [readonly]="true" />
+                            <span class="total_reviews">
+                                ( {{ item.totalReviews }} )
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</main>
+
+@if (pagination().content.length !== 0) {
+    <app-paginator [pageMetadata]="pageMetadata()"></app-paginator>
+}

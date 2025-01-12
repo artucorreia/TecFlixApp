@@ -1,0 +1,82 @@
+@use '../../../dist/scss/variables.scss' as variables;
+
+
+.container_not_found {
+    padding: 5rem 0 5rem 3rem;
+    color: #fff;
+
+    & > * {
+        padding-bottom: 1rem;
+    }
+    
+    h1 {
+        font-size: 1.5em;
+        font-weight: 600;
+    }
+
+    h2 {
+        font-size: 1.2em;
+    }
+
+    ul {
+        li {
+            list-style: circle;
+        }
+    }
+}
+
+.container {
+    padding-top: 2rem;
+    & > * {
+        width: 100vw;
+    }
+}
+
+.card {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.title {
+    font-size: 2em;
+    color: variables.$primary-color;
+    padding-left: 1.5rem;
+}
+
+.container_image {
+    transition-duration: .2s;
+    &:hover {
+        cursor: pointer;
+        filter: brightness(90%);
+    }
+
+    .image {
+        max-width: 20rem;
+        min-width: 15rem;
+    }
+}
+
+.container_rating {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.score {
+    width: 1.7rem;
+    height: 1.1em;
+    color: variables.$seccondary-color;
+    font-size: .9em;
+}
+
+.total_reviews {
+    font-size: .8em;
+    padding-left: 0.625rem;
+    color: gray;    
+}
+
+.url {
+    color: gray;
+    font-weight: 400;
+}
