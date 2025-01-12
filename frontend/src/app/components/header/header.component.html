@@ -1,4 +1,4 @@
-<p-menubar [model]="items()">   
+<p-menubar [model]="items()">
     <ng-template #item let-item let-root="root" >
         @if (item.route) {
             <a [routerLink]="item.route" pRipple class="flex items-center p-menubar-item-link">
@@ -16,7 +16,7 @@
         <div class="flex items-center gap-2">
             <p-iconfield iconPosition="left">
                 <p-inputicon styleClass="pi pi-search" />
-                <input type="text" [(ngModel)]="term" pInputText placeholder="Search" (keyup)="search($event)" />
+                <input type="text" [(ngModel)]="term" pInputText placeholder="Pesquisar" (keyup)="search($event)" />
             </p-iconfield>
 
             <p-menu  #menu [model]="userMenuItems" [popup]="true" class="container_menu" styleClass="w-full md:w-60">
