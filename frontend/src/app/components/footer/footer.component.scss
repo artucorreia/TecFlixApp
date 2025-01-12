@@ -6,28 +6,27 @@
     background-color: variables.$primary-color;
     color: white;
 
-    padding: 50px 30px 30px 30px; 
+    padding: 3.125rem 1.875rem 1.875rem 1.875rem;
 }
 
 .logo {
     font-size: 1.7em;
     font-weight: 600;
     text-transform: uppercase;
-    padding-bottom: 20px;
+    padding-bottom: 1.25rem;
 
     font-family: variables.$font-family-logo;
 }
 
 .mid_container {
-
-    width: 100%;
     display: flex;
     justify-content: space-between;
+    align-items: start;
 
-    padding-bottom: 100px;
+    padding-bottom: 6.25rem;
 
-    > * {
-        max-width: 250px;
+    & > * {
+        width: 11.5rem;
     }
 
     .social_title, .contact-title {
@@ -35,7 +34,7 @@
     }
 
     .text_container, .social_title, .contact-title {
-        padding-bottom: 10px;
+        padding-bottom: 0.625rem;
     }
 
     .slogan {
@@ -49,13 +48,12 @@
         font-weight: 500;
 
         outline: none;
-        border: 1.5px solid #fff;
-        border-radius: 3px;
+        border: 0.094rem solid #fff;
+        border-radius: 0.188rem;
         
-        padding: 5px 7px;
+        padding: 0.313rem 0.438rem;
 
         color: #fff;
-        // background-color: #f0f0f0;
 
         transition-duration: 0.4s;
 
@@ -77,12 +75,12 @@
 
                 font-size: 1.2em;
 
-                padding: 5px;
+                padding: 0.313rem;
 
-                border: 1px solid #fff;
+                border: 0.063rem solid #fff;
                 border-radius: 50%;
 
-                margin-right: 5px;
+                margin-right: 0.313rem;
             }
 
         }
@@ -97,7 +95,7 @@
     display: flex;
     justify-content: space-between;
     
-    padding-top: 30px;
+    padding-top: 1.875rem;
 
     .footer_links_container {
         display: flex;
@@ -107,11 +105,29 @@
         text-transform: uppercase;
         .footer_link {
             cursor: pointer;
-            padding-right: 10px;
+            padding-right: 0.625rem;
         }
     }
 
     .copyright {
         font-size: 0.8em;
+    }
+}
+
+@media(max-width: 768px) {
+    .mid_container {
+        flex-wrap: wrap;
+        & > * {
+            padding-bottom: 1rem;
+        }
+    }
+}
+
+@media(max-width: 480px) {
+    .mid_container {
+        flex-flow: column;
+        & > * {
+            padding-bottom: 2rem;
+        }
     }
 }
