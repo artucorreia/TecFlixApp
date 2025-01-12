@@ -7,13 +7,13 @@ import { inject, Injectable } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
 import { environment } from '../../../../environments/environment';
 import { catchError, map, Observable, of } from 'rxjs';
-import { Tag } from '../../../interface/response/tag';
-import { ApiError } from '../../../interface/response/api-error';
+import { Tag } from '../../../interfaces/response/tag';
+import { ApiError } from '../../../interfaces/response/api-error';
 
 @Injectable({
     providedIn: 'root',
 })
-export class TagsService {
+export class TagService {
     private _http: HttpClient = inject(HttpClient);
     private _authService: AuthService = inject(AuthService);
     private _baseHeaders: HttpHeaders = new HttpHeaders()

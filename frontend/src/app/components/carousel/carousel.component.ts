@@ -3,8 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
-import { Course } from '../../interface/response/course';
-import { Pagination } from '../../interface/response/pagination';
+import { Course } from '../../interfaces/response/course';
+import { Pagination } from '../../interfaces/response/pagination';
 
 // primeng
 import { CarouselModule } from 'primeng/carousel';

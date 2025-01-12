@@ -6,15 +6,15 @@ import {
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { catchError, map, Observable, of } from 'rxjs';
-import { Course } from '../../../interface/response/course';
-import { ApiError } from '../../../interface/response/api-error';
-import { Pagination } from '../../../interface/response/pagination';
+import { Course } from '../../../interfaces/response/course';
+import { ApiError } from '../../../interfaces/response/api-error';
+import { Pagination } from '../../../interfaces/response/pagination';
 import { AuthService } from '../../auth/auth.service';
 
 @Injectable({
     providedIn: 'root',
 })
-export class TecflixService {
+export class CourseService {
     private _http: HttpClient = inject(HttpClient);
     private _authService: AuthService = inject(AuthService);
 

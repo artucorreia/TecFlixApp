@@ -5,12 +5,12 @@ import { RouterModule } from '@angular/router';
 import { ActivatedRoute, Router } from '@angular/router';
 
 // services
-import { AuthService } from '../../service/auth/auth.service';
-import { TecFlixApiUtilService } from '../../service/util/api/tec-flix-api-util.service';
+import { AuthService } from '../../services/auth/auth.service';
+import { ApiUtilService } from '../../services/api/tecflix/api-util.service';
 
 // interfaces
-import { Tag } from '../../interface/response/tag';
-import { TagsService } from '../../service/api/tecflix/tags.service';
+import { Tag } from '../../interfaces/response/tag';
+import { TagService } from '../../services/api/tecflix/tag.service';
 
 // primeng
 import { MenuItem } from 'primeng/api';
@@ -51,8 +51,8 @@ export class HeaderComponent {
     private _router: Router = inject(Router);
     private _http: ActivatedRoute = inject(ActivatedRoute);
     private _authService: AuthService = inject(AuthService);
-    private _tagsService: TagsService = inject(TagsService);
-    private _apiUtil: TecFlixApiUtilService = inject(TecFlixApiUtilService);
+    private _tagsService: TagService = inject(TagService);
+    private _apiUtil: ApiUtilService = inject(ApiUtilService);
 
     public term = signal('');
 

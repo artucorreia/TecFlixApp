@@ -1,9 +1,9 @@
-import { Component, effect, inject } from '@angular/core'
-import { RouterOutlet } from '@angular/router'
-import { MessageService } from 'primeng/api'
-import { Toast } from 'primeng/toast'
-import { ButtonModule } from 'primeng/button'
-import { MessageUtilService } from './service/util/message/message-util.service'
+import { Component, effect, inject } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { Toast } from 'primeng/toast';
+import { ButtonModule } from 'primeng/button';
+import { MessageUtilService } from './services/util/message-util.service';
 
 @Component({
     selector: 'app-root',
@@ -15,8 +15,8 @@ import { MessageUtilService } from './service/util/message/message-util.service'
     providers: [MessageService],
 })
 export class AppComponent {
-    private _primeApiMessageService: MessageService = inject(MessageService)
-    private _messageService: MessageUtilService = inject(MessageUtilService)
+    private _primeApiMessageService: MessageService = inject(MessageService);
+    private _messageService: MessageUtilService = inject(MessageUtilService);
 
     constructor() {
         effect(() => {
@@ -25,7 +25,7 @@ export class AppComponent {
                 summary: this._messageService.message().summary,
                 detail: this._messageService.message().detail,
                 life: this._messageService.message().life,
-            })
-        })
+            });
+        });
     }
 }

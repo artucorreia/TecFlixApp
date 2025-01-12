@@ -6,12 +6,12 @@ import { CarouselComponent } from '../../components/carousel/carousel.component'
 import { FooterComponent } from '../../components/footer/footer.component';
 
 // services
-import { TecflixService } from '../../service/api/tecflix/tecflix.service';
-import { TecFlixApiUtilService } from '../../service/util/api/tec-flix-api-util.service';
+import { CourseService } from '../../services/api/tecflix/course.service';
+import { ApiUtilService } from '../../services/api/tecflix/api-util.service';
 
 // interfaces
-import { Pagination } from '../../interface/response/pagination';
-import { Course } from '../../interface/response/course';
+import { Pagination } from '../../interfaces/response/pagination';
+import { Course } from '../../interfaces/response/course';
 
 @Component({
     selector: 'app-home',
@@ -20,8 +20,8 @@ import { Course } from '../../interface/response/course';
     styleUrl: './home.component.scss',
 })
 export class HomeComponent {
-    private _tecflixApi: TecflixService = inject(TecflixService);
-    private _apiUtil: TecFlixApiUtilService = inject(TecFlixApiUtilService);
+    private _courseService: CourseService = inject(CourseService);
+    private _apiUtil: ApiUtilService = inject(ApiUtilService);
 
     public carousels: WritableSignal<
         { title: string; pagination: WritableSignal<Pagination<Course>> }[]
@@ -29,7 +29,7 @@ export class HomeComponent {
 
     ngOnInit() {
         // find more top rated courses
-        this._tecflixApi
+        this._courseService
             .findAllCourses({ direction: 'totalReviews,desc' })
             .subscribe({
                 next: (response) => {
@@ -49,7 +49,7 @@ export class HomeComponent {
             });
 
         // find latest courses
-        this._tecflixApi
+        this._courseService
             .findAllCourses({ direction: 'createdAt,desc' })
             .subscribe({
                 next: (response) => {
@@ -69,7 +69,7 @@ export class HomeComponent {
             });
 
         // find courses about development
-        this._tecflixApi
+        this._courseService
             .search({ direction: 'totalReviews,desc' }, { tags: '1,2,3,4,5,6' })
             .subscribe({
                 next: (response) => {

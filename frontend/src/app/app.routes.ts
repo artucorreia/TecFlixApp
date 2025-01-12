@@ -1,36 +1,36 @@
 import { Routes } from '@angular/router';
 
 // guards
-import { authGuard } from './guard/auth/auth.guard';
+import { authGuard } from './guards/auth.guard';
 
 // pages
-import { HomeComponent } from './page/home/home.component';
-import { SingInComponent } from './page/auth/sing-in/sing-in.component';
-import { SingUpComponent } from './page/auth/sing-up/sing-up.component';
-import { ValidateEmailComponent } from './page/auth/validate-email/validate-email.component';
-import { SearchComponent } from './page/search/search.component';
-import { CourseComponent } from './page/course/course.component';
-import { ProfileComponent } from './page/profile/profile.component';
+import { HomeComponent } from './pages/home/home.component';
+import { SingInComponent } from './pages/auth/sing-in/sing-in.component';
+import { SingUpComponent } from './pages/auth/sing-up/sing-up.component';
+import { ValidateEmailComponent } from './pages/auth/validate-email/validate-email.component';
+import { SearchComponent } from './pages/search/search.component';
+import { CourseComponent } from './pages/course/course.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 
 export const routes: Routes = [
     {
         path: 'sing-in',
         loadComponent: () =>
-            import('./page/auth/sing-in/sing-in.component').then(
+            import('./pages/auth/sing-in/sing-in.component').then(
                 (c) => SingInComponent
             ),
     },
     {
         path: 'sing-up',
         loadComponent: () =>
-            import('./page/auth/sing-up/sing-up.component').then(
+            import('./pages/auth/sing-up/sing-up.component').then(
                 (c) => SingUpComponent
             ),
     },
     {
         path: 'sing-up/authenticate-code',
         loadComponent: () =>
-            import('./page/auth/validate-email/validate-email.component').then(
+            import('./pages/auth/validate-email/validate-email.component').then(
                 (c) => ValidateEmailComponent
             ),
     },
@@ -38,7 +38,7 @@ export const routes: Routes = [
     {
         path: 'course/:id',
         loadComponent: () =>
-            import('./page/course/course.component').then(
+            import('./pages/course/course.component').then(
                 (c) => CourseComponent
             ),
         canActivate: [authGuard],
@@ -46,7 +46,7 @@ export const routes: Routes = [
     {
         path: 'profile/:id',
         loadComponent: () =>
-            import('./page/profile/profile.component').then(
+            import('./pages/profile/profile.component').then(
                 (c) => ProfileComponent
             ),
         canActivate: [authGuard],
@@ -54,7 +54,7 @@ export const routes: Routes = [
     {
         path: 'search',
         loadComponent: () =>
-            import('./page/search/search.component').then(
+            import('./pages/search/search.component').then(
                 (c) => SearchComponent
             ),
         canActivate: [authGuard],
@@ -62,7 +62,7 @@ export const routes: Routes = [
     {
         path: 'home',
         loadComponent: () =>
-            import('./page/home/home.component').then((c) => HomeComponent),
+            import('./pages/home/home.component').then((c) => HomeComponent),
         canActivate: [authGuard],
     },
     {

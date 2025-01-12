@@ -1,7 +1,7 @@
 import { Component, inject, Input, signal } from '@angular/core';
 
 // interfaces
-import { PageMetadata } from '../../interface/response/pagination';
+import { PageMetadata } from '../../interfaces/response/pagination';
 
 // primeng
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';

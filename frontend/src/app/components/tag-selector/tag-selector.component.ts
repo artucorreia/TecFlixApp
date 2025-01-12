@@ -2,9 +2,9 @@ import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MultiSelectModule } from 'primeng/multiselect';
-import { TagsService } from '../../service/api/tecflix/tags.service';
-import { TecFlixApiUtilService } from '../../service/util/api/tec-flix-api-util.service';
-import { Tag } from '../../interface/response/tag';
+import { TagService } from '../../services/api/tecflix/tag.service';
+import { ApiUtilService } from '../../services/api/tecflix/api-util.service';
+import { Tag } from '../../interfaces/response/tag';
 
 @Component({
     selector: 'app-tag-selector',
@@ -20,8 +20,8 @@ import { Tag } from '../../interface/response/tag';
 export class TagSelectorComponent {
     private _router: Router = inject(Router);
     private _http: ActivatedRoute = inject(ActivatedRoute);
-    private _tagsService: TagsService = inject(TagsService);
-    private _apiUtil: TecFlixApiUtilService = inject(TecFlixApiUtilService);
+    private _tagsService: TagService = inject(TagService);
+    private _apiUtil: ApiUtilService = inject(ApiUtilService);
 
     public tags: WritableSignal<Tag[]> = signal([]);
     public selectedTags: WritableSignal<Tag[]> = signal([]);

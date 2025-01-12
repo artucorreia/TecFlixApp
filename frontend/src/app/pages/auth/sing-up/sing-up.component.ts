@@ -19,10 +19,10 @@ import { FloatLabel } from 'primeng/floatlabel';
 import { MessageService } from 'primeng/api';
 import { ProgressSpinner } from 'primeng/progressspinner';
 
-import { AuthService } from '../../../service/auth/auth.service';
-import { Register } from '../../../interface/resquest/register';
-import { TecFlixApiUtilService } from '../../../service/util/api/tec-flix-api-util.service';
-import { MessageUtilService } from '../../../service/util/message/message-util.service';
+import { AuthService } from '../../../services/auth/auth.service';
+import { Register } from '../../../interfaces/resquest/register';
+import { ApiUtilService } from '../../../services/api/tecflix/api-util.service';
+import { MessageUtilService } from '../../../services/util/message-util.service';
 
 @Component({
     selector: 'app-sing-up',
@@ -46,7 +46,7 @@ import { MessageUtilService } from '../../../service/util/message/message-util.s
 export class SingUpComponent {
     private _messageUtilService: MessageUtilService =
         inject(MessageUtilService);
-    private _apiUtil: TecFlixApiUtilService = inject(TecFlixApiUtilService);
+    private _apiUtil: ApiUtilService = inject(ApiUtilService);
     private _authService: AuthService = inject(AuthService);
 
     public loading = signal(false);

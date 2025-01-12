@@ -7,12 +7,8 @@ import {
 } from '@angular/core';
 
 // interfaces
-import {
-    Links,
-    PageMetadata,
-    Pagination,
-} from '../../interface/response/pagination';
-import { Course } from '../../interface/response/course';
+import { PageMetadata, Pagination } from '../../interfaces/response/pagination';
+import { Course } from '../../interfaces/response/course';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
 // primeng

@@ -4,13 +4,13 @@ import {
     HttpErrorResponse,
     HttpHeaders,
 } from '@angular/common/http';
-import { Login } from '../../interface/resquest/login';
-import { Register } from '../../interface/resquest/register';
+import { Login } from '../../interfaces/resquest/login';
+import { Register } from '../../interfaces/resquest/register';
 import { catchError, map, Observable, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { ApiError } from '../../interface/response/api-error';
-import { Token } from '../../interface/response/token';
-import { GenericResponse } from '../../interface/response/generic-response';
+import { ApiError } from '../../interfaces/response/api-error';
+import { Token } from '../../interfaces/response/token';
+import { GenericResponse } from '../../interfaces/response/generic-response';
 
 @Injectable({
     providedIn: 'root',

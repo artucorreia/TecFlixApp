@@ -2,8 +2,8 @@ import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 // services
-import { TecflixService } from '../../service/api/tecflix/tecflix.service';
-import { TecFlixApiUtilService } from '../../service/util/api/tec-flix-api-util.service';
+import { CourseService } from '../../services/api/tecflix/course.service';
+import { ApiUtilService } from '../../services/api/tecflix/api-util.service';
 
 // components
 import { HeaderComponent } from '../../components/header/header.component';
@@ -12,8 +12,8 @@ import { TagSelectorComponent } from '../../components/tag-selector/tag-selector
 import { ContentResearchComponent } from '../../components/content-research/content-research.component';
 
 // interfaces
-import { Pagination } from '../../interface/response/pagination';
-import { Course } from '../../interface/response/course';
+import { Pagination } from '../../interfaces/response/pagination';
+import { Course } from '../../interfaces/response/course';
 
 @Component({
     selector: 'app-search',
@@ -29,8 +29,8 @@ import { Course } from '../../interface/response/course';
 export class SearchComponent {
     private _http: ActivatedRoute = inject(ActivatedRoute);
 
-    private _tecflixApi: TecflixService = inject(TecflixService);
-    private _apiUtil: TecFlixApiUtilService = inject(TecFlixApiUtilService);
+    private _tecflixApi: CourseService = inject(CourseService);
+    private _apiUtil: ApiUtilService = inject(ApiUtilService);
 
     public data: WritableSignal<{
         title: string;
