@@ -32,7 +32,7 @@ export class TagService {
 
     public findAllTags(): Observable<Tag[] | ApiError> {
         return this._http
-            .get<Tag[]>(`${environment.apiUrl}/api/v1/tags`, {
+            .get<Tag[]>(`${environment.apiUrl}v1/tags`, {
                 headers: this._baseHeaders,
             })
             .pipe(

@@ -29,7 +29,27 @@ export class CourseService {
         fetch(environment.apiUrl);
         fetch(environment.apiKey);
     }
+
     constructor() {}
+
+    public findById(id: string): Observable<Course | ApiError> {
+        return this._http
+            .get<Course>(`${environment.apiUrl}v1/courses/${id}`, {
+                headers: this._baseHeaders,
+            })
+            .pipe(
+                map((response: Course) => response),
+                catchError((error: HttpErrorResponse) => {
+                    const apiError: ApiError = {
+                        title: error.error.title,
+                        timestamp: error.error.timestamp,
+                        details: error.error.details,
+                        status: error.status,
+                    };
+                    return of(apiError);
+                })
+            );
+    }
 
     public findAllCourses(paged: {
         page?: number;
@@ -39,7 +59,7 @@ export class CourseService {
         const pageOptions = this.createPageOptions(paged);
         return this._http
             .get<Pagination<Course>>(
-                `${environment.apiUrl}/api/v1/courses?${pageOptions}`,
+                `${environment.apiUrl}v1/courses?${pageOptions}`,
                 {
                     headers: this._baseHeaders,
                 }
@@ -73,7 +93,7 @@ export class CourseService {
         const searchOptions: string = this.createSearchOptions(search);
         return this._http
             .get<Pagination<Course>>(
-                `${environment.apiUrl}/api/v1/courses/search?${pageOptions}${searchOptions}`,
+                `${environment.apiUrl}v1/courses/search?${pageOptions}${searchOptions}`,
                 {
                     headers: this._baseHeaders,
                 }
@@ -99,7 +119,7 @@ export class CourseService {
     }): string {
         const sort = paged.direction || 'totalReviews,ASC';
         return `page=${paged.page || 0}&size=${
-            paged.size || 7
+            paged.size || 10
         }&direction=${sort}`;
     }
 

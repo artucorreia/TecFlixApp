@@ -45,7 +45,7 @@ export class AuthService {
 
     public login(data: Login): Observable<Token | ApiError> {
         return this._http
-            .post<Token>(`${environment.apiUrl}/auth/login`, data, {
+            .post<Token>(`${environment.apiUrl}auth/login`, data, {
                 headers: this._baseHeaders,
             })
             .pipe(
@@ -64,11 +64,9 @@ export class AuthService {
 
     public register(data: Register): Observable<GenericResponse | ApiError> {
         return this._http
-            .post<GenericResponse>(
-                `${environment.apiUrl}/auth/register`,
-                data,
-                { headers: this._baseHeaders }
-            )
+            .post<GenericResponse>(`${environment.apiUrl}auth/register`, data, {
+                headers: this._baseHeaders,
+            })
             .pipe(
                 map((response: GenericResponse) => response),
                 catchError((error: HttpErrorResponse) => {
@@ -88,7 +86,7 @@ export class AuthService {
     ): Observable<GenericResponse | ApiError> {
         return this._http
             .post<GenericResponse>(
-                `${environment.apiUrl}/auth/send-code/${userId}`,
+                `${environment.apiUrl}auth/send-code/${userId}`,
                 null,
                 { headers: this._baseHeaders }
             )
@@ -111,7 +109,7 @@ export class AuthService {
     ): Observable<GenericResponse | ApiError> {
         return this._http
             .post<GenericResponse>(
-                `${environment.apiUrl}/auth/validate-code/${code}`,
+                `${environment.apiUrl}auth/validate-code/${code}`,
                 null,
                 { headers: this._baseHeaders }
             )
