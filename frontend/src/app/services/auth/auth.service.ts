@@ -32,10 +32,21 @@ export class AuthService {
         sessionStorage.removeItem('token');
     }
 
-    public extractToken(): Token {
-        const token =
+    public extractAccessToken(): string {
+        const stringToken: string | null =
             localStorage.getItem('token') || sessionStorage.getItem('token');
-        return token ? JSON.parse(token) : null;
+
+        let token: Token = {
+            userId: 'userId',
+            accessToken: 'accessToken',
+            refreshToken: 'refreshToken',
+            createdAt: new Date(),
+            expiresAt: new Date(),
+        };
+
+        if (stringToken) token = JSON.parse(stringToken);
+
+        return token.accessToken;
     }
 
     public saveToken(token: Token, rememberMe: boolean | null): void {

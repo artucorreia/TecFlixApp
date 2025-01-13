@@ -1,21 +1,24 @@
 import { Component, inject, signal, WritableSignal } from '@angular/core';
-import { HeaderComponent } from '../../components/header/header.component';
-import { FooterComponent } from '../../components/footer/footer.component';
 import { ActivatedRoute, Router } from '@angular/router';
+
+// services
 import { ApiUtilService } from '../../services/api/tecflix/api-util.service';
 import { CourseService } from '../../services/api/tecflix/course.service';
-import { Course } from '../../interfaces/response/course';
+
+// components
 import { CourseDetailsComponent } from '../../components/course-details/course-details.component';
+
+// interfaces
+import { Course } from '../../interfaces/response/course';
 
 @Component({
     selector: 'app-course',
-    imports: [HeaderComponent, FooterComponent, CourseDetailsComponent],
+    imports: [CourseDetailsComponent],
     templateUrl: './course.component.html',
     styleUrl: './course.component.scss',
 })
 export class CourseComponent {
     private _http: ActivatedRoute = inject(ActivatedRoute);
-    private _router: Router = inject(Router);
     private _apiUtil: ApiUtilService = inject(ApiUtilService);
     private _courseService: CourseService = inject(CourseService);
 

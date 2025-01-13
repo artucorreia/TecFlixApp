@@ -22,7 +22,7 @@ export class CourseService {
         .set('X-API-KEY', environment.apiKey)
         .set(
             'Authorization',
-            `Bearer ${this._authService.extractToken().accessToken}`
+            `Bearer ${this._authService.extractAccessToken()}`
         );
 
     ngOnInit() {

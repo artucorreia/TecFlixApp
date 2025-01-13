@@ -1,9 +1,7 @@
 import { Component, inject, signal, WritableSignal } from '@angular/core';
 
 // components
-import { HeaderComponent } from '../../components/header/header.component';
 import { CarouselComponent } from '../../components/carousel/carousel.component';
-import { FooterComponent } from '../../components/footer/footer.component';
 
 // services
 import { CourseService } from '../../services/api/tecflix/course.service';
@@ -15,7 +13,7 @@ import { Course } from '../../interfaces/response/course';
 
 @Component({
     selector: 'app-home',
-    imports: [HeaderComponent, CarouselComponent, FooterComponent],
+    imports: [CarouselComponent],
     templateUrl: './home.component.html',
     styleUrl: './home.component.scss',
 })

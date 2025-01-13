@@ -1,13 +1,21 @@
 import { Component, effect, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+
+// services
+import { MessageUtilService } from './services/util/message-util.service';
+
+// primeng
 import { MessageService } from 'primeng/api';
 import { Toast } from 'primeng/toast';
-import { ButtonModule } from 'primeng/button';
-import { MessageUtilService } from './services/util/message-util.service';
 
 @Component({
     selector: 'app-root',
-    imports: [RouterOutlet, Toast, ButtonModule],
+    imports: [
+        RouterOutlet,
+
+        // primeng
+        Toast,
+    ],
     template: `
         <p-toast />
         <router-outlet />

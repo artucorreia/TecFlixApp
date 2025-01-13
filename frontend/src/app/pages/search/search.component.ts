@@ -6,8 +6,6 @@ import { CourseService } from '../../services/api/tecflix/course.service';
 import { ApiUtilService } from '../../services/api/tecflix/api-util.service';
 
 // components
-import { HeaderComponent } from '../../components/header/header.component';
-import { FooterComponent } from '../../components/footer/footer.component';
 import { TagSelectorComponent } from '../../components/tag-selector/tag-selector.component';
 import { ContentResearchComponent } from '../../components/content-research/content-research.component';
 
@@ -17,12 +15,7 @@ import { Course } from '../../interfaces/response/course';
 
 @Component({
     selector: 'app-search',
-    imports: [
-        HeaderComponent,
-        FooterComponent,
-        TagSelectorComponent,
-        ContentResearchComponent,
-    ],
+    imports: [TagSelectorComponent, ContentResearchComponent],
     templateUrl: './search.component.html',
     styleUrl: './search.component.scss',
 })
