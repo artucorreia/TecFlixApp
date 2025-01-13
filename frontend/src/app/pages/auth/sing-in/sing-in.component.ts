@@ -9,6 +9,13 @@ import {
 } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 
+// services
+import { AuthService } from '../../../services/auth/auth.service';
+import { ApiUtilService } from '../../../services/api/tecflix/api-util.service';
+
+// interfaces
+import { Login } from '../../../interfaces/resquest/login';
+
 // primeng
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
@@ -17,10 +24,6 @@ import { PasswordModule } from 'primeng/password';
 import { DividerModule } from 'primeng/divider';
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabel } from 'primeng/floatlabel';
-
-import { AuthService } from '../../../services/auth/auth.service';
-import { Login } from '../../../interfaces/resquest/login';
-import { ApiUtilService } from '../../../services/api/tecflix/api-util.service';
 
 @Component({
     selector: 'app-sing-in',

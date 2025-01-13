@@ -1,0 +1,114 @@
+@use 'variables' as variables;
+
+.container_course_details {
+    background-color: #101010;
+    padding: 2rem 5rem;
+}
+
+.container_description {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    flex-wrap: wrap-reverse;
+
+    padding-bottom: 2rem;
+
+    & > * {
+        max-width: 30rem;
+    }
+}
+
+.container_about {
+    line-height: 1.7rem;
+
+    & > * {
+        padding-bottom: 1.2rem;
+    }
+
+    .description {
+        line-height: 1.8em;
+        font-size: 1em;
+    }
+}
+
+.title {
+    font-family: variables.$font-family-logo;
+    font-size: 2em;
+    font-weight: 600;
+    
+    line-height: 1.1em;
+}
+
+.container_image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .image {
+        max-width: 24rem;
+    }
+}
+
+.container_professor {
+    padding-bottom: 1.5rem;
+    font-size: 1.08em;
+    cursor: default;
+
+    & > * {
+        cursor: pointer;
+    }
+}
+
+.container_tags {
+    display: flex;
+    flex-wrap: wrap;
+    
+    & > .tag {
+        font-weight: 500;
+        font-size: 0.75rem;
+        font-family: variables.$font-family-logo;
+
+        
+        background-color: variables.$primary-color;
+
+        white-space: nowrap;
+        
+        border-radius: 7px;
+        
+        margin: 0 .375rem .375rem 0;
+        padding: 0.4rem;
+        
+        cursor: pointer;
+    }
+}
+
+@media (max-width: 1024px) {
+    .container_image {
+        padding-bottom: 2rem;
+        .image {
+            max-width: 30rem;
+        }
+    }
+
+
+    .container_description {
+        align-items: center;
+        flex-direction: column-reverse;
+    }
+
+    .container_button {
+        display: flex;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .container_course_details {
+        padding: 2rem 0.8rem;
+    }
+
+    .container_image {
+        .image {
+            max-width: 20rem;
+        }
+    }
+}

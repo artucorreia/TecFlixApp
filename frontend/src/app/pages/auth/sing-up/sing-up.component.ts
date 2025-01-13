@@ -9,20 +9,22 @@ import {
 } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
+// services
+import { AuthService } from '../../../services/auth/auth.service';
+import { ApiUtilService } from '../../../services/api/tecflix/api-util.service';
+import { MessageUtilService } from '../../../services/util/message-util.service';
+
+// interfaces
+import { Register } from '../../../interfaces/resquest/register';
+
 // primeng
 import { ButtonModule } from 'primeng/button';
 import { PasswordModule } from 'primeng/password';
 import { DividerModule } from 'primeng/divider';
 import { InputTextModule } from 'primeng/inputtext';
-import { ToastModule } from 'primeng/toast';
 import { FloatLabel } from 'primeng/floatlabel';
 import { MessageService } from 'primeng/api';
 import { ProgressSpinner } from 'primeng/progressspinner';
-
-import { AuthService } from '../../../services/auth/auth.service';
-import { Register } from '../../../interfaces/resquest/register';
-import { ApiUtilService } from '../../../services/api/tecflix/api-util.service';
-import { MessageUtilService } from '../../../services/util/message-util.service';
 
 @Component({
     selector: 'app-sing-up',
@@ -37,7 +39,6 @@ import { MessageUtilService } from '../../../services/util/message-util.service'
         PasswordModule,
         DividerModule,
         ProgressSpinner,
-        ToastModule,
     ],
     providers: [MessageService],
     templateUrl: './sing-up.component.html',

@@ -1,0 +1,63 @@
+@if (course()) {
+    <main class="container_course_details">
+        <section>
+            <div class="container_description">
+                <div>
+                    <div class="container_about">
+                        <h1 class="title">{{course().title}}</h1>
+                        <p class="description">{{course().description}}</p>
+                    </div>
+                    <div class="container_professor">
+                        Professor: 
+                        <a (click)="navigate('/profile', course().professor.id)">
+                            {{ course().professor.name }}
+                            <i class="pi pi-user"></i>
+                        </a>
+                    </div>
+                    <div class="container_tags">
+                        @for (tag of course().tags; track $index) {
+                            <a (click)="navigate('/search', tag.id)" class="tag">
+                                {{tag.name}}
+                            </a>
+                        }
+                    </div>
+                </div>
+                <div class="container_image">
+                    <!-- <img [src]="course().capeImage" [alt]="course().title"> -->
+                    <img src="./test.jpg" [alt]="course().title" class="image">
+                </div>
+            </div>
+            <div class="container_button">
+                <p-button label="Obter este curso" badgeSeverity="contrast" styleClass="m-0" [outlined]="true" size="large"/>
+            </div>
+        </section>
+    </main>
+} @else {
+    <main class="container_course_details">
+        <section>
+            <div class="container_description">
+                <div>
+                    <div class="container_about">
+                        <p-skeleton width="19rem" height="2.5rem" styleClass="mb-2" />
+                        <p-skeleton height="14rem" width="24rem" />
+                    </div>
+                    <div class="container_professor">
+                        <p-skeleton width="15rem" styleClass="mt-2" />
+                    </div>
+                    <div class="container_tags">
+                        <p-skeleton width="6rem" styleClass="mb-2 mr-2"/>
+                        <p-skeleton width="6rem" styleClass="mb-2 mr-2"/>
+                    </div>
+                </div>
+                <div class="container_image">
+                    <p-skeleton size="24rem" />
+                </div>
+            </div>
+            <div class="container_button">
+                <p-skeleton width="10rem" height="3rem" />
+            </div>
+        </section>
+    </main>
+}
+
+<app-course-modules [modules]="course().modules"></app-course-modules>

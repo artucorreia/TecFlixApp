@@ -30,7 +30,7 @@ export class HomeComponent {
     ngOnInit() {
         // find more top rated courses
         this._courseService
-            .findAllCourses({ direction: 'totalReviews,desc' })
+            .findAllCourses({ direction: 'totalReviews,desc', size: 7 })
             .subscribe({
                 next: (response) => {
                     if (this._apiUtil.isApiError(response)) {
@@ -50,7 +50,7 @@ export class HomeComponent {
 
         // find latest courses
         this._courseService
-            .findAllCourses({ direction: 'createdAt,desc' })
+            .findAllCourses({ direction: 'createdAt,desc', size: 7 })
             .subscribe({
                 next: (response) => {
                     if (this._apiUtil.isApiError(response)) {
@@ -70,7 +70,10 @@ export class HomeComponent {
 
         // find courses about development
         this._courseService
-            .search({ direction: 'totalReviews,desc' }, { tags: '1,2,3,4,5,6' })
+            .search(
+                { direction: 'totalReviews,desc', size: 7 },
+                { tags: '1,2,3,4,5,6' }
+            )
             .subscribe({
                 next: (response) => {
                     if (this._apiUtil.isApiError(response)) {
