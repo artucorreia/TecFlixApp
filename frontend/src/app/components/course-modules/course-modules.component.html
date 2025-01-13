@@ -1,17 +1,21 @@
 @if (modules) {
     <main class="container_modules">
         <h1 class="title">Conteúdo:</h1>
-        @for (module of modules; track $index) {
-            <p-panel [toggleable]="true" [collapsed]="true">
-                <ng-template #header>
-                    <div class="flex items-center gap-2">
-                        <i class="pi pi-folder"></i>
-                        <span class="font-bold">{{module.title}}</span>
-                    </div>
-                </ng-template>
-                <app-module-classes [classes]="module.classes"></app-module-classes>
-            </p-panel>
-        }
+        <p-accordion [value]="0" [multiple]="true">
+            @for (module of modules; track $index) {
+                <p-accordion-panel [value]="module.id">
+                    <p-accordion-header class="accordion_header">
+                        <div>
+                            <i class="pi pi-folder icon"></i>
+                            <span>{{ module.title }}</span>
+                        </div>
+                    </p-accordion-header>
+                    <p-accordion-content>
+                        <app-module-classes [classes]="module.classes"></app-module-classes>
+                    </p-accordion-content>
+                </p-accordion-panel>
+            }
+        </p-accordion>
     </main>
 } @else {
     <main class="container_modules">

@@ -7,16 +7,17 @@ import { ModuleClassesComponent } from '../module-classes/module-classes.compone
 import { Module } from '../../interfaces/response/module';
 
 // primeng
-import { PanelModule } from 'primeng/panel';
 import { SkeletonModule } from 'primeng/skeleton';
+import { AccordionModule } from 'primeng/accordion';
 
 @Component({
     selector: 'app-course-modules',
     imports: [
         ModuleClassesComponent,
+
         // primeng
-        PanelModule,
         SkeletonModule,
+        AccordionModule,
     ],
     templateUrl: './course-modules.component.html',
     styleUrl: './course-modules.component.scss',
