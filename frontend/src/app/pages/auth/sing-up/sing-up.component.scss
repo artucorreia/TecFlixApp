@@ -1,5 +1,5 @@
-@use '../../../../dist/scss/variables.scss' as variables;
-@use '../../../../dist/scss/classes.scss';
+@use 'variables' as variables;
+@use 'classes';
 
 .card {
     background-color: variables.$bg-color-seccondary;
