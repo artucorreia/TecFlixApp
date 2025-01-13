@@ -21,66 +21,65 @@ import br.com.tecflix_app.service.auth.jwt.SecurityFilter;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    
+
     private final AuthenticationFilter authenticationFilter;
     private final SecurityFilter securityFilter;
-    
+
     @Autowired
     public SecurityConfig(
-        AuthenticationFilter authenticationFilter,
-        SecurityFilter securityFilter
-    ) {
+            AuthenticationFilter authenticationFilter,
+            SecurityFilter securityFilter) {
         this.authenticationFilter = authenticationFilter;
         this.securityFilter = securityFilter;
     }
-    
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(AbstractHttpConfigurer::disable)
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(
-                authorize -> authorize
-                    // hello-world
-                    .requestMatchers(HttpMethod.GET, "/hello-world").permitAll()
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(
+                        authorize -> authorize
+                                // hello-world
+                                .requestMatchers(HttpMethod.GET, "/hello-world").permitAll()
 
-                    // auth
-                    .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/auth/refresh-token").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/auth/send-code/{userId}").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/auth/validate-code/{code}").permitAll()
-                    
-                    // courses
-                    .requestMatchers(HttpMethod.POST, "/api/v1/courses").hasAnyRole("ADMIN", "PROFESSOR")
-                    
-                    // modules
-                    .requestMatchers(HttpMethod.POST, "/api/v1/modules").hasAnyRole("ADMIN", "PROFESSOR")
+                                // auth
+                                .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/auth/refresh-token").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/auth/send-code/{userId}").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/auth/validate-code/{code}").permitAll()
 
-                    // classes
-                    .requestMatchers(HttpMethod.POST, "/api/v1/classes").hasAnyRole("ADMIN", "PROFESSOR")
+                                // courses
+                                .requestMatchers(HttpMethod.POST, "/api/v1/courses").hasAnyRole("ADMIN", "PROFESSOR")
 
-                    // swagger
-                    .requestMatchers("/v3/api-docs/**").permitAll()
-                    .requestMatchers("/swagger-ui/**").permitAll()
-                    .requestMatchers("/swagger-ui.html").permitAll()
+                                // modules
+                                .requestMatchers(HttpMethod.POST, "/api/v1/modules").hasAnyRole("ADMIN", "PROFESSOR")
 
-                    .anyRequest().hasAnyRole("ADMIN", "USER", "PROFESSOR")
-            )
-            // api key filter
-            .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
-            // jwt filter
-            .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
+                                // classes
+                                .requestMatchers(HttpMethod.POST, "/api/v1/classes").hasAnyRole("ADMIN", "PROFESSOR")
+
+                                // swagger
+                                .requestMatchers("/v3/api-docs/**").permitAll()
+                                .requestMatchers("/swagger-ui/**").permitAll()
+                                .requestMatchers("/swagger-ui.html").permitAll()
+
+                                .anyRequest().hasAnyRole("ADMIN", "USER", "PROFESSOR"))
+                // api key filter
+                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                // jwt filter
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
     @Bean
     public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration authenticationConfiguration
-    ) throws Exception {
+            AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder(); }
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }
