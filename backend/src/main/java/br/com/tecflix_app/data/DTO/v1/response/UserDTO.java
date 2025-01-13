@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.UUID;
 
 import br.com.tecflix_app.data.DTO.v1.create.CreateProfessorDataDTO;
-import br.com.tecflix_app.data.DTO.v1.create.CreateSocialDTO;
 import br.com.tecflix_app.model.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +13,8 @@ import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter @Getter
+@Setter
+@Getter
 public class UserDTO {
     private UUID id;
     private String name;
@@ -23,5 +23,5 @@ public class UserDTO {
     private LocalDateTime createdAt;
     private Boolean active;
     private CreateProfessorDataDTO professorData;
-    private List<CreateSocialDTO> socials;
+    private List<ProfessorDataDTO> socials;
 }
