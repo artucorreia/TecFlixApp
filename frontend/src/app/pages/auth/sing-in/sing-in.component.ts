@@ -1,4 +1,3 @@
-// angular
 import { Component, inject } from '@angular/core';
 import {
     FormBuilder,
@@ -11,7 +10,8 @@ import { Router, RouterModule } from '@angular/router';
 
 // services
 import { AuthService } from '../../../services/auth/auth.service';
-import { ApiUtilService } from '../../../services/api/tecflix/api-util.service';
+import { ApiUtilService } from '../../../services/api/api-util.service';
+import { MessageUtilService } from '../../../services/util/message-util.service';
 
 // interfaces
 import { Login } from '../../../interfaces/resquest/login';
@@ -20,7 +20,6 @@ import { Login } from '../../../interfaces/resquest/login';
 import { PasswordModule } from 'primeng/password';
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabel } from 'primeng/floatlabel';
-import { MessageUtilService } from '../../../services/util/message-util.service';
 
 @Component({
     selector: 'app-sing-in',

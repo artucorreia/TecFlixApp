@@ -1,10 +1,16 @@
 import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MultiSelectModule } from 'primeng/multiselect';
-import { TagService } from '../../services/api/tecflix/tag.service';
-import { ApiUtilService } from '../../services/api/tecflix/api-util.service';
+
+// services
+import { TagService } from '../../services/api/tag.service';
+import { ApiUtilService } from '../../services/api/api-util.service';
+
+// interfaces
 import { Tag } from '../../interfaces/response/tag';
+
+// primeng
+import { MultiSelectModule } from 'primeng/multiselect';
 
 @Component({
     selector: 'app-tag-selector',

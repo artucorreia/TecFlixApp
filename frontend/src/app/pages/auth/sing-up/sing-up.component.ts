@@ -1,4 +1,3 @@
-// angular
 import { Component, inject, signal } from '@angular/core';
 import {
     FormBuilder,
@@ -11,7 +10,7 @@ import { RouterModule } from '@angular/router';
 
 // services
 import { AuthService } from '../../../services/auth/auth.service';
-import { ApiUtilService } from '../../../services/api/tecflix/api-util.service';
+import { ApiUtilService } from '../../../services/api/api-util.service';
 import { MessageUtilService } from '../../../services/util/message-util.service';
 
 // interfaces

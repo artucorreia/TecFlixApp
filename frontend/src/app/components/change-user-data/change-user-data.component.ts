@@ -8,6 +8,11 @@ import {
     Validators,
 } from '@angular/forms';
 
+// services
+import { UserService } from '../../services/api/user.service';
+import { MessageUtilService } from '../../services/util/message-util.service';
+import { ApiUtilService } from '../../services/api/api-util.service';
+
 // interfaces
 import { User } from '../../interfaces/response/user';
 
@@ -15,9 +20,6 @@ import { User } from '../../interfaces/response/user';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
-import { UserService } from '../../services/api/tecflix/user.service';
-import { MessageUtilService } from '../../services/util/message-util.service';
-import { ApiUtilService } from '../../services/api/tecflix/api-util.service';
 
 @Component({
     selector: 'app-change-user-data',

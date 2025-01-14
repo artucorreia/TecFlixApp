@@ -6,11 +6,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 // services
 import { AuthService } from '../../services/auth/auth.service';
-import { ApiUtilService } from '../../services/api/tecflix/api-util.service';
+import { ApiUtilService } from '../../services/api/api-util.service';
+import { TagService } from '../../services/api/tag.service';
 
 // interfaces
 import { Tag } from '../../interfaces/response/tag';
-import { TagService } from '../../services/api/tecflix/tag.service';
 
 // primeng
 import { MenuItem } from 'primeng/api';

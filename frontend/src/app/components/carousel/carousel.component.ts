@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
+// interfaces
 import { Course } from '../../interfaces/response/course';
 import { Pagination } from '../../interfaces/response/pagination';
 

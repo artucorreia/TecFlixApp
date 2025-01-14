@@ -1,19 +1,5 @@
-import { Component, inject, signal, WritableSignal } from '@angular/core';
-import {
-    FormBuilder,
-    FormControl,
-    FormGroup,
-    Validators,
-} from '@angular/forms';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-// services
-import { UserService } from '../../services/api/tecflix/user.service';
-import { ApiUtilService } from '../../services/api/tecflix/api-util.service';
-import { MessageUtilService } from '../../services/util/message-util.service';
-
-// interfaces
-import { User } from '../../interfaces/response/user';
 
 // primeng
 import { TabsModule } from 'primeng/tabs';

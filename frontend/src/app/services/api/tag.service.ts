@@ -4,11 +4,17 @@ import {
     HttpHeaders,
 } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { AuthService } from '../../auth/auth.service';
-import { environment } from '../../../../environments/environment';
 import { catchError, map, Observable, of } from 'rxjs';
-import { Tag } from '../../../interfaces/response/tag';
-import { ApiError } from '../../../interfaces/response/api-error';
+
+// services
+import { AuthService } from '../auth/auth.service';
+
+// interfaes
+import { Tag } from '../../interfaces/response/tag';
+import { ApiError } from '../../interfaces/response/api-error';
+
+// environments
+import { environment } from '../../../environments/environment';
 
 @Injectable({
     providedIn: 'root',

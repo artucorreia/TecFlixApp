@@ -5,11 +5,16 @@ import {
     signal,
     WritableSignal,
 } from '@angular/core';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+// components
+import { PaginatorComponent } from '../paginator/paginator.component';
 
 // interfaces
 import { PageMetadata, Pagination } from '../../interfaces/response/pagination';
 import { Course } from '../../interfaces/response/course';
-import { ActivatedRoute, RouterLink } from '@angular/router';
 
 // primeng
 import { CarouselModule } from 'primeng/carousel';
@@ -17,9 +22,6 @@ import { ButtonModule } from 'primeng/button';
 import { Rating } from 'primeng/rating';
 import { TagModule } from 'primeng/tag';
 import { SkeletonModule } from 'primeng/skeleton';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { PaginatorComponent } from '../paginator/paginator.component';
 
 @Component({
     selector: 'app-content-research',

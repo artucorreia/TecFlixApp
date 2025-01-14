@@ -1,11 +1,11 @@
 import { Component, inject, Input, signal } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 // interfaces
 import { PageMetadata } from '../../interfaces/response/pagination';
 
 // primeng
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     selector: 'app-paginator',

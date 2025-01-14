@@ -6,14 +6,18 @@ import {
     ReactiveFormsModule,
     Validators,
 } from '@angular/forms';
+
+// services
+import { MessageUtilService } from '../../services/util/message-util.service';
+import { AuthService } from '../../services/auth/auth.service';
+import { ApiUtilService } from '../../services/api/api-util.service';
+
+// primeng
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
-import { MessageUtilService } from '../../services/util/message-util.service';
-import { AuthService } from '../../services/auth/auth.service';
-import { ApiUtilService } from '../../services/api/tecflix/api-util.service';
 
 @Component({
     selector: 'app-change-password',

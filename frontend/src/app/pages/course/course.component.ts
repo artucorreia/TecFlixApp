@@ -1,9 +1,9 @@
 import { Component, inject, signal, WritableSignal } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 // services
-import { ApiUtilService } from '../../services/api/tecflix/api-util.service';
-import { CourseService } from '../../services/api/tecflix/course.service';
+import { ApiUtilService } from '../../services/api/api-util.service';
+import { CourseService } from '../../services/api/course.service';
 
 // components
 import { CourseDetailsComponent } from '../../components/course-details/course-details.component';

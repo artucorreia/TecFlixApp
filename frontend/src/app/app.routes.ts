@@ -4,8 +4,8 @@ import { Routes } from '@angular/router';
 import { authGuard } from './guards/auth.guard';
 
 // layouts
-import { LoggedLayoutComponent } from './layouts/logged-layout/logged-layout.component';
-import { UnloggedLayoutComponent } from './layouts/unlogged-layout/unlogged-layout.component';
+import { LoggedLayoutComponent } from './layouts/logged-layout.component';
+import { UnloggedLayoutComponent } from './layouts/unlogged-layout.component';
 
 // pages
 import { HomeComponent } from './pages/home/home.component';

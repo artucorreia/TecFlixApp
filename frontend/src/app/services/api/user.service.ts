@@ -7,14 +7,14 @@ import { inject, Injectable } from '@angular/core';
 import { catchError, map, Observable, of } from 'rxjs';
 
 // services
-import { AuthService } from '../../auth/auth.service';
+import { AuthService } from '../auth/auth.service';
 
 // interfaces
-import { User } from '../../../interfaces/response/user';
-import { ApiError } from '../../../interfaces/response/api-error';
+import { User } from '../../interfaces/response/user';
+import { ApiError } from '../../interfaces/response/api-error';
 
 // environments
-import { environment } from '../../../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
     providedIn: 'root',

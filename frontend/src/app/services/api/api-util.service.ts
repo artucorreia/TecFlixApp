@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { ApiError } from '../../../interfaces/response/api-error';
+
+// interfaces
+import { ApiError } from '../../interfaces/response/api-error';
 
 @Injectable({
     providedIn: 'root',

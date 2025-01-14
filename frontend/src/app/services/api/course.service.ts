@@ -4,12 +4,18 @@ import {
     HttpHeaders,
 } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { environment } from '../../../../environments/environment';
 import { catchError, map, Observable, of } from 'rxjs';
-import { Course } from '../../../interfaces/response/course';
-import { ApiError } from '../../../interfaces/response/api-error';
-import { Pagination } from '../../../interfaces/response/pagination';
-import { AuthService } from '../../auth/auth.service';
+
+// services
+import { AuthService } from '../auth/auth.service';
+
+// interfaces
+import { Course } from '../../interfaces/response/course';
+import { ApiError } from '../../interfaces/response/api-error';
+import { Pagination } from '../../interfaces/response/pagination';
+
+// environments
+import { environment } from '../../../environments/environment';
 
 @Injectable({
     providedIn: 'root',

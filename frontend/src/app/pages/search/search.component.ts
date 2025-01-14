@@ -2,8 +2,8 @@ import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 // services
-import { CourseService } from '../../services/api/tecflix/course.service';
-import { ApiUtilService } from '../../services/api/tecflix/api-util.service';
+import { CourseService } from '../../services/api/course.service';
+import { ApiUtilService } from '../../services/api/api-util.service';
 
 // components
 import { TagSelectorComponent } from '../../components/tag-selector/tag-selector.component';
