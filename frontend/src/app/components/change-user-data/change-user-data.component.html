@@ -1,0 +1,15 @@
+<form [formGroup]="form" (submit)="submit()" class="form">
+    <p-floatlabel variant="in" class="input_container">
+        <input pInputText id="name" formControlName="name" autocomplete="off" class="input" psize="large" minlength="3" maxlength="30" />
+        <label for="in_label">Nome</label>
+    </p-floatlabel>
+    <p-floatlabel variant="in" class="input_container">
+        <input pInputText id="email" formControlName="email" autocomplete="off" class="input" psize="large" minlength="8"  maxlength="50" />
+        <label for="in_label">Email</label>
+    </p-floatlabel>
+
+    <span class="created_at">Engressou em: {{user()?.createdAt | date: 'dd/MM/y hh:mm'}}</span>
+    <div class="container_button">
+        <p-button type="submit" label="Salvar" />
+    </div>
+</form>

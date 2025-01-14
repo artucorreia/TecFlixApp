@@ -15,6 +15,7 @@ import { ValidateEmailComponent } from './pages/auth/validate-email/validate-ema
 import { SearchComponent } from './pages/search/search.component';
 import { CourseComponent } from './pages/course/course.component';
 import { ProfileComponent } from './pages/profile/profile.component';
+import { AccountComponent } from './pages/account/account.component';
 
 export const routes: Routes = [
     {
@@ -58,6 +59,20 @@ export const routes: Routes = [
     },
 
     {
+        path: 'home',
+        component: LoggedLayoutComponent,
+        children: [
+            {
+                path: '',
+                loadComponent: () =>
+                    import('./pages/home/home.component').then(
+                        (c) => HomeComponent
+                    ),
+            },
+        ],
+        canActivate: [authGuard],
+    },
+    {
         path: 'course/:id',
         component: LoggedLayoutComponent,
         children: [
@@ -100,14 +115,14 @@ export const routes: Routes = [
         canActivate: [authGuard],
     },
     {
-        path: 'home',
+        path: 'account',
         component: LoggedLayoutComponent,
         children: [
             {
                 path: '',
                 loadComponent: () =>
-                    import('./pages/home/home.component').then(
-                        (c) => HomeComponent
+                    import('./pages/account/account.component').then(
+                        (c) => AccountComponent
                     ),
             },
         ],

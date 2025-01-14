@@ -32,21 +32,17 @@ export class AuthService {
         sessionStorage.removeItem('token');
     }
 
-    public extractAccessToken(): string {
+    private getToken(): Token | null {
         const stringToken: string | null =
             localStorage.getItem('token') || sessionStorage.getItem('token');
 
-        let token: Token = {
-            userId: 'userId',
-            accessToken: 'accessToken',
-            refreshToken: 'refreshToken',
-            createdAt: new Date(),
-            expiresAt: new Date(),
-        };
+        if (stringToken) return JSON.parse(stringToken);
+        return null;
+    }
 
-        if (stringToken) token = JSON.parse(stringToken);
-
-        return token.accessToken;
+    public extractAccessToken(): string {
+        let token: Token | null = this.getToken();
+        return token?.accessToken || '';
     }
 
     public saveToken(token: Token, rememberMe: boolean | null): void {
@@ -123,6 +119,32 @@ export class AuthService {
                 `${environment.apiUrl}auth/validate-code/${code}`,
                 null,
                 { headers: this._baseHeaders }
+            )
+            .pipe(
+                map((response: GenericResponse) => response),
+                catchError((error: HttpErrorResponse) => {
+                    const apiError: ApiError = {
+                        title: error.error.title,
+                        timestamp: error.error.timestamp,
+                        details: error.error.details,
+                        status: error.status,
+                    };
+                    return of(apiError);
+                })
+            );
+    }
+
+    public changePassword(data: {
+        newPassword: string;
+    }): Observable<GenericResponse | ApiError> {
+        const authenticatedHeaders: HttpHeaders = new HttpHeaders()
+            .set('X-API-KEY', environment.apiKey)
+            .set('Authorization', `Bearer ${this.extractAccessToken()}`);
+        return this._http
+            .post<GenericResponse>(
+                `${environment.apiUrl}auth/change-password`,
+                data,
+                { headers: authenticatedHeaders }
             )
             .pipe(
                 map((response: GenericResponse) => response),

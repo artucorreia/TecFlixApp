@@ -1,0 +1,16 @@
+.form {
+    padding-bottom: 1rem;
+    .input_container {
+        margin-bottom: 2rem;
+    }
+}
+
+.container_button {
+    padding-top: 2rem;
+    display: flex;
+    justify-content: end;
+    
+    .button {
+        width: 10rem;
+    }
+}

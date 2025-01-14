@@ -89,7 +89,8 @@ export class HeaderComponent {
                     {
                         label: 'Conta',
                         icon: 'pi pi-cog',
-                        command: () => console.log('Conta'),
+                        routerLink: '/account',
+                        // command: () => this._router.navigate(),
                     },
                     {
                         label: 'Aprendizado',
