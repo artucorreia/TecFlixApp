@@ -18,12 +18,10 @@ import { MessageUtilService } from '../../../services/util/message-util.service'
 import { Register } from '../../../interfaces/resquest/register';
 
 // primeng
-import { ButtonModule } from 'primeng/button';
 import { PasswordModule } from 'primeng/password';
 import { DividerModule } from 'primeng/divider';
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabel } from 'primeng/floatlabel';
-import { MessageService } from 'primeng/api';
 import { ProgressSpinner } from 'primeng/progressspinner';
 
 @Component({
@@ -33,18 +31,18 @@ import { ProgressSpinner } from 'primeng/progressspinner';
         RouterModule,
 
         // primeng
-        ButtonModule,
         InputTextModule,
         FloatLabel,
         PasswordModule,
         DividerModule,
         ProgressSpinner,
     ],
-    providers: [MessageService],
+    providers: [],
     templateUrl: './sing-up.component.html',
     styleUrl: './sing-up.component.scss',
 })
 export class SingUpComponent {
+    private _fb: FormBuilder = inject(FormBuilder);
     private _messageUtilService: MessageUtilService =
         inject(MessageUtilService);
     private _apiUtil: ApiUtilService = inject(ApiUtilService);
@@ -58,8 +56,8 @@ export class SingUpComponent {
         password: FormControl<string | null>;
     }>;
 
-    constructor(private _fb: FormBuilder) {
-        this.singUpForm = _fb.group({
+    constructor() {
+        this.singUpForm = this._fb.group({
             name: [
                 '',
                 [

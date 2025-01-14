@@ -3,7 +3,7 @@
         <div class="header">
             <h1 class="logo">TecFlix</h1>
             <h2 class="title">Cadastro</h2>
-            <p>Ja possui conta? <a routerLink="/sing-in" class="url">Entrar</a></p>
+            <p>Já possui conta? <a routerLink="/sing-in" class="url">Entrar</a></p>
         </div>
         <form [formGroup]="singUpForm" (submit)="singUp()" class="form">
         
@@ -25,10 +25,10 @@
                     <ng-template #footer>
                         <p-divider />
                         <ul class="pl-2 ml-2 my-0 leading-normal">
-                            <li>Ao menos uma letra minuscula</li>
-                            <li>Ao menos uma lentra maiscula</li>
-                            <li>Ao menos um numero</li>
-                            <li>Minimo de 8 caracteres</li>
+                            <li>Ao menos uma letra minúscula</li>
+                            <li>Ao menos uma letra maiúscula</li>
+                            <li>Ao menos um número</li>
+                            <li>Mínimo de 8 caracteres</li>
                         </ul>
                     </ng-template>
                 </p-password>

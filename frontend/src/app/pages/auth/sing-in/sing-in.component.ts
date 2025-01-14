@@ -17,13 +17,10 @@ import { ApiUtilService } from '../../../services/api/tecflix/api-util.service';
 import { Login } from '../../../interfaces/resquest/login';
 
 // primeng
-import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
 import { PasswordModule } from 'primeng/password';
-import { DividerModule } from 'primeng/divider';
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabel } from 'primeng/floatlabel';
+import { MessageUtilService } from '../../../services/util/message-util.service';
 
 @Component({
     selector: 'app-sing-in',
@@ -32,20 +29,18 @@ import { FloatLabel } from 'primeng/floatlabel';
         RouterModule,
 
         // primeng
-        ButtonModule,
         InputTextModule,
         FloatLabel,
         PasswordModule,
-        DividerModule,
-        ToastModule,
     ],
-    providers: [MessageService],
+    providers: [],
     templateUrl: './sing-in.component.html',
     styleUrl: '../sing-up/sing-up.component.scss',
 })
 export class SingInComponent {
+    private _fb: FormBuilder = inject(FormBuilder);
     private _router: Router = inject(Router);
-    private _messageService: MessageService = inject(MessageService);
+    private _messageService: MessageUtilService = inject(MessageUtilService);
     private _authService: AuthService = inject(AuthService);
     private _apiUtil: ApiUtilService = inject(ApiUtilService);
 
@@ -55,8 +50,8 @@ export class SingInComponent {
         rememberMe: FormControl<boolean | null>;
     }>;
 
-    constructor(private _fb: FormBuilder) {
-        this.singInForm = _fb.group({
+    constructor() {
+        this.singInForm = this._fb.group({
             email: ['', [Validators.email, Validators.required]],
             password: [
                 '',
@@ -80,7 +75,7 @@ export class SingInComponent {
         this._authService.login(login).subscribe({
             next: (response) => {
                 if (this._apiUtil.isApiError(response)) {
-                    this._messageService.add({
+                    this._messageService.display({
                         severity: 'error',
                         summary: 'Error',
                         detail: response.title,
