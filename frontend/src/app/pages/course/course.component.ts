@@ -7,13 +7,19 @@ import { CourseService } from '../../services/api/course.service';
 
 // components
 import { CourseDetailsComponent } from '../../components/course-details/course-details.component';
+import { CourseModulesComponent } from '../../components/course-modules/course-modules.component';
+import { CourseReviewsComponent } from '../../components/course-reviews/course-reviews.component';
 
 // interfaces
 import { Course } from '../../interfaces/response/course';
 
 @Component({
     selector: 'app-course',
-    imports: [CourseDetailsComponent],
+    imports: [
+        CourseDetailsComponent,
+        CourseModulesComponent,
+        CourseReviewsComponent,
+    ],
     templateUrl: './course.component.html',
     styleUrl: './course.component.scss',
 })
@@ -21,8 +27,6 @@ export class CourseComponent {
     private _http: ActivatedRoute = inject(ActivatedRoute);
     private _apiUtil: ApiUtilService = inject(ApiUtilService);
     private _courseService: CourseService = inject(CourseService);
-
-    private _courseId: string = '';
 
     public course: WritableSignal<Course> = signal({
         id: '',
@@ -49,16 +53,26 @@ export class CourseComponent {
         active: false,
     });
 
-    ngOnInit() {
-        this.getCourseId();
+    public details: { reviews: number; average: number } = {
+        reviews: 0,
+        average: 0,
+    };
 
-        this._courseService.findById(this._courseId).subscribe({
+    ngOnInit() {
+        this._courseService.findById(this.getCourseId()).subscribe({
             next: (response) => {
                 if (this._apiUtil.isApiError(response)) {
                     console.log(response);
                     return;
                 }
                 this.course.set(response);
+                if (response.totalReviews != 0) {
+                    this.details = {
+                        reviews: response.totalReviews,
+                        average:
+                            response.totalScoreReviews / response.totalReviews,
+                    };
+                }
             },
             error: (error) => {
                 console.log('unexpected error', error);
@@ -66,9 +80,9 @@ export class CourseComponent {
         });
     }
 
-    getCourseId() {
-        return this._http.params.subscribe(
-            (res) => (this._courseId = res['id'])
-        );
+    private getCourseId(): string {
+        let courseId = '';
+        this._http.params.subscribe((res) => (courseId = res['id']));
+        return courseId;
     }
 }

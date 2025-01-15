@@ -1,0 +1,95 @@
+@use 'variables' as var;
+$gray-color: #dbdbdb98;
+
+.container_reviews {
+    background-color: #101010;
+    padding: 2rem 5rem;
+    color: #fff;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+
+    font-size: 1.5em;
+
+    padding-bottom: 2rem;
+
+    .average {
+        display: flex;
+        align-items: center;
+
+        .star_icon {
+            padding-right: .5rem;
+            color: var.$seccondary-color;
+        }
+    }
+
+    .ball_icon {
+        padding: 0 .7rem;
+        color: $gray-color;
+    }
+}
+
+.card {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    max-width: 45rem;
+
+    margin: auto;
+}
+
+.review {
+    padding-bottom: 1rem;
+    padding-top: 1rem;
+    width: 21rem;
+
+    border-top: solid 1px $gray-color;
+    border-bottom: solid 1px $gray-color;
+}
+
+.container_user {
+    display: flex;
+}
+
+.icon {
+    border: solid 1px #fff;
+    padding: .35rem;
+    border-radius: 50%;
+    margin-right: 1rem;
+}
+
+.name {
+    font-weight: 600;
+    font-size: 1em;
+}
+
+.comment {
+    padding-top: 1rem;
+}
+
+.date {
+    padding-top: 1rem;
+}
+
+@media (max-width: 768px) {
+    .container_reviews {
+        padding: 2rem 0.5rem;
+    }
+
+    .card {
+        display: block;
+        .review {
+            margin: auto
+        }
+    }
+
+    .header {
+        display: block;
+        .ball_icon {
+            display: none;
+        }
+    }
+}

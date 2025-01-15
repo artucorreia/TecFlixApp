@@ -1,0 +1,67 @@
+<main class="container_reviews">
+    <div class="header">
+        <div class="average">
+            <i class="pi pi-star-fill star_icon"></i>
+            <div class="coisa">Nota do curso: {{details.average}}</div>
+        </div>
+        <i class="pi pi-circle-on ball_icon" style="font-size: 0.5rem" ></i>
+        <div class="total_reviews">
+            Total de avalicoes: {{details.reviews}}
+        </div>
+    </div>
+    <div class="card">
+        @for (review of reviews(); track $index) {
+            <section class="review">
+                <div class="container_user">
+                    <div>
+                        <i class="pi pi-user icon" style="font-size: 2rem"></i>
+                    </div>
+                    <div>
+                        <span class="name">{{review.user.name}}</span>
+                        <p-rating [(ngModel)]="review.score" [readonly]="true" />
+                    </div>
+                </div>
+                <div class="comment">
+                    {{review.comment}}
+                </div>
+                <div class="date">
+                    {{review.createdAt | date: 'dd/MM/y hh:mm a'}}
+                </div>
+            </section>
+        }
+    </div>
+</main>
+
+
+<!-- TODO: display this when data is loading -->
+<!-- <main class="container_reviews">
+        <div class="header">
+            <div class="average">
+                <p-skeleton height="2rem" width="10rem" styleClass="mb-2" />
+            </div>
+            <i class="pi pi-circle-on ball_icon" style="font-size: 0.5rem" ></i>
+            <div class="total_reviews">
+                <p-skeleton height="2rem" width="10rem" styleClass="mb-2" />
+            </div>
+        </div>
+        <div class="card">
+            <section class="review">
+                <p-skeleton height="10rem" width="21rem" styleClass="mb-2" />
+            </section>
+            <section class="review">
+                <p-skeleton height="10rem" width="21rem" styleClass="mb-2" />
+            </section>
+            <section class="review">
+                <p-skeleton height="10rem" width="21rem" styleClass="mb-2" />
+            </section>
+            <section class="review">
+                <p-skeleton height="10rem" width="21rem" styleClass="mb-2" />
+            </section>
+            <section class="review">
+                <p-skeleton height="10rem" width="21rem" styleClass="mb-2" />
+            </section>
+            <section class="review">
+                <p-skeleton height="10rem" width="21rem" styleClass="mb-2" />
+            </section>
+        </div>
+    </main> -->

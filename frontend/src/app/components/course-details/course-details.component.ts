@@ -8,9 +8,6 @@ import {
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
-// components
-import { CourseModulesComponent } from '../course-modules/course-modules.component';
-
 // interfaces
 import { Course } from '../../interfaces/response/course';
 
@@ -22,7 +19,6 @@ import { SkeletonModule } from 'primeng/skeleton';
     selector: 'app-course-details',
     imports: [
         CommonModule,
-        CourseModulesComponent,
 
         // primeng
         ButtonModule,

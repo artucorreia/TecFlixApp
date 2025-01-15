@@ -16,6 +16,7 @@ import { Pagination } from '../../interfaces/response/pagination';
 
 // environments
 import { environment } from '../../../environments/environment';
+import { Review } from '../../interfaces/response/review';
 
 @Injectable({
     providedIn: 'root',
@@ -57,7 +58,7 @@ export class CourseService {
             );
     }
 
-    public findAllCourses(paged: {
+    public findAll(paged: {
         page?: number;
         size?: number;
         direction?: string;
@@ -106,6 +107,25 @@ export class CourseService {
             )
             .pipe(
                 map((response: Pagination<Course>) => response),
+                catchError((error: HttpErrorResponse) => {
+                    const apiError: ApiError = {
+                        title: error.error.title,
+                        timestamp: error.error.timestamp,
+                        details: error.error.details,
+                        status: error.status,
+                    };
+                    return of(apiError);
+                })
+            );
+    }
+
+    public findReviewsByCourseId(id: string): Observable<Review[] | ApiError> {
+        return this._http
+            .get<Review[]>(`${environment.apiUrl}v1/courses/${id}/reviews`, {
+                headers: this._baseHeaders,
+            })
+            .pipe(
+                map((response: Review[]) => response),
                 catchError((error: HttpErrorResponse) => {
                     const apiError: ApiError = {
                         title: error.error.title,
