@@ -1,6 +1,13 @@
 services:
-  # nginx
-  # nginx:
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   dns:
+  #     - 8.8.8.8
+  #   volumes:
+  #     - ./frontend/dist:/output # Build do Angular será exportado para ./frontend/dist
+  #   command: echo "Build concluído"
 
   # back
   backend:
@@ -17,7 +24,7 @@ services:
       - postgres
     networks:
       - app
-    restart: on-failure:2
+    restart: always
 
   # postgres
   postgres:
@@ -27,14 +34,36 @@ services:
       - 2345:5432
     env_file:
       - ./db.env
-    # volumes:
-    #   - postgres_data:/var/lib/postgresql/data
-    restart: on-failure:2
+    restart: always
     networks:
       - app
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
-# volumes:
-#   postgres_data:
+  # nginx
+  nginx:
+    image: nginx:1.27.3-alpine
+    container_name: nginx
+    ports:
+      - 80:80
+      # - '443:443'
+    volumes:
+      - ./frontend/dist/tecflix:/usr/share/nginx/html
+      # - ./frontend/mime.types:/etc/nginx/mime.types
+      - ./data/nginx:/etc/nginx/conf.d
+      # - ./data/certbot/conf:/etc/letsencrypt
+      # - ./data/certbot/www:/var/www/certbot
+    command: '/bin/sh -c ''while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
+    networks:
+      - app
+    depends_on:
+      # - certbot
+      # - frontend
+      - backend
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
 
 networks:
   app:
