@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import br.com.tecflix_app.data.DTO.v1.create.CreateProfessorDataDTO;
 import br.com.tecflix_app.model.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,6 +21,9 @@ public class UserDTO {
     private Role role;
     private LocalDateTime createdAt;
     private Boolean active;
-    private CreateProfessorDataDTO professorData;
-    private List<ProfessorDataDTO> socials;
+    private List<CourseDTO> enrolledCourses;
+    private ProfessorDataDTO professorData;
+    private List<SocialDTO> socials;
+    private List<CourseDTO> coursesTaught;
+    // private List<Payment> payments;
 }

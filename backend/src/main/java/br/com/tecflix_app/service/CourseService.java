@@ -36,7 +36,6 @@ public class CourseService {
     private final CourseRepository repository;
     private final CourseValidatorService courseValidatorService;
     private final TokenService tokenService;
-    private final UserService userService;
     private final IMapperService mapper;
     private final CustomPagedResourcesAssembler<CourseDTO> assembler;
 
@@ -44,13 +43,11 @@ public class CourseService {
             CourseRepository repository,
             CourseValidatorService courseValidatorService,
             TokenService tokenService,
-            UserService userService,
             IMapperService mapper,
             CustomPagedResourcesAssembler<CourseDTO> assembler) {
         this.repository = repository;
         this.courseValidatorService = courseValidatorService;
         this.tokenService = tokenService;
-        this.userService = userService;
         this.mapper = mapper;
         this.assembler = assembler;
     }
@@ -122,7 +119,8 @@ public class CourseService {
         data.setTitle(data.getTitle().trim());
         data.setDescription(data.getDescription().trim());
 
-        UserDTO professor = userService.findById(tokenService.getUserId());
+        UserDTO professor = new UserDTO();
+        professor.setId(tokenService.getUserId());
         data.setProfessor(professor);
 
         Course entity = mapper.map(data, Course.class);

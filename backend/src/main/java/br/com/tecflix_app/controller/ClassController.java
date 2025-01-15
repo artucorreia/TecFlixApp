@@ -34,105 +34,52 @@ import jakarta.validation.Valid;
 public class ClassController {
 
     private final ClassService service;
-    
-    @Autowired
-    public ClassController(ClassService service) { this.service = service; }
 
-    @GetMapping(
-        value = "/{id}",
-        produces = MediaType.APPLICATION_JSON_VALUE 
-    )
-    @Operation(
-        summary = "Find class by id",
-        description = "Find class by id",
-        tags = {"Class"},
-        method = "GET"
-    )
-    @ApiResponses(
-        value = {
-            @ApiResponse(
-                responseCode = "200",
-                description = "Success",
-                content = @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = ClassDTO.class)
-                )
-            ),
+    @Autowired
+    public ClassController(ClassService service) {
+        this.service = service;
+    }
+
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Find class by id", description = "Find class by id", tags = { "Class" }, method = "GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ClassDTO.class))),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
-        }
-    )
+    })
     public ResponseEntity<ClassDTO> findById(@PathVariable UUID id) {
         return ResponseEntity.ok(service.findById(id));
     }
-    
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(
-        summary = "Find all classes",
-        description = "Find all classes",
-        tags = {"Class"},
-        method = "GET"
-    )
-    @ApiResponses(
-        value = {
-            @ApiResponse(
-                responseCode = "200",
-                description = "Success",
-                content = @Content(
-                    mediaType = "application/json",
-                    array = @ArraySchema(schema = @Schema(implementation = ClassDTO.class))
-                )
-            ),
+    @Operation(summary = "Find all classes", description = "Find all classes", tags = { "Class" }, method = "GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ClassDTO.class)))),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
-        }
-    )
+    })
     public ResponseEntity<List<ClassDTO>> findAll() {
         return ResponseEntity.ok(service.findAll());
     }
 
-    @PostMapping(
-        consumes = MediaType.APPLICATION_JSON_VALUE,
-        produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    @Operation(
-        summary = "Create a new class",
-        description = "Create a new class",
-        tags = {"Class"},
-        method = "POST",
-        requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
-            content = @Content(
-                mediaType = "application/json",
-                examples = @ExampleObject(
-                    value = """
-                            { "title": "string", "videoPath": "string", "module": {"id": "long"} }
-                            """
-                )
-            )
-        )
-    )
-    @ApiResponses(
-        value = {
-            @ApiResponse(
-                    responseCode = "201",
-                    description = "Success",
-                    content = @Content(
-                        mediaType = "application/json",
-                        schema = @Schema(implementation = GenericResponseDTO.class)
-                    )
-            ),
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Create a new class", description = "Create a new class", tags = {
+            "Class" }, method = "POST", requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = "application/json", examples = @ExampleObject(value = """
+                    { "title": "string", "videoPath": "string", "module": {"id": "long"} }
+                    """))))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = GenericResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
             @ApiResponse(responseCode = "404", description = "Module Not Found", content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
-        }
-    )
+    })
     public ResponseEntity<GenericResponseDTO<UUID>> create(@Valid @RequestBody CreateClassDTO data) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.create(data));
     }

@@ -6,11 +6,8 @@ import java.time.LocalDateTime;
 import br.com.tecflix_app.model.enums.Occupation;
 
 public interface ProfessorDataProjection {
-    UserProfileProjection getUser();
-
     LocalDate getBirthdate();
 
-    // Gender getGender();
     Occupation getOccupation();
 
     String getBiography();

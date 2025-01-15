@@ -22,25 +22,24 @@ public class ProfessorDataService {
     private final IMapperService mapper;
 
     public ProfessorDataService(
-        ProfessorDataRepository repository,
-        IMapperService mapper
-    ) {
+            ProfessorDataRepository repository,
+            IMapperService mapper) {
         this.repository = repository;
         this.mapper = mapper;
     }
 
     public Optional<Long> findIdByUserId(UUID userId) {
+        LOGGER.info("Finding professorData id by user id");
         return repository.findIdByUserId(userId);
     }
 
     @Transactional(rollbackFor = Exception.class)
     public void create(
-        UserDTO user, 
-        LocalDateTime createdAt,
-        CreateProfessorDataDTO data
-    ) {
+            UserDTO user,
+            LocalDateTime createdAt,
+            CreateProfessorDataDTO data) {
         LOGGER.info("Saving professor data");
-        
+
         data.setUser(user);
         data.setBiography(data.getBiography().trim());
         data.setContact(data.getContact().trim());

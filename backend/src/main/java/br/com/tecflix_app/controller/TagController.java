@@ -26,64 +26,35 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public class TagController {
 
     private final TagService service;
-    
-    @Autowired
-    public TagController(TagService service) { this.service = service; }
 
-    @GetMapping(
-        value = "/{id}",
-        produces = MediaType.APPLICATION_JSON_VALUE 
-    )
-    @Operation(
-        summary = "Find tag by id",
-        description = "Find tag by id",
-        tags = {"Tag"},
-        method = "GET"
-    )
-    @ApiResponses(
-        value = {
-            @ApiResponse(
-                responseCode = "200",
-                description = "Success",
-                content = @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = TagDTO.class)
-                )
-            ),
+    @Autowired
+    public TagController(TagService service) {
+        this.service = service;
+    }
+
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Find tag by id", description = "Find tag by id", tags = { "Tag" }, method = "GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TagDTO.class))),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
-        }
-    )
+    })
     public ResponseEntity<TagDTO> findById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
-    
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(
-        summary = "Find all tags",
-        description = "Find all tags",
-        tags = {"Tag"},
-        method = "GET"
-    )
-    @ApiResponses(
-        value = {
-            @ApiResponse(
-                responseCode = "200",
-                description = "Success",
-                content = @Content(
-                    mediaType = "application/json",
-                    array = @ArraySchema(schema = @Schema(implementation = TagDTO.class))
-                )
-            ),
+    @Operation(summary = "Find all tags", description = "Find all tags", tags = { "Tag" }, method = "GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = TagDTO.class)))),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
-        }
-    )
+    })
     public ResponseEntity<List<TagDTO>> findAll() {
         return ResponseEntity.ok(service.findAll());
     }

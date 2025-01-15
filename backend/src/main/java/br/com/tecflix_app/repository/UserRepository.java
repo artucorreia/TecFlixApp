@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import br.com.tecflix_app.model.User;
 import br.com.tecflix_app.model.enums.Role;
 import br.com.tecflix_app.projection.UserAccountProjection;
+import br.com.tecflix_app.projection.UserProfileProjection;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID> {
@@ -31,4 +32,6 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     @Query("SELECT u.id FROM User u WHERE u.email = :email")
     Optional<UUID> findIdByEmail(String email);
+
+    Optional<UserProfileProjection> findProfileById(UUID id);
 }

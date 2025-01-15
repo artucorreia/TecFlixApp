@@ -16,6 +16,7 @@ import br.com.tecflix_app.data.DTO.v1.create.RegisterProfessorDTO;
 import br.com.tecflix_app.data.DTO.v1.response.GenericResponseDTO;
 import br.com.tecflix_app.data.DTO.v1.response.UserDTO;
 import br.com.tecflix_app.exception.auth.UserAlreadyIsActive;
+import br.com.tecflix_app.exception.general.InaccessibleResource;
 import br.com.tecflix_app.exception.general.ResourceNotFoundException;
 import br.com.tecflix_app.mapper.contract.IMapperService;
 import br.com.tecflix_app.model.User;
@@ -130,6 +131,26 @@ public class UserService {
                 repository.findDataById(id).orElseThrow(
                         () -> new ResourceNotFoundException("Não foi possível encontrar seus dados")),
                 UserDTO.class);
+    }
+
+    public UserDTO findProfileById(UUID id) {
+        UserDTO user = findById(id);
+
+        if (!user.getActive())
+            throw new InaccessibleResource("Este perfil está atualmente inativo");
+
+        if (user.getRole().equals(Role.USER))
+            throw new InaccessibleResource("Este usuário não possui perfil de professor");
+
+        UserDTO response = mapper.map(
+                repository.findProfileById(id).orElseThrow(
+                        () -> new ResourceNotFoundException("Nenhum perfil encontrado para este id")),
+                UserDTO.class);
+
+        if (response.getProfessorData() == null)
+            throw new InaccessibleResource("Este usuário não possui perfil de professor");
+
+        return response;
     }
 
     @Transactional(rollbackFor = Exception.class)

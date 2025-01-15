@@ -15,7 +15,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ProfessorDataDTO {
-    private UserDTO user;
     private String cpf;
     private LocalDate birthdate;
     private Gender gender;

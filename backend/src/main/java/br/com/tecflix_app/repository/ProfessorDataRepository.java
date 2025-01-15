@@ -11,9 +11,6 @@ import br.com.tecflix_app.model.ProfessorData;
 
 @Repository
 public interface ProfessorDataRepository extends JpaRepository<ProfessorData, Long> {
-    @Query(
-        nativeQuery = true,
-        value = "SELECT pd.id from professors_data pd WHERE pd.user_id = :userId"
-    )
+    @Query(nativeQuery = true, value = "SELECT pd.id from professors_data pd WHERE pd.user_id = :userId")
     Optional<Long> findIdByUserId(UUID userId);
 }
