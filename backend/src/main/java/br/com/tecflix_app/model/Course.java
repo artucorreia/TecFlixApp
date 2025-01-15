@@ -27,15 +27,17 @@ import lombok.Setter;
 @Table(name = "courses")
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 @EqualsAndHashCode(of = "id")
 public class Course implements Serializable {
-    @Id @GeneratedValue(strategy = GenerationType.UUID)
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(nullable = false, length = 40)
     private String title;
-    
+
     @Column(name = "description", nullable = false, length = 2000)
     private String description;
 
@@ -47,33 +49,28 @@ public class Course implements Serializable {
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
-    
-    @Column(name = "total_score_reviews")
-    private Double totalScoreReviews;
-    
+
+    @Column(name = "total_score")
+    private Long totalScore;
+
     @Column(name = "total_reviews")
     private Long totalReviews;
 
-    @ManyToOne 
+    @Column(name = "average_score")
+    private Double averageScore;
+
+    @ManyToOne
     @JoinColumn(name = "professor_id", referencedColumnName = "id", nullable = false)
     private User professor;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-        name = "courses_students",
-        joinColumns = @JoinColumn(name = "course_id"),
-        inverseJoinColumns = @JoinColumn(name = "student_id")
-    )
+    @JoinTable(name = "courses_students", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))
     private List<User> students;
 
     @OneToMany(mappedBy = "course")
     private List<Module> modules;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-        name = "courses_tags",
-        joinColumns = @JoinColumn(name = "course_id"),
-        inverseJoinColumns = @JoinColumn(name = "tag_id")
-    )
+    @JoinTable(name = "courses_tags", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private List<Tag> tags;
 }

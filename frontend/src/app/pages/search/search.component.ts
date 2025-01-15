@@ -44,9 +44,9 @@ export class SearchComponent {
                 size?: number;
                 direction?: string;
             } = {
-                page: params['page'],
-                size: params['size'],
-                direction: params['direction'],
+                page: params['page'] || 0,
+                size: params['size'] || 10,
+                direction: params['direction'] || 'averageScore,desc',
             };
             let searchOptions: { term?: string; tags?: string } = {
                 term: params['term'],

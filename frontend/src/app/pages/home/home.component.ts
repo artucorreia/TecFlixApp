@@ -27,26 +27,35 @@ export class HomeComponent {
 
     ngOnInit() {
         // find more top rated courses
-        this._courseService
-            .findAll({ direction: 'totalReviews,desc', size: 7 })
-            .subscribe({
-                next: (response) => {
-                    if (this._apiUtil.isApiError(response)) {
-                        console.log(response);
-                        return;
-                    }
-                    const carousel = {
-                        title: 'Mais Avaliados',
-                        pagination: signal(response),
-                    };
-                    this.carousels.update((values) => [...values, carousel]);
-                },
-                error: (error) => {
-                    console.log('unexpected error', error);
-                },
-            });
+        this.findTopRatedCourses();
 
         // find latest courses
+        this.findLatestCourses();
+
+        // find courses about development
+        this.findCoursesAboutTheme();
+    }
+
+    private findTopRatedCourses(): void {
+        this._courseService.findAll({ size: 7 }).subscribe({
+            next: (response) => {
+                if (this._apiUtil.isApiError(response)) {
+                    console.log(response);
+                    return;
+                }
+                const carousel = {
+                    title: 'Melhor avaliados',
+                    pagination: signal(response),
+                };
+                this.carousels.update((values) => [...values, carousel]);
+            },
+            error: (error) => {
+                console.log('unexpected error', error);
+            },
+        });
+    }
+
+    private findLatestCourses(): void {
         this._courseService
             .findAll({ direction: 'createdAt,desc', size: 7 })
             .subscribe({
@@ -65,13 +74,11 @@ export class HomeComponent {
                     console.log('unexpected error', error);
                 },
             });
+    }
 
-        // find courses about development
+    private findCoursesAboutTheme(): void {
         this._courseService
-            .search(
-                { direction: 'totalReviews,desc', size: 7 },
-                { tags: '1,2,3,4,5,6' }
-            )
+            .search({ size: 7 }, { tags: '1,2,3,4,5,6' })
             .subscribe({
                 next: (response) => {
                     if (this._apiUtil.isApiError(response)) {

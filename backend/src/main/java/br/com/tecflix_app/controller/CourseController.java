@@ -84,7 +84,7 @@ public class CourseController {
         public ResponseEntity<CustomPagedResponse<CourseDTO>> findAll(
                         @RequestParam(name = "page", defaultValue = "0") Integer page,
                         @RequestParam(name = "size", defaultValue = "10") Integer size,
-                        @RequestParam(name = "direction", defaultValue = "totalScoreReviews,asc") String direction) {
+                        @RequestParam(name = "direction", defaultValue = "averageScore,asc") String direction) {
 
                 String[] sortOptions = direction.split(",");
                 Direction sortDirection = "desc".equalsIgnoreCase(sortOptions[1]) ? Sort.Direction.DESC
@@ -109,7 +109,7 @@ public class CourseController {
                         @RequestParam(name = "term", required = false) String term,
                         @RequestParam(name = "page", defaultValue = "0") Integer page,
                         @RequestParam(name = "size", defaultValue = "10") Integer size,
-                        @RequestParam(name = "direction", defaultValue = "totalScoreReviews,asc") String direction) {
+                        @RequestParam(name = "direction", defaultValue = "averageScore,asc") String direction) {
 
                 String[] sortOptions = direction.split(",");
                 Direction sortDirection = "desc".equalsIgnoreCase(sortOptions[1]) ? Sort.Direction.DESC

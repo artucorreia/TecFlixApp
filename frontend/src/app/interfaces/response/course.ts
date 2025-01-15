@@ -10,8 +10,9 @@ export interface Course {
     modules: Module[];
     tags: Tag[];
     professor: User;
-    totalScoreReviews: number;
+    totalScore: number;
     totalReviews: number;
+    averageScore: number;
     createdAt: Date; // '2025-01-07T19:00:31.178Z'
     active: boolean;
 }

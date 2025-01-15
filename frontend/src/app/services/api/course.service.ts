@@ -143,7 +143,7 @@ export class CourseService {
         size?: number;
         direction?: string;
     }): string {
-        const sort = paged.direction || 'totalReviews,ASC';
+        const sort = paged.direction || 'averageScore,DESC';
         return `page=${paged.page || 0}&size=${
             paged.size || 10
         }&direction=${sort}`;

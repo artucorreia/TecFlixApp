@@ -19,8 +19,8 @@ public class CourseReviewScheduledUpdate {
         this.repository = repository;
     }
 
-    // @Scheduled(cron = "0 0 0 * * *")
-    @Scheduled(fixedRate = 10000) // test
+    // @Scheduled(cron = "0 0 0 * * *") // prod
+    @Scheduled(fixedRate = 10000) // dev
     @Transactional(rollbackFor = Exception.class)
     public void courseReviewsUpdate() {
         LOGGER.info("Updating courses reviews");

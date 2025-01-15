@@ -17,9 +17,11 @@ public interface CourseDetailsProjection {
 
     LocalDateTime getCreatedAt();
 
-    Double getTotalScoreReviews();
+    Long getTotalScore();
 
     Long getTotalReviews();
+
+    Double getAverageScore();
 
     UserBasicProjection getProfessor();
 

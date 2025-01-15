@@ -74,7 +74,7 @@ export class HeaderComponent {
                         queryParams: {
                             page: 0,
                             size: 10,
-                            direction: 'totalReviews,desc',
+                            direction: 'averageScore,desc',
                         },
                     }),
             },
@@ -90,7 +90,6 @@ export class HeaderComponent {
                         label: 'Conta',
                         icon: 'pi pi-cog',
                         routerLink: '/account',
-                        // command: () => this._router.navigate(),
                     },
                     {
                         label: 'Aprendizado',
@@ -118,12 +117,11 @@ export class HeaderComponent {
                     term: this.term(),
                     page: 0,
                     size: 10,
-                    direction: 'totalReviews,desc',
+                    direction: 'averageScore,desc',
                 }),
             });
     }
 
-    // TODO: add cache
     private findAllTags(): void {
         this._tagsService.findAllTags().subscribe({
             next: (response) => {

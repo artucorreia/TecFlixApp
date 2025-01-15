@@ -19,7 +19,7 @@
                         <div class="relative mx-auto container_image" routerLink="/course/{{item.id}}">
                             <img src="./test.jpg" [alt]="item.title" class="rounded-border image" />
                             @if (
-                                getScore(item.totalScoreReviews, item.totalReviews) >= 4.5
+                                item.averageScore >= 4.5
                             ) {
                                 <p-tag value="Bem avalidado" class="absolute" styleClass="dark:!bg-surface-900" [ngStyle]="{ 'left.px': 5, 'top.px': 5 }" />
                             }
@@ -35,10 +35,10 @@
     
                     <div class="flex justify-between items-center">
                         <div class="container_rating">
-                            <span class="score"> {{ this.value }} </span>
-                            <p-rating [(ngModel)]="value" [readonly]="true" />
+                            <span class="score"> {{ item.averageScore || 0 }} </span>
+                            <p-rating [(ngModel)]="item.averageScore" [readonly]="true" />
                             <span class="total_reviews">
-                                ( {{ item.totalReviews }} )
+                                ( {{ item.totalReviews || 0}} )
                             </span>
                         </div>
                     </div>

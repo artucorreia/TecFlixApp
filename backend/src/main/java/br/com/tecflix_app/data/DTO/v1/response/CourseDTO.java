@@ -13,7 +13,8 @@ import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 public class CourseDTO extends RepresentationModel<CourseDTO> {
     private UUID id;
     private String title;
@@ -21,8 +22,9 @@ public class CourseDTO extends RepresentationModel<CourseDTO> {
     private String capeImage;
     private Boolean active;
     private LocalDateTime createdAt;
-    private Double totalScoreReviews;
+    private Long totalScore;
     private Long totalReviews;
+    private Double averageScore;
     private UserDTO professor;
     private List<ModuleDTO> modules;
     private List<TagDTO> tags;

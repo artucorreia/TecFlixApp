@@ -4,8 +4,9 @@ CREATE TABLE IF NOT EXISTS courses(
     description TEXT NOT NULL,
     cape_image VARCHAR(255),
     professor_id UUID REFERENCES users(id) NOT NULL,
-    total_score_reviews FLOAT,
-    total_reviews BIGINT,
+    total_score BIGINT NOT NULL DEFAULT 0,
+    total_reviews BIGINT NOT NULL DEFAULT 0,
+    average_score FLOAT NOT NULL DEFAULT 0,
     active BOOLEAN DEFAULT TRUE NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );

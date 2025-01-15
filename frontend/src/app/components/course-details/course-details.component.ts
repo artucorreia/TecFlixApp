@@ -49,8 +49,9 @@ export class CourseDetailsComponent {
             socials: null,
             coursesTaught: null,
         },
-        totalScoreReviews: 0,
+        totalScore: 0,
         totalReviews: 0,
+        averageScore: 0,
         createdAt: new Date(),
         active: false,
     });

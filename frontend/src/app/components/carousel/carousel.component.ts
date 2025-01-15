@@ -38,9 +38,6 @@ export class CarouselComponent {
         page: null,
     };
     public responsiveOptions: any[] | undefined;
-    public value: number = 5;
-
-    constructor() {}
 
     ngOnInit() {
         this.responsiveOptions = [
@@ -65,12 +62,5 @@ export class CarouselComponent {
                 numScroll: 1,
             },
         ];
-    }
-
-    public getScore(totalScore: number, totalReviews: number) {
-        if (totalScore === null || totalReviews === null)
-            return (this.value = 0);
-
-        return (this.value = totalScore / totalReviews);
     }
 }

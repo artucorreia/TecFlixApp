@@ -26,8 +26,9 @@ public interface CourseRepository extends JpaRepository<Course, UUID> {
                     c.title as title,
                     c.capeImage as capeImage,
                     c.createdAt as createdAt,
-                    c.totalScoreReviews as totalScoreReviews,
+                    c.totalScore as totalScore,
                     c.totalReviews as totalReviews,
+                    c.averageScore as averageScore,
                     p as professor
                 FROM
                     Course c
@@ -69,26 +70,6 @@ public interface CourseRepository extends JpaRepository<Course, UUID> {
     Page<CourseProjection> findByTagIdsAndTerm(Long[] tagIds, String term, Pageable pageable);
 
     @Modifying
-    @Query(nativeQuery = true, value = """
-                UPDATE
-                    courses
-                SET
-                    total_reviews = (
-                        SELECT
-                            COUNT(r.id)
-                        FROM
-                            reviews r
-                        WHERE
-                            r.course_id = courses.id
-                    ),
-                    total_score_reviews = (
-                        SELECT
-                            SUM(r.score)
-                        FROM
-                            reviews r
-                        WHERE
-                            r.course_id = courses.id
-                    );
-            """)
+    @Query(nativeQuery = true, value = "CALL update_courses_reviews()")
     void updateCourseReviews();
 }

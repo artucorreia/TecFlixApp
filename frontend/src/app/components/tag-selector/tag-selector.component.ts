@@ -70,7 +70,7 @@ export class TagSelectorComponent {
                 tags: tagsId,
                 page: 0,
                 size: 10,
-                direction: 'totalReviews,desc',
+                direction: 'averageScore,desc',
             },
         });
     }

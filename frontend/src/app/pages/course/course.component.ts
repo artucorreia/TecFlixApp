@@ -47,8 +47,9 @@ export class CourseComponent {
             socials: null,
             coursesTaught: null,
         },
-        totalScoreReviews: 0,
+        totalScore: 0,
         totalReviews: 0,
+        averageScore: 0,
         createdAt: new Date(),
         active: false,
     });
@@ -69,8 +70,7 @@ export class CourseComponent {
                 if (response.totalReviews != 0) {
                     this.details = {
                         reviews: response.totalReviews,
-                        average:
-                            response.totalScoreReviews / response.totalReviews,
+                        average: response.averageScore,
                     };
                 }
             },

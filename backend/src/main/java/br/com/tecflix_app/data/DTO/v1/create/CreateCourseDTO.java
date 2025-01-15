@@ -18,26 +18,40 @@ import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 public class CreateCourseDTO {
-    @NotNull @NotBlank @Size(min = 5, max = 40)
+    @NotNull
+    @NotBlank
+    @Size(min = 5, max = 40)
     private String title;
 
-    @NotNull @NotBlank @Size(min = 5, max = 2000)
+    @NotNull
+    @NotBlank
+    @Size(min = 5, max = 2000)
     private String description;
-    
+
     @Size(max = 255)
     private String capeImage;
 
     @NotEmpty
     private List<TagDTO> tags;
-    
+
     @JsonIgnore
     private UserDTO professor;
-    
+
     @JsonIgnore
     private Boolean active = true;
-    
+
     @JsonIgnore
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @JsonIgnore
+    private Long totalScore = 0L;
+
+    @JsonIgnore
+    private Long totalReviews = 0L;
+
+    @JsonIgnore
+    private Double averageScore = 0D;
 }

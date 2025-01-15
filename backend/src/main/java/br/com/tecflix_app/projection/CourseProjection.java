@@ -5,10 +5,18 @@ import java.util.UUID;
 
 public interface CourseProjection {
     UUID getId();
+
     String getTitle();
+
     String getCapeImage();
+
     LocalDateTime getCreatedAt();
-    Double getTotalScoreReviews();
+
+    Long getTotalScore();
+
     Long getTotalReviews();
+
+    Double getAverageScore();
+
     UserBasicProjection getProfessor();
 }
