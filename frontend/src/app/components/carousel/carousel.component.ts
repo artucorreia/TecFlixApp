@@ -32,11 +32,11 @@ import { SkeletonModule } from 'primeng/skeleton';
     styleUrl: './carousel.component.scss',
 })
 export class CarouselComponent {
-    @Input() public pagination: WritableSignal<Pagination<Course>> = signal({
+    @Input() public pagination: Pagination<Course> = {
         content: [],
         links: null,
         page: null,
-    });
+    };
     public responsiveOptions: any[] | undefined;
     public value: number = 5;
 

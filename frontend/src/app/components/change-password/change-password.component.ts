@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
     FormBuilder,
     FormControl,
@@ -18,6 +18,7 @@ import { DividerModule } from 'primeng/divider';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
+import { ProgressSpinner } from 'primeng/progressspinner';
 
 @Component({
     selector: 'app-change-password',
@@ -30,6 +31,7 @@ import { PasswordModule } from 'primeng/password';
         ButtonModule,
         PasswordModule,
         DividerModule,
+        ProgressSpinner,
     ],
     templateUrl: './change-password.component.html',
     styleUrl: './change-password.component.scss',
@@ -44,6 +46,7 @@ export class ChangePasswordComponent {
         password: FormControl<string | null>;
         confirmation: FormControl<string | null>;
     }>;
+    public isLoading = signal(false);
 
     constructor() {
         this.form = this._fb.group({
@@ -136,12 +139,12 @@ export class ChangePasswordComponent {
 
     private closeForm(): void {
         this.form.disable();
-        // this.loading.update((value) => (value = !value));
+        this.isLoading.update((value) => (value = !value));
     }
 
     private resetForm(): void {
         this.form.reset();
         this.form.enable();
-        // this.loading.update((value) => (value = !value));
+        this.isLoading.update((value) => (value = !value));
     }
 }

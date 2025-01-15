@@ -8,8 +8,8 @@
         <label for="in_label">Email</label>
     </p-floatlabel>
 
-    <span class="created_at">Engressou em: {{user()?.createdAt | date: 'dd/MM/y hh:mm'}}</span>
+    <span class="created_at">Ingressou em: <br> {{user()?.createdAt | date: 'dd/MM/y, hh:mm a'}}</span>
     <div class="container_button">
-        <p-button type="submit" label="Salvar" />
+        <p-button type="submit" label="Salvar" [disabled]="form.invalid || form.disabled"/>
     </div>
 </form>

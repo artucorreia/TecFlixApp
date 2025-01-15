@@ -1,5 +1,5 @@
 @for (carousel of carousels(); track $index) {
-    <app-carousel [pagination]="carousel.pagination">
+    <app-carousel [pagination]="carousel.pagination()">
         <h1 class="title">{{ carousel.title }}</h1>
     </app-carousel>
 }

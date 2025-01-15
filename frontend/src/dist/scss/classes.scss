@@ -5,8 +5,7 @@ $button-hover-color: #0f9b7c;
 .button {
     width: variables.$input-width;
     height: variables.$input-height;
-    background-color: variables.$primary-color;
-    background-color: variables.$primary-color;
+    background-color: variables.$seccondary-color;
     border-radius: 10px;
     box-shadow: var(--p-inputtext-shadow);
     transition-duration: 0.3s;

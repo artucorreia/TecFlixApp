@@ -1,1 +1,79 @@
-<p>profile works!</p>
+@if (user == null) {
+    <main>
+        <div class="card">
+            <section class="container_profile">
+                <div class="container_header">
+                    <div class="container_info">
+                        
+                        <p-skeleton height="2rem" width="10rem" styleClass="mb-2" />
+                        <p-skeleton height="1.5rem" width="6rem" styleClass="mb-2" />
+                        <div class="timeline">
+                            <p-skeleton height="1rem" width="12rem" styleClass="mb-2" />
+                            <p-skeleton height="1rem" width="12rem" styleClass="mb-2" />
+                        </div>
+            
+                    </div>
+                    <div class="container_profile_image">
+                        <p-skeleton shape="circle" size="12rem" />
+                    </div>
+                </div>
+                <div class="container_biography">
+                    <p-skeleton height="9rem" width="30rem" styleClass="mb-2" />
+                </div>
+                <div class="container_social">
+                    <p-skeleton height="2rem" width="7rem" styleClass="mb-2 mr-2" />
+                    <p-skeleton height="2rem" width="7rem" styleClass="mb-2 mr-2" />
+                    <p-skeleton height="2rem" width="7rem" styleClass="mb-2" />
+
+
+                </div>
+            
+            </section>
+        </div>
+        <section class="container_courses">
+            <p-skeleton height="2rem" width="12rem" styleClass="mb-2 ml-10" />
+            <app-carousel [pagination]="coursesTaught()"></app-carousel>
+        </section>
+    </main>
+} @else {
+    <main>
+        <div class="card">
+            <section class="container_profile">
+                <div class="container_header">
+                    <div class="container_info">
+                        <h1 class="name">{{user.name}}</h1>
+                        <h2 class="occupation">{{user.professorData?.occupation}}</h2>
+                        <div class="timeline">
+                            <p>Ingressou em: {{user.createdAt | date: 'dd/MM/y'}}</p>
+                            <p>Professor desde: {{user.professorData?.createdAt | date: 'dd/MM/y'}}</p>
+                        </div>
+            
+                    </div>
+                    <div class="container_profile_image">
+                        <img src="./test.jpg" class="image" [alt]="user.name">
+                    </div>
+                </div>
+                <div class="container_biography">
+                    <p-scrollpanel [style]="{ width: '100%', height: '150px' }">
+                        {{user.professorData?.biography}}
+                    </p-scrollpanel>
+                </div>
+                <div class="container_social">
+                    @for (social of user.socials; track $index) {
+                        <div class="social">
+                            <a [href]="social.url" target="_blank" rel="noopener noreferrer" class="p-button font-bold">
+                                {{social.name}}
+                                <i class="pi pi-external-link"></i>
+                            </a>
+                        </div>
+                    }
+                </div>
+            
+            </section>
+        </div>
+        <section class="container_courses">
+            <h1 class="title">Meus cursos ({{coursesTaught().content.length}})</h1>
+            <app-carousel [pagination]="coursesTaught()"></app-carousel>
+        </section>
+    </main>
+}
