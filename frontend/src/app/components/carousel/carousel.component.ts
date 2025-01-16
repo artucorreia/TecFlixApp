@@ -9,7 +9,6 @@ import { Pagination } from '../../interfaces/response/pagination';
 
 // primeng
 import { CarouselModule } from 'primeng/carousel';
-import { ButtonModule } from 'primeng/button';
 import { Rating } from 'primeng/rating';
 import { TagModule } from 'primeng/tag';
 import { SkeletonModule } from 'primeng/skeleton';
@@ -23,7 +22,6 @@ import { SkeletonModule } from 'primeng/skeleton';
 
         // primang
         CarouselModule,
-        ButtonModule,
         TagModule,
         Rating,
         SkeletonModule,

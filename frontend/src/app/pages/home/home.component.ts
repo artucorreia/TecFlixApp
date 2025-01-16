@@ -2,6 +2,7 @@ import { Component, inject, signal, WritableSignal } from '@angular/core';
 
 // components
 import { CarouselComponent } from '../../components/carousel/carousel.component';
+import { AdsCarouselComponent } from '../../components/ads-carousel/ads-carousel.component';
 
 // services
 import { CourseService } from '../../services/api/course.service';
@@ -13,7 +14,7 @@ import { Course } from '../../interfaces/response/course';
 
 @Component({
     selector: 'app-home',
-    imports: [CarouselComponent],
+    imports: [CarouselComponent, AdsCarouselComponent],
     templateUrl: './home.component.html',
     styleUrl: './home.component.scss',
 })

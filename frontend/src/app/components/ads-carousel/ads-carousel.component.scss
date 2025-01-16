@@ -1,0 +1,78 @@
+@use 'variables' as var;
+
+.announcement {
+    display: flex;
+    align-items: center;
+
+    height: 25rem;
+
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.left_content {
+    justify-content: start;
+
+    .content {
+        margin-left: 2rem;
+    }
+}
+
+.right_content {
+    justify-content: end;
+
+    .content {
+        margin-right: 2rem;
+    }
+}
+
+.content {
+    color: #fff;
+    background-color: var.$bg-color;
+    
+    box-shadow: #ffffff2d 3px 3px 20px;
+
+    width: 50%;
+    min-width: 300px;
+    padding: 2.5rem .5rem;
+
+    border-radius: 0.625rem;
+    
+    .title {
+        font-size: 1.5em;
+        font-weight: 600;
+        padding-bottom: 1rem;
+    }
+
+    .details {
+        font-size: 1.1em;
+        text-align: justify;
+    }
+}
+
+.card_mobile {
+    display: none;
+}
+
+@media (max-width: 480px) {
+    .card {
+        display: none;
+    }
+
+    .card_mobile {
+        display: block;
+    
+        .left_content {
+            .content {
+                margin-left: 1rem;
+            }
+        }
+        
+        .right_content {
+            .content {
+                margin-right: 1rem;
+            }
+        }
+    }
+}

@@ -1,0 +1,43 @@
+<main>
+    <div class="card">
+        <p-carousel [value]="ads" [numVisible]="1" [numScroll]="1" autoplayInterval="8000" [circular]="true">
+            <ng-template let-ad #item>
+                <div class="border border-surface-200 dark:border-surface-700 rounded m-2 p-4">
+                    <div class="mb-4">
+                        <div class="relative mx-auto">
+                            <div 
+                                class="announcement" 
+                                [ngStyle]="{
+                                    'background-image': 'url(' + ad.image + ')'
+                                }"
+                                [ngClass]="{
+                                    'left_content': !ad.positionRight,
+                                    'right_content': ad.positionRight
+                                }"
+                            >
+                                <div class="content">
+                                    <h1 class="title">{{ad.title}}</h1>
+                                    <p class="details">{{ad.details}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </p-carousel>
+    </div>
+    
+    <div class="card_mobile">
+        <div
+            class="announcement right_content"
+            [ngStyle]="{
+                'background-image': 'url(' + adMobile.image + ')'
+            }"
+        >
+            <div class="content">
+                <h1 class="title">{{adMobile.title}}</h1>
+                <p class="details">{{adMobile.details}}</p>
+            </div>
+        </div>
+    </div>
+</main>
