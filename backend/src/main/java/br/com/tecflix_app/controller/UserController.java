@@ -10,12 +10,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.tecflix_app.data.DTO.v1.create.RegisterProfessorDTO;
 import br.com.tecflix_app.data.DTO.v1.response.GenericResponseDTO;
 import br.com.tecflix_app.data.DTO.v1.response.UserDTO;
 import br.com.tecflix_app.projection.UserAccountProjection;
+import br.com.tecflix_app.projection.UserBasicProjection;
 import br.com.tecflix_app.projection.UserProfileProjection;
 import br.com.tecflix_app.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -68,6 +70,22 @@ public class UserController {
         })
         public ResponseEntity<UserDTO> findProfileById(@PathVariable UUID id) {
                 return ResponseEntity.ok(service.findProfileById(id));
+        }
+
+        @GetMapping(value = "/find", produces = MediaType.APPLICATION_JSON_VALUE)
+        @Operation(summary = "Find user id by email", description = "Find user id by email", tags = {
+                        "User" }, method = "GET")
+
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserBasicProjection.class))),
+                        @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+                        @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
+                        @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
+                        @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
+                        @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
+        })
+        public ResponseEntity<UserDTO> findProfileById(@RequestParam(required = true) String email) {
+                return ResponseEntity.ok(service.findIdByEmail(email));
         }
 
         @PostMapping(value = "/{userId}/make-professor", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

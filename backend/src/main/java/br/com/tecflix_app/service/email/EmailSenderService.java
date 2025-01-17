@@ -3,7 +3,6 @@ package br.com.tecflix_app.service.email;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.util.UUID;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,13 @@ public class EmailSenderService {
         this.javaMailSender = javaMailSender;
     }
 
-    public void sendEmailCode(String email, String name, UUID userId, String code) {
+    public void sendEmailCode(
+            String email,
+            String name,
+            String templateMessage,
+            String buttonText,
+            String path,
+            String helperText) {
         LOGGER.info("Sending email code to user");
 
         try {
@@ -40,22 +45,20 @@ public class EmailSenderService {
             helper.setFrom("no-reply@tecflix");
             helper.setSubject("Validação de Email");
 
-            String template = getTemplate("templates/code-mail-template.html");
+            String template = getTemplate("templates/generic-mail-template.html");
             template = template.replace("${name}", name);
-            
-            String url = WEBSITE_URL + "/sing-up/authenticate-code?code=" + code + "&userId=" + userId;
-            
+            template = template.replace("${message}", templateMessage);
+            template = template.replace("${button_text}", buttonText);
+
+            String url = WEBSITE_URL + path;
+
             template = template.replace("${url}", url);
             template = template.replace("${currentYear}", String.valueOf(LocalDateTime.now().getYear()));
 
-            helper.setText(
-                    "Código de Validação:" + code,
-                    template
-            );
+            helper.setText(helperText, template);
 
             javaMailSender.send(message);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new EmailSendingException("Ocorreu um erro ao enviar o email");
         }
     }

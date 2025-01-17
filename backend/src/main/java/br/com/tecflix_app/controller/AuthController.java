@@ -128,7 +128,7 @@ public class AuthController {
         }
 
         @PostMapping(value = "/send-code/{userId}")
-        @Operation(summary = "Send email code", description = "Send email code to validate email", tags = {
+        @Operation(summary = "Send email code", description = "Send email code to validate email or reset password", tags = {
                         "Authentication" }, method = "POST")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = GenericResponseDTO.class))),
@@ -138,11 +138,12 @@ public class AuthController {
                         @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
                         @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
         })
-        public ResponseEntity<GenericResponseDTO<Long>> sendEmailCode(@PathVariable UUID userId) {
-                return ResponseEntity.ok().body(emailCodeService.create(userId));
+        public ResponseEntity<GenericResponseDTO<Long>> sendEmailCode(@PathVariable UUID userId,
+                        @RequestParam(name = "resetPassword", required = false, defaultValue = "false") boolean resetPassword) {
+                return ResponseEntity.ok(emailCodeService.create(userId, resetPassword));
         }
 
-        @PostMapping(value = "/validate-code/{code}")
+        @PostMapping(value = "/validate-code")
         @Operation(summary = "Validate email code", description = "Validate email code", tags = {
                         "Authentication" }, method = "POST")
         @ApiResponses(value = {
@@ -153,8 +154,9 @@ public class AuthController {
                         @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
                         @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
         })
-        public ResponseEntity<GenericResponseDTO<UUID>> validateEmailCode(@PathVariable String code) {
-                return ResponseEntity.status(HttpStatus.CREATED).body(emailCodeService.validate(code));
+        public ResponseEntity<GenericResponseDTO<UUID>> validateEmailCode(@RequestParam(required = true) String code,
+                        @RequestParam(required = true) UUID userId) {
+                return ResponseEntity.status(HttpStatus.CREATED).body(emailCodeService.validate(code, userId));
         }
 
         @PostMapping(value = "/change-password", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -172,5 +174,25 @@ public class AuthController {
         })
         public ResponseEntity<GenericResponseDTO<UUID>> changePassword(@Valid @RequestBody NewPasswordDTO data) {
                 return ResponseEntity.ok(userService.changePassword(data));
+        }
+
+        @PostMapping(value = "/reset-password", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+        @Operation(summary = "Reset user password", description = "Reset user password", tags = {
+                        "Authentication" }, method = "POST", requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = "application/json", examples = @ExampleObject(value = """
+                                        { "newPassword": "string" }
+                                        """))))
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = GenericResponseDTO.class))),
+                        @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+                        @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
+                        @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
+                        @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
+                        @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
+        })
+        public ResponseEntity<GenericResponseDTO<UUID>> resetPassword(@RequestParam(required = true) String code,
+                        @RequestParam(required = true) UUID userId,
+                        @Valid @RequestBody NewPasswordDTO data) {
+                return ResponseEntity.status(HttpStatus.CREATED).body(emailCodeService.validate(code, userId, data));
+
         }
 }

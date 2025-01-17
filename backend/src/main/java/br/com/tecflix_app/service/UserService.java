@@ -77,6 +77,14 @@ public class UserService {
                 () -> new ResourceNotFoundException("Nenhum usuário encontrado para este id"));
     }
 
+    public UserDTO findIdByEmail(String email) {
+        LOGGER.info("Finding user's id by email");
+        return mapper.map(
+                repository.findByEmail(email)
+                        .orElseThrow(() -> new ResourceNotFoundException("Nenhum usuário encontrado para este email")),
+                UserDTO.class);
+    }
+
     public Role findRoleById(UUID id) {
         LOGGER.info("Finding user's role by id");
         return repository.findRoleById(id).orElseThrow(
@@ -116,13 +124,20 @@ public class UserService {
                 LocalDateTime.now());
     }
 
-    public void activateUser(UUID userId) {
+    @Transactional(rollbackFor = Exception.class)
+    public GenericResponseDTO<UUID> activateUser(UUID userId) {
         LOGGER.info("Activating user");
+
         User entity = findEntityById(userId);
         if (entity.getActive())
             throw new UserAlreadyIsActive("Usuário já está ativo");
         entity.setActive(true);
         repository.save(entity);
+
+        return new GenericResponseDTO<>(
+                userId,
+                "Usuário validado com sucesso",
+                LocalDateTime.now());
     }
 
     public UserDTO findMe() {
@@ -153,9 +168,11 @@ public class UserService {
         return response;
     }
 
+    // change password
     @Transactional(rollbackFor = Exception.class)
     public GenericResponseDTO<UUID> changePassword(NewPasswordDTO data) {
-        LOGGER.info("Changing password");
+        LOGGER.info("Changing user password");
+
         UUID userId = tokenService.getUserId();
         User user = findEntityById(userId);
         String newPassword = new BCryptPasswordEncoder().encode(data.getNewPassword().trim());
@@ -164,6 +181,21 @@ public class UserService {
         return new GenericResponseDTO<>(
                 id,
                 "Senha alterada com sucesso",
+                LocalDateTime.now());
+    }
+
+    // reset password
+    @Transactional(rollbackFor = Exception.class)
+    public GenericResponseDTO<UUID> resetPassword(UUID userId, NewPasswordDTO data) {
+        LOGGER.info("Resetting user password");
+
+        User user = findEntityById(userId);
+        String newPassword = new BCryptPasswordEncoder().encode(data.getNewPassword().trim());
+        user.setPassword(newPassword);
+        UUID id = repository.save(user).getId();
+        return new GenericResponseDTO<>(
+                id,
+                "Senha redefinida com sucesso",
                 LocalDateTime.now());
     }
 

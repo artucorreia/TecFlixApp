@@ -77,9 +77,11 @@
     <div class="container">
         <div class="logo">TecFlix</div>
         <h2>Olá, ${name}!</h2>
-        <p>Clique no botão abaixo para validar o seu e-mail:</p>
+        <p>${message}</p>
+        <!-- <p>Clique no botão abaixo para validar o seu e-mail:</p> -->
         <a href="${url}" class="button">
-            <span class="button-text">Validar E-mail</span>
+            <span class="button-text">${button_text}</span>
+            <!-- <span class="button-text">Validar E-mail</span> -->
         </a>
         <p class="footer-text">Se você não solicitou essa validação, ignore este e-mail.</p>
         <p class="footer-credits">&copy; ${currentYear} TecFlix. Todos os direitos reservados.</p>

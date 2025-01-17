@@ -13,16 +13,13 @@ import br.com.tecflix_app.model.EmailCode;
 
 @Repository
 public interface EmailCodeRepository extends JpaRepository<EmailCode, Long> {
-    
-    Optional<EmailCode> findByCode(String code);
-    
+
+    Optional<EmailCode> findByCodeAndUserId(String code, UUID userId);
+
     @Modifying
     void deleteAllByCreatedAtBefore(LocalDateTime time);
 
     @Modifying
-    @Query(
-        nativeQuery = true,
-        value = "DELETE FROM email_codes WHERE user_id = :userId"
-    )
+    @Query(nativeQuery = true, value = "DELETE FROM email_codes WHERE user_id = :userId")
     void deleteByUserId(UUID userId);
 }
