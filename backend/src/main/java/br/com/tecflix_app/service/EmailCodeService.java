@@ -53,8 +53,10 @@ public class EmailCodeService {
 
         deleteByUserId(userId);
 
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(userId);
         EmailCodeDTO emailCode = EmailCodeDTO.builder()
-                .user(user)
+                .user(userDTO)
                 .code(EmailCodeGenerator.genarateCode())
                 .createdAt(LocalDateTime.now())
                 .build();
