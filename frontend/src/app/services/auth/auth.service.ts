@@ -96,7 +96,6 @@ export class AuthService {
         userId: string,
         resetPassword?: boolean
     ): Observable<GenericResponse | ApiError> {
-        debugger;
         return this._http
             .post<GenericResponse>(
                 `${environment.apiUrl}auth/send-code/${userId}?resetPassword=${
@@ -124,7 +123,6 @@ export class AuthService {
     public validateEmailCode(
         code: string,
         userId: string
-        // resetPassword: boolean
     ): Observable<GenericResponse | ApiError> {
         return this._http
             .post<GenericResponse>(
@@ -157,6 +155,33 @@ export class AuthService {
                 `${environment.apiUrl}auth/change-password`,
                 data,
                 { headers: authenticatedHeaders }
+            )
+            .pipe(
+                map((response: GenericResponse) => response),
+                catchError((error: HttpErrorResponse) => {
+                    const apiError: ApiError = {
+                        title: error.error.title,
+                        timestamp: error.error.timestamp,
+                        details: error.error.details,
+                        status: error.status,
+                    };
+                    return of(apiError);
+                })
+            );
+    }
+
+    public resetPassword(
+        code: string,
+        userId: string,
+        data: {
+            newPassword: string;
+        }
+    ): Observable<GenericResponse | ApiError> {
+        return this._http
+            .post<GenericResponse>(
+                `${environment.apiUrl}auth/reset-password?code=${code}&userId=${userId}`,
+                data,
+                { headers: this._baseHeaders }
             )
             .pipe(
                 map((response: GenericResponse) => response),

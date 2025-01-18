@@ -10,6 +10,6 @@
 
     <span class="created_at">Ingressou em: <br> {{user()?.createdAt | date: 'dd/MM/y, hh:mm a'}}</span>
     <div class="container_button">
-        <p-button type="submit" label="Salvar" [disabled]="form.invalid || form.disabled"/>
+        <p-button type="submit" label="Salvar" size="large" [disabled]="form.invalid || form.disabled"/>
     </div>
 </form>

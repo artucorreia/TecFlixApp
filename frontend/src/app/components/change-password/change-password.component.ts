@@ -1,4 +1,11 @@
-import { Component, inject, signal } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    inject,
+    Input,
+    Output,
+    signal,
+} from '@angular/core';
 import {
     FormBuilder,
     FormControl,
@@ -38,15 +45,16 @@ import { ProgressSpinner } from 'primeng/progressspinner';
 })
 export class ChangePasswordComponent {
     private _fb: FormBuilder = inject(FormBuilder);
-    private _authService: AuthService = inject(AuthService);
-    private _apiUtil: ApiUtilService = inject(ApiUtilService);
     private _messageService: MessageUtilService = inject(MessageUtilService);
 
     public form: FormGroup<{
         password: FormControl<string | null>;
         confirmation: FormControl<string | null>;
     }>;
+
     public isLoading = signal(false);
+    @Input() public apiCallIsOver = signal(false);
+    @Output() public output = new EventEmitter<string>();
 
     constructor() {
         this.form = this._fb.group({
@@ -54,7 +62,7 @@ export class ChangePasswordComponent {
                 '',
                 [
                     Validators.minLength(8),
-                    Validators.maxLength(30),
+                    Validators.maxLength(50),
                     Validators.required,
                 ],
             ],
@@ -67,6 +75,10 @@ export class ChangePasswordComponent {
                 ],
             ],
         });
+    }
+
+    public ngDoCheck() {
+        if (this.apiCallIsOver()) this.resetForm();
     }
 
     public submit() {
@@ -87,38 +99,8 @@ export class ChangePasswordComponent {
         }
 
         let newPassword: string | null = this.form.controls.confirmation.value;
-        if (newPassword) {
-            this.changePassword({ newPassword: newPassword });
-        }
-        this.form.enable();
-    }
 
-    private changePassword(data: { newPassword: string }) {
-        this._authService.changePassword(data).subscribe({
-            next: (response) => {
-                this.resetForm();
-                if (this._apiUtil.isApiError(response)) {
-                    this._messageService.display({
-                        severity: 'error',
-                        summary: 'Error',
-                        detail: response.title,
-                        life: 3000,
-                    });
-                    return;
-                }
-
-                this._messageService.display({
-                    severity: 'success',
-                    summary: 'Success',
-                    detail: response.message,
-                    life: 3000,
-                });
-            },
-            error: (error) => {
-                this.resetForm();
-                console.log('unexpected error', error);
-            },
-        });
+        if (newPassword) this.output.emit(newPassword);
     }
 
     private passwordIsValid(): boolean {
@@ -139,12 +121,12 @@ export class ChangePasswordComponent {
 
     private closeForm(): void {
         this.form.disable();
-        this.isLoading.update((value) => (value = !value));
+        this.isLoading.set(true);
     }
 
     private resetForm(): void {
         this.form.reset();
         this.form.enable();
-        this.isLoading.update((value) => (value = !value));
+        this.isLoading.set(false);
     }
 }

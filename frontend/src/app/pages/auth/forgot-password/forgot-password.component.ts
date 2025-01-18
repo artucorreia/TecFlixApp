@@ -79,7 +79,6 @@ export class ForgotPasswordComponent {
                         detail: response.title,
                         life: 3000,
                     });
-                    console.log(response);
                     this.isLoading.set(false);
                     return;
                 }
