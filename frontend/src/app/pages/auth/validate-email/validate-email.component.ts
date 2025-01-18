@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterLink, RouterModule } from '@angular/router';
 
 // services
 import { AuthService } from '../../../services/auth/auth.service';
@@ -7,9 +7,6 @@ import { ApiUtilService } from '../../../services/api/api-util.service';
 import { MessageUtilService } from '../../../services/util/message-util.service';
 
 // primeng
-import { ButtonModule } from 'primeng/button';
-import { MessageService } from 'primeng/api';
-import { ToastModule } from 'primeng/toast';
 import { ProgressSpinner } from 'primeng/progressspinner';
 
 // local interfaces
@@ -22,13 +19,12 @@ interface QueryParams {
     selector: 'app-validate-email',
     imports: [
         RouterModule,
+        RouterLink,
 
         // primeng
-        ButtonModule,
-        ToastModule,
         ProgressSpinner,
     ],
-    providers: [MessageService],
+    providers: [],
     templateUrl: './validate-email.component.html',
     styleUrl: './validate-email.component.scss',
 })
@@ -36,8 +32,7 @@ export class ValidateEmailComponent {
     private _apiUtil: ApiUtilService = inject(ApiUtilService);
     private _authService: AuthService = inject(AuthService);
     private _http: ActivatedRoute = inject(ActivatedRoute);
-    private _messageUtilService: MessageUtilService =
-        inject(MessageUtilService);
+    private _messageService: MessageUtilService = inject(MessageUtilService);
 
     private _queryParams: QueryParams = {
         code: '',
@@ -58,15 +53,18 @@ export class ValidateEmailComponent {
             this._queryParams.userId = params['userId'];
 
             if (this._queryParams.code !== '')
-                this.validateEmailCode(this._queryParams.code);
+                this.validateEmailCode(
+                    this._queryParams.code,
+                    this._queryParams.userId
+                );
         });
     }
 
-    private validateEmailCode(code: string) {
-        this._authService.validateEmailCode(code).subscribe({
+    private validateEmailCode(code: string, userId: string) {
+        this._authService.validateEmailCode(code, userId).subscribe({
             next: (response) => {
                 if (this._apiUtil.isApiError(response)) {
-                    this._messageUtilService.display({
+                    this._messageService.display({
                         severity: 'error',
                         summary: 'Error',
                         detail: response.title,
@@ -86,7 +84,7 @@ export class ValidateEmailComponent {
                     );
                     return;
                 }
-                this._messageUtilService.display({
+                this._messageService.display({
                     severity: 'success',
                     summary: 'Success',
                     detail: response.message,
@@ -112,7 +110,7 @@ export class ValidateEmailComponent {
         this._authService.sendEmailCode(this._queryParams.userId).subscribe({
             next: (response) => {
                 if (this._apiUtil.isApiError(response)) {
-                    this._messageUtilService.display({
+                    this._messageService.display({
                         severity: 'error',
                         summary: 'Error',
                         detail: response.title,
@@ -131,7 +129,7 @@ export class ValidateEmailComponent {
                     this.codeIsValid.set(false);
                     return;
                 }
-                this._messageUtilService.display({
+                this._messageService.display({
                     severity: 'success',
                     summary: 'Success',
                     detail: response.message,

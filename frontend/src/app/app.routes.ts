@@ -16,6 +16,8 @@ import { SearchComponent } from './pages/search/search.component';
 import { CourseComponent } from './pages/course/course.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { AccountComponent } from './pages/account/account.component';
+import { ForgotPasswordComponent } from './pages/auth/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './pages/auth/reset-password/reset-password.component';
 
 export const routes: Routes = [
     {
@@ -54,6 +56,32 @@ export const routes: Routes = [
                     import(
                         './pages/auth/validate-email/validate-email.component'
                     ).then((c) => ValidateEmailComponent),
+            },
+        ],
+    },
+    {
+        path: 'sing-in/forgot-password',
+        component: UnloggedLayoutComponent,
+        children: [
+            {
+                path: '',
+                loadComponent: () =>
+                    import(
+                        './pages/auth/forgot-password/forgot-password.component'
+                    ).then((c) => ForgotPasswordComponent),
+            },
+        ],
+    },
+    {
+        path: 'sing-in/reset-password',
+        component: UnloggedLayoutComponent,
+        children: [
+            {
+                path: '',
+                loadComponent: () =>
+                    import(
+                        './pages/auth/reset-password/reset-password.component'
+                    ).then((c) => ResetPasswordComponent),
             },
         ],
     },

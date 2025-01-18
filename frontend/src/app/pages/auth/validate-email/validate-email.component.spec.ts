@@ -3,21 +3,20 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ValidateEmailComponent } from './validate-email.component';
 
 describe('ValidateEmailComponent', () => {
-  let component: ValidateEmailComponent;
-  let fixture: ComponentFixture<ValidateEmailComponent>;
+    let component: ValidateEmailComponent;
+    let fixture: ComponentFixture<ValidateEmailComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ValidateEmailComponent]
-    })
-    .compileComponents();
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            imports: [ValidateEmailComponent],
+        }).compileComponents();
 
-    fixture = TestBed.createComponent(ValidateEmailComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+        fixture = TestBed.createComponent(ValidateEmailComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

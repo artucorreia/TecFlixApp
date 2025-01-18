@@ -74,10 +74,15 @@ export class UserService {
             );
     }
 
-    public findById(id: string): Observable<User | ApiError> {
+    public findByEmail(email: string): Observable<User | ApiError> {
+        const headers: HttpHeaders = new HttpHeaders().set(
+            'X-API-KEY',
+            environment.apiKey
+        );
+
         return this._http
-            .get<User>(`${environment.apiUrl}v1/courses/${id}`, {
-                headers: this._baseHeaders,
+            .get<User>(`${environment.apiUrl}v1/users/find?email=${email}`, {
+                headers: headers,
             })
             .pipe(
                 map((response: User) => response),

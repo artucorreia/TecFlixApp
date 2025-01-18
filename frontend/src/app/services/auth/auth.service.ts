@@ -4,13 +4,17 @@ import {
     HttpErrorResponse,
     HttpHeaders,
 } from '@angular/common/http';
+import { catchError, map, Observable, of } from 'rxjs';
+
+// interfaces
 import { Login } from '../../interfaces/resquest/login';
 import { Register } from '../../interfaces/resquest/register';
-import { catchError, map, Observable, of } from 'rxjs';
-import { environment } from '../../../environments/environment';
 import { ApiError } from '../../interfaces/response/api-error';
 import { Token } from '../../interfaces/response/token';
 import { GenericResponse } from '../../interfaces/response/generic-response';
+
+// environments
+import { environment } from '../../../environments/environment';
 
 @Injectable({
     providedIn: 'root',
@@ -89,13 +93,19 @@ export class AuthService {
     }
 
     public sendEmailCode(
-        userId: string
+        userId: string,
+        resetPassword?: boolean
     ): Observable<GenericResponse | ApiError> {
+        debugger;
         return this._http
             .post<GenericResponse>(
-                `${environment.apiUrl}auth/send-code/${userId}`,
+                `${environment.apiUrl}auth/send-code/${userId}?resetPassword=${
+                    resetPassword || false
+                }`,
                 null,
-                { headers: this._baseHeaders }
+                {
+                    headers: this._baseHeaders,
+                }
             )
             .pipe(
                 map((response: GenericResponse) => response),
@@ -112,11 +122,13 @@ export class AuthService {
     }
 
     public validateEmailCode(
-        code: string
+        code: string,
+        userId: string
+        // resetPassword: boolean
     ): Observable<GenericResponse | ApiError> {
         return this._http
             .post<GenericResponse>(
-                `${environment.apiUrl}auth/validate-code/${code}`,
+                `${environment.apiUrl}auth/validate-code?code=${code}&userId=${userId}`,
                 null,
                 { headers: this._baseHeaders }
             )
