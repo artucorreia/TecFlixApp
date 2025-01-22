@@ -1,38 +1,79 @@
 <p-menubar [model]="items()">
-    <ng-template #item let-item let-root="root" >
-        @if (item.route) {
-            <a [routerLink]="item.route" pRipple class="flex items-center p-menubar-item-link">
-                <span>{{ item.label }}</span>
-                <i *ngIf="item.items" [ngClass]="['ml-auto pi', root ? 'pi-angle-down' : 'pi-angle-right']"></i>
-            </a>
+  <ng-template #item let-item let-root="root">
+    @if (item.route) {
+      <a
+        [routerLink]="item.route"
+        pRipple
+        class="flex items-center p-menubar-item-link"
+      >
+        <span>{{ item.label }}</span>
+        <i
+          *ngIf="item.items"
+          [ngClass]="['ml-auto pi', root ? 'pi-angle-down' : 'pi-angle-right']"
+        ></i>
+      </a>
+    } @else {
+      <a pRipple class="flex items-center p-menubar-item-link">
+        <span>{{ item.label }}</span>
+        <i
+          *ngIf="item.items"
+          [ngClass]="['ml-auto pi', root ? 'pi-angle-down' : 'pi-angle-right']"
+        ></i>
+      </a>
+    }
+  </ng-template>
+  <ng-template #end>
+    <div class="flex items-center gap-2">
+      <p-iconfield iconPosition="left">
+        @if (term()) {
+          <p-inputicon
+            styleClass="pi pi-times"
+            [style]="{ cursor: 'pointer' }"
+            (click)="clearTerm()"
+          />
         } @else {
-            <a pRipple class="flex items-center p-menubar-item-link">
-                <span>{{ item.label }}</span>
-                <i *ngIf="item.items" [ngClass]="['ml-auto pi', root ? 'pi-angle-down' : 'pi-angle-right']"></i>
-            </a>
+          <p-inputicon styleClass="pi pi-search" />
         }
-    </ng-template>
-    <ng-template #end>
-        <div class="flex items-center gap-2">
-            <p-iconfield iconPosition="left">
-                <p-inputicon styleClass="pi pi-search" />
-                <input type="text" [(ngModel)]="term" pInputText placeholder="Pesquisar" (keyup)="search($event)" />
-            </p-iconfield>
 
-            <p-menu  #menu [model]="userMenuItems" [popup]="true" class="container_menu" styleClass="w-full md:w-60">
-                <ng-template #submenuheader let-item>
-                    <span class="text-primary font-bold">{{ item.label }}</span>
-                </ng-template>
-                <ng-template #item let-item>
-                    <a pRipple class="flex items-center p-menu-item-link" [routerLink]="item.routerLink">
-                        <span [class]="item.icon"></span>
-                        <span class="ml-2">{{ item.label }}</span>
-                        <p-badge *ngIf="item.badge" class="ml-auto" [value]="item.badge" />
-                    </a>
-                </ng-template>
-            </p-menu>
+        <input
+          type="text"
+          [(ngModel)]="term"
+          pInputText
+          placeholder="Pesquisar"
+          (keyup)="listener($event)"
+        />
+      </p-iconfield>
 
-            <p-avatar icon="pi pi-user" class="mr-2 avatar" size="normal" shape="circle" (click)="menu.toggle($event)"/>
-        </div>
-    </ng-template>
+      <p-menu
+        #menu
+        [model]="userMenuItems"
+        [popup]="true"
+        class="container_menu"
+        styleClass="w-full md:w-60"
+      >
+        <ng-template #submenuheader let-item>
+          <span class="text-primary font-bold">{{ item.label }}</span>
+        </ng-template>
+        <ng-template #item let-item>
+          <a
+            pRipple
+            class="flex items-center p-menu-item-link"
+            [routerLink]="item.routerLink"
+          >
+            <span [class]="item.icon"></span>
+            <span class="ml-2">{{ item.label }}</span>
+            <p-badge *ngIf="item.badge" class="ml-auto" [value]="item.badge" />
+          </a>
+        </ng-template>
+      </p-menu>
+
+      <p-avatar
+        icon="pi pi-user"
+        class="mr-2 avatar"
+        size="normal"
+        shape="circle"
+        (click)="menu.toggle($event)"
+      />
+    </div>
+  </ng-template>
 </p-menubar>

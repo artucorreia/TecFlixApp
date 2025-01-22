@@ -24,167 +24,196 @@ import { IconField } from 'primeng/iconfield';
 import { InputIcon } from 'primeng/inputicon';
 
 @Component({
-    selector: 'app-header',
-    imports: [
-        CommonModule,
-        FormsModule,
-        RouterModule,
+  selector: 'app-header',
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterModule,
 
-        // primeng
-        Menubar,
-        BadgeModule,
-        AvatarModule,
-        InputTextModule,
-        Ripple,
-        MenuModule,
-        IconField,
-        InputIcon,
-    ],
-    templateUrl: './header.component.html',
-    styles: `
-        .avatar:hover {
-            cursor: pointer;
-        }
-    `,
+    // primeng
+    Menubar,
+    BadgeModule,
+    AvatarModule,
+    InputTextModule,
+    Ripple,
+    MenuModule,
+    IconField,
+    InputIcon,
+  ],
+  templateUrl: './header.component.html',
+  styles: `
+    .avatar:hover {
+      cursor: pointer;
+    }
+  `,
 })
 export class HeaderComponent {
-    private _router: Router = inject(Router);
-    private _http: ActivatedRoute = inject(ActivatedRoute);
-    private _authService: AuthService = inject(AuthService);
-    private _tagsService: TagService = inject(TagService);
-    private _apiUtil: ApiUtilService = inject(ApiUtilService);
+  private _router: Router = inject(Router);
+  private _http: ActivatedRoute = inject(ActivatedRoute);
+  private _authService: AuthService = inject(AuthService);
+  private _tagsService: TagService = inject(TagService);
+  private _apiUtil: ApiUtilService = inject(ApiUtilService);
 
-    public term = signal('');
+  public term = signal('');
 
-    public items: WritableSignal<MenuItem[]> = signal([]);
-    public userMenuItems: MenuItem[] = [];
+  public items: WritableSignal<MenuItem[]> = signal([]);
+  public userMenuItems: MenuItem[] = [];
 
-    constructor() {}
+  constructor() {}
 
-    ngOnInit() {
-        this.items.set([
-            {
-                label: 'Inicio',
-                route: '/home',
+  ngOnInit() {
+    this.setItems();
+    this.findAllTags();
+    this.setUserMenuItems();
+    this.getTerm();
+  }
+
+  private getTerm(): void {
+    this._http.queryParams.subscribe((params) => {
+      this.term.set(params['term']);
+    });
+  }
+
+  private setItems(): void {
+    this.items.set([
+      {
+        label: 'Inicio',
+        route: '/home',
+      },
+      {
+        label: 'Todos os Cursos',
+        command: () =>
+          this._router.navigate(['/search'], {
+            queryParams: {
+              page: 0,
+              size: 10,
+              direction: 'averageScore,desc',
             },
-            {
-                label: 'Todos os Cursos',
-                command: () =>
-                    this._router.navigate(['/search'], {
-                        queryParams: {
-                            page: 0,
-                            size: 10,
-                            direction: 'averageScore,desc',
-                        },
-                    }),
-            },
-        ]);
+          }),
+      },
+    ]);
+  }
 
-        this.findAllTags();
+  private setUserMenuItems(): void {
+    this.userMenuItems = [
+      {
+        label: 'Profile',
+        items: [
+          {
+            label: 'Conta',
+            icon: 'pi pi-cog',
+            routerLink: '/account',
+          },
+          {
+            label: 'Aprendizado',
+            icon: 'pi pi-video',
+            badge: '2',
+            command: () => console.log('Aprendizado'),
+          },
+          {
+            separator: true,
+          },
+          {
+            label: 'Sair',
+            icon: 'pi pi-sign-out',
+            command: () => this.logout(),
+          },
+        ],
+      },
+    ];
+  }
 
-        this.userMenuItems = [
-            {
-                label: 'Profile',
-                items: [
-                    {
-                        label: 'Conta',
-                        icon: 'pi pi-cog',
-                        routerLink: '/account',
-                    },
-                    {
-                        label: 'Aprendizado',
-                        icon: 'pi pi-video',
-                        badge: '2',
-                        command: () => console.log('Aprendizado'),
-                    },
-                    {
-                        separator: true,
-                    },
-                    {
-                        label: 'Sair',
-                        icon: 'pi pi-sign-out',
-                        command: () => this.logout(),
-                    },
-                ],
-            },
-        ];
+  // NOTE: listen event key in search input
+  // if event key is 'enter' search for that
+  public listener(event: KeyboardEvent): void {
+    if (event.key == 'Enter') {
+      this.search();
     }
+  }
 
-    public search(event: KeyboardEventInit): void {
-        if (event.key == 'Enter')
-            this._router.navigate(['/search'], {
-                queryParams: this.getQueryParams({
-                    term: this.term(),
-                    page: 0,
-                    size: 10,
-                    direction: 'averageScore,desc',
-                }),
-            });
-    }
+  public clearTerm() {
+    this.term.set('');
+    this.search();
+  }
 
-    private findAllTags(): void {
-        this._tagsService.findAllTags().subscribe({
-            next: (response) => {
-                if (this._apiUtil.isApiError(response)) {
-                    console.log(response);
-                    return;
-                }
-                this.mapTags(response);
-                return;
-            },
-            error: (error) => {
-                console.log('unexpected error', error);
-            },
-        });
-    }
+  private search(): void {
+    this._router.navigate(['/search'], {
+      queryParams: this.getQueryParams({
+        term: this.term(),
+        page: 0,
+        size: 10,
+        direction: 'averageScore,desc',
+      }),
+    });
+  }
 
-    private mapTags(tags: Tag[]): void {
-        let result: MenuItem[] = [];
-        for (let tag of tags) {
-            result.push({
-                id: tag.id.toString(),
-                label: tag.name,
-                command: (item) => {
-                    if (item.item) {
-                        this._router.navigate(['/search'], {
-                            queryParams: this.getQueryParams({
-                                tags: item.item.id,
-                            }),
-                        });
-                    }
-                },
-            });
+  private findAllTags(): void {
+    this._tagsService.findAllTags().subscribe({
+      next: (response) => {
+        if (this._apiUtil.isApiError(response)) {
+          console.log(response);
+          return;
         }
-        this.items.update((values) => [
-            ...values,
-            {
-                label: 'Tags',
-                items: result,
-            },
-        ]);
-    }
+        this.mapTags(response);
+        return;
+      },
+      error: (error) => {
+        console.log('unexpected error', error);
+      },
+    });
+  }
 
-    private logout(): void {
-        this._authService.clearStorage();
-        this._router.navigate(['/sing-in']);
+  private mapTags(tags: Tag[]): void {
+    let result: MenuItem[] = [];
+    for (let tag of tags) {
+      result.push({
+        id: tag.id.toString(),
+        label: tag.name,
+        command: (item) => {
+          if (item.item) {
+            this._router.navigate(['/search'], {
+              queryParams: this.getQueryParams({
+                tags: item.item.id,
+              }),
+            });
+          }
+        },
+      });
     }
+    this.items.update((values) => [
+      ...values,
+      {
+        label: 'Tags',
+        items: result,
+      },
+    ]);
+  }
 
-    private getQueryParams(defaultParams: {
-        term?: string;
-        tags?: string;
-        page?: number;
-        size?: number;
-        direction?: string;
-    }) {
-        let queryParams = defaultParams;
-        this._http.queryParams.subscribe((params) => {
-            if (!queryParams.term) queryParams.term = params['term'];
-            if (!queryParams.tags) queryParams.tags = params['tags'];
-            if (!queryParams.page) queryParams.page = params['page'];
-            if (!queryParams.size) queryParams.size = params['size'];
-            if (!queryParams.direction)
-                queryParams.direction = params['direction'];
-        });
-        return queryParams;
-    }
+  private logout(): void {
+    this._authService.clearStorage();
+    this._router.navigate(['/sing-in']);
+  }
+
+  private getQueryParams(defaultParams: {
+    term?: string;
+    tags?: string;
+    page?: number;
+    size?: number;
+    direction?: string;
+  }) {
+    let queryParams = defaultParams;
+    this._http.queryParams.subscribe((params) => {
+      if (typeof queryParams.term == undefined)
+        queryParams.term = params['term'];
+      if (typeof queryParams.tags == undefined)
+        queryParams.tags = params['tags'];
+      if (typeof queryParams.page == undefined)
+        queryParams.page = params['page'];
+      if (typeof queryParams.size == undefined)
+        queryParams.size = params['size'];
+      if (typeof queryParams.direction == undefined)
+        queryParams.direction = params['direction'];
+    });
+    return queryParams;
+  }
 }
