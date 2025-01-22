@@ -1,14 +1,5 @@
 package br.com.tecflix_app.model;
 
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import br.com.tecflix_app.model.enums.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,82 +12,130 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name = "users")
-@NoArgsConstructor
-@AllArgsConstructor
-@Setter @Getter
+@Setter
+@Getter
 @EqualsAndHashCode(of = "id")
 @Builder
 public class User implements UserDetails {
-    @Id @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
 
-    @Column(length = 30, nullable = false)
-    private String name;
+  @Column(length = 30, nullable = false)
+  private String name;
 
-    @Column(length = 50, unique = true, nullable = false)
-    private String email;
+  @Column(length = 50, unique = true, nullable = false)
+  private String email;
 
-    @Column(length = 100, nullable = false)
-    private String password;
+  @Column(length = 100, nullable = false)
+  private String password;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+  @Enumerated(EnumType.STRING)
+  private Role role;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+  @Column(name = "created_at", nullable = false, updatable = false)
+  private LocalDateTime createdAt;
 
-    @Column(nullable = false)
-    private Boolean active;
+  @Column(nullable = false)
+  private Boolean active;
 
-    @OneToOne(mappedBy = "user")
-    private RefreshToken refreshToken;
+  @OneToOne(mappedBy = "user")
+  private RefreshToken refreshToken;
 
-    @ManyToMany(mappedBy = "students")
-    private List<Course> enrolledCourses;
+  @ManyToMany(mappedBy = "students")
+  private List<Course> enrolledCourses;
 
-    @OneToOne(mappedBy = "user")
-    private ProfessorData professorData;
+  @OneToOne(mappedBy = "user")
+  private ProfessorData professorData;
 
-    @OneToMany(mappedBy = "user")
-    private List<Social> socials;
-    
-    @OneToMany(mappedBy = "professor")
-    private List<Course> coursesTaught;
-    
-    @OneToMany(mappedBy = "user")
-    private List<Payment> payments;
+  @OneToMany(mappedBy = "user")
+  private List<Social> socials;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (role == Role.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        if (role == Role.PROFESSOR) return List.of(new SimpleGrantedAuthority("ROLE_PROFESSOR"));
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
-    }
+  @OneToMany(mappedBy = "professor")
+  private List<Course> coursesTaught;
 
-    @Override
-    public String getPassword() { return password; }
+  @OneToMany(mappedBy = "user")
+  private List<Payment> payments;
 
-    @Override
-    public String getUsername() { return email; }
+  public User() {}
 
-    @Override
-    public boolean isAccountNonExpired() { return true; }
+  public User(
+      UUID id,
+      String name,
+      String email,
+      String password,
+      Role role,
+      LocalDateTime createdAt,
+      Boolean active,
+      RefreshToken refreshToken,
+      List<Course> enrolledCourses,
+      ProfessorData professorData,
+      List<Social> socials,
+      List<Course> coursesTaught,
+      List<Payment> payments) {
+    this.id = id;
+    this.name = name;
+    this.email = email;
+    this.password = password;
+    this.role = role;
+    this.createdAt = createdAt;
+    this.active = active;
+    this.refreshToken = refreshToken;
+    this.enrolledCourses = enrolledCourses;
+    this.professorData = professorData;
+    this.socials = socials;
+    this.coursesTaught = coursesTaught;
+    this.payments = payments;
+  }
 
-    @Override
-    public boolean isAccountNonLocked() { return true; }
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    if (role == Role.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
+    if (role == Role.PROFESSOR) return List.of(new SimpleGrantedAuthority("ROLE_PROFESSOR"));
+    return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+  }
 
-    @Override
-    public boolean isCredentialsNonExpired() { return true; }
+  @Override
+  public String getPassword() {
+    return password;
+  }
 
-    @Override
-    public boolean isEnabled() { return true; }
+  @Override
+  public String getUsername() {
+    return email;
+  }
+
+  @Override
+  public boolean isAccountNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isAccountNonLocked() {
+    return true;
+  }
+
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isEnabled() {
+    return true;
+  }
 }
