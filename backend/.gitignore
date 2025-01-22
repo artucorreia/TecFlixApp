@@ -9,6 +9,9 @@
 # env
 .env
 
+# tool-versions
+.tool-versions
+
 # certs
 certs/
 

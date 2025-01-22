@@ -6,11 +6,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
-@NoArgsConstructor
 public class RegisterDTO {
   @NotBlank
   @Size(min = 3, max = 30)
@@ -29,6 +25,23 @@ public class RegisterDTO {
   @JsonIgnore private LocalDateTime createdAt = LocalDateTime.now();
 
   @JsonIgnore private Boolean active = true;
+
+  public RegisterDTO() {}
+
+  public RegisterDTO(
+      @NotBlank @Size(min = 3, max = 30) String name,
+      @Email @Size(max = 50) String email,
+      Role role,
+      @NotBlank @Size(min = 8, max = 50) String password,
+      LocalDateTime createdAt,
+      Boolean active) {
+    this.name = name;
+    this.email = email;
+    this.role = role;
+    this.password = password;
+    this.createdAt = createdAt;
+    this.active = active;
+  }
 
   public String getName() {
     return name;

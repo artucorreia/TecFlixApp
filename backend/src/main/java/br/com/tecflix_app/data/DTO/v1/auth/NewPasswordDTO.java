@@ -10,8 +10,6 @@ public class NewPasswordDTO {
   @Size(min = 8, max = 50)
   private String newPassword;
 
-  public NewPasswordDTO() {}
-
   public NewPasswordDTO(@NotNull @NotBlank @Size(min = 8, max = 50) String newPassword) {
     this.newPassword = newPassword;
   }
