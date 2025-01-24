@@ -43,7 +43,7 @@ public class TokenService {
       Instant expiresAt = generateExpirationDate(createdAt);
       String token =
           JWT.create()
-              .withIssuer("grafmarques")
+              .withIssuer("TecFlixApp")
               .withSubject(userId.toString())
               .withIssuedAt(createdAt)
               .withExpiresAt(expiresAt)
