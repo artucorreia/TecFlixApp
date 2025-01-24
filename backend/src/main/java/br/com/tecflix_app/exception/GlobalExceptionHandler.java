@@ -1,19 +1,5 @@
 package br.com.tecflix_app.exception;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
 import br.com.tecflix_app.exception.auth.InactiveUserException;
 import br.com.tecflix_app.exception.auth.InvalidApiKeyException;
 import br.com.tecflix_app.exception.auth.InvalidTokenException;
@@ -29,241 +15,192 @@ import br.com.tecflix_app.exception.general.ResourceNotFoundException;
 import br.com.tecflix_app.exception.payment.EVPGenerationException;
 import br.com.tecflix_app.exception.payment.PixGenerationException;
 import br.com.tecflix_app.exception.payment.QRCodeGenerationException;
+import java.time.LocalDateTime;
+import java.util.List;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestController
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
-    /*
-     * Validators Exceptions
-     */
 
-    @SuppressWarnings("null")
-    @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(
-            MethodArgumentNotValidException ex,
-            HttpHeaders headers,
-            HttpStatusCode status,
-            WebRequest request) {
-        List<String> errorMessages = ex.getBindingResult()
-                .getFieldErrors()
-                .stream()
-                .map(error -> error.getField() + ": " + error.getDefaultMessage())
-                .toList();
+  // INFO: Validators Exceptions
 
-        ExceptionResponse response = ExceptionResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .title(String.join(", ", errorMessages))
-                .details(request.getDescription(false))
-                .build();
+  @Override
+  protected ResponseEntity<Object> handleMethodArgumentNotValid(
+      MethodArgumentNotValidException ex,
+      HttpHeaders headers,
+      HttpStatusCode status,
+      WebRequest request) {
+    List<String> errorMessages =
+        ex.getBindingResult().getFieldErrors().stream()
+            .map(error -> error.getField() + ": " + error.getDefaultMessage())
+            .toList();
 
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
+    ExceptionResponse response =
+        new ExceptionResponse(
+            LocalDateTime.now(), String.join(", ", errorMessages), request.getDescription(false));
 
-    /*
-     * General Exceptions
-     */
+    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+  }
 
-    @ExceptionHandler(Exception.class)
-    public final ResponseEntity<ExceptionResponse> handleAllExceptions(
-            Exception exception,
-            WebRequest request) {
-        ExceptionResponse response = ExceptionResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .title(exception.getMessage())
-                .details(request.getDescription(false))
-                .build();
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+  // INFO: General Exceptions
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public final ResponseEntity<ExceptionResponse> handleResourceNotFoundExceptions(
-            Exception exception,
-            WebRequest request) {
-        ExceptionResponse response = ExceptionResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .title(exception.getMessage())
-                .details(request.getDescription(false))
-                .build();
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-    }
+  @ExceptionHandler(Exception.class)
+  public final ResponseEntity<ExceptionResponse> handleAllExceptions(
+      Exception exception, WebRequest request) {
+    ExceptionResponse response =
+        new ExceptionResponse(
+            LocalDateTime.now(), exception.getMessage(), request.getDescription(false));
+    return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
 
-    @ExceptionHandler(RepeatedDataException.class)
-    public final ResponseEntity<ExceptionResponse> handleRepeatedDataExceptions(
-            Exception exception,
-            WebRequest request) {
-        ExceptionResponse response = ExceptionResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .title(exception.getMessage())
-                .details(request.getDescription(false))
-                .build();
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
+  @ExceptionHandler(ResourceNotFoundException.class)
+  public final ResponseEntity<ExceptionResponse> handleResourceNotFoundExceptions(
+      Exception exception, WebRequest request) {
+    ExceptionResponse response =
+        new ExceptionResponse(
+            LocalDateTime.now(), exception.getMessage(), request.getDescription(false));
+    return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+  }
 
-    @ExceptionHandler(ActionNotAllowedException.class)
-    public final ResponseEntity<ExceptionResponse> handleActionNotAllowedExceptions(
-            Exception exception,
-            WebRequest request) {
-        ExceptionResponse response = ExceptionResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .title(exception.getMessage())
-                .details(request.getDescription(false))
-                .build();
-        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
-    }
+  @ExceptionHandler(RepeatedDataException.class)
+  public final ResponseEntity<ExceptionResponse> handleRepeatedDataExceptions(
+      Exception exception, WebRequest request) {
+    ExceptionResponse response =
+        new ExceptionResponse(
+            LocalDateTime.now(), exception.getMessage(), request.getDescription(false));
+    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+  }
 
-    @ExceptionHandler(InaccessibleResource.class)
-    public final ResponseEntity<ExceptionResponse> handleInaccessibleResourceExceptions(
-            Exception exception,
-            WebRequest request) {
-        ExceptionResponse response = ExceptionResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .title(exception.getMessage())
-                .details(request.getDescription(false))
-                .build();
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
+  @ExceptionHandler(ActionNotAllowedException.class)
+  public final ResponseEntity<ExceptionResponse> handleActionNotAllowedExceptions(
+      Exception exception, WebRequest request) {
+    ExceptionResponse response =
+        new ExceptionResponse(
+            LocalDateTime.now(), exception.getMessage(), request.getDescription(false));
+    return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+  }
 
-    /*
-     * Authentication Exceptions
-     */
+  @ExceptionHandler(InaccessibleResource.class)
+  public final ResponseEntity<ExceptionResponse> handleInaccessibleResourceExceptions(
+      Exception exception, WebRequest request) {
+    ExceptionResponse response =
+        new ExceptionResponse(
+            LocalDateTime.now(), exception.getMessage(), request.getDescription(false));
+    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+  }
 
-    @ExceptionHandler(InvalidApiKeyException.class)
-    public final ResponseEntity<ExceptionResponse> handleInvalidApiKeyExceptions(
-            Exception exception,
-            WebRequest request) {
-        ExceptionResponse response = ExceptionResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .title(exception.getMessage())
-                .details(request.getDescription(false))
-                .build();
-        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
-    }
+  // INFO: Authentication Exceptions
 
-    @ExceptionHandler(JwtCreationTokenException.class)
-    public final ResponseEntity<ExceptionResponse> handleJwtCreationTokenExceptions(
-            Exception exception,
-            WebRequest request) {
-        ExceptionResponse response = ExceptionResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .title(exception.getMessage())
-                .details(request.getDescription(false))
-                .build();
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+  @ExceptionHandler(InvalidApiKeyException.class)
+  public final ResponseEntity<ExceptionResponse> handleInvalidApiKeyExceptions(
+      Exception exception, WebRequest request) {
+    ExceptionResponse response =
+        new ExceptionResponse(
+            LocalDateTime.now(), exception.getMessage(), request.getDescription(false));
+    return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+  }
 
-    @ExceptionHandler(InvalidTokenException.class)
-    public final ResponseEntity<ExceptionResponse> handleInvalidTokenExceptions(
-            Exception exception,
-            WebRequest request) {
-        ExceptionResponse response = ExceptionResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .title(exception.getMessage())
-                .details(request.getDescription(false))
-                .build();
-        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
-    }
+  @ExceptionHandler(JwtCreationTokenException.class)
+  public final ResponseEntity<ExceptionResponse> handleJwtCreationTokenExceptions(
+      Exception exception, WebRequest request) {
+    ExceptionResponse response =
+        new ExceptionResponse(
+            LocalDateTime.now(), exception.getMessage(), request.getDescription(false));
+    return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
 
-    @ExceptionHandler(InactiveUserException.class)
-    public final ResponseEntity<ExceptionResponse> handleInactiveUserExceptions(
-            Exception exception,
-            WebRequest request) {
-        ExceptionResponse response = ExceptionResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .title(exception.getMessage())
-                .details(request.getDescription(false))
-                .build();
-        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
-    }
+  @ExceptionHandler(InvalidTokenException.class)
+  public final ResponseEntity<ExceptionResponse> handleInvalidTokenExceptions(
+      Exception exception, WebRequest request) {
+    ExceptionResponse response =
+        new ExceptionResponse(
+            LocalDateTime.now(), exception.getMessage(), request.getDescription(false));
+    return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+  }
 
-    @ExceptionHandler(UserAlreadyIsActive.class)
-    public final ResponseEntity<ExceptionResponse> handleUserAlreadyIsActives(
-            Exception exception,
-            WebRequest request) {
-        ExceptionResponse response = ExceptionResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .title(exception.getMessage())
-                .details(request.getDescription(false))
-                .build();
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
+  @ExceptionHandler(InactiveUserException.class)
+  public final ResponseEntity<ExceptionResponse> handleInactiveUserExceptions(
+      Exception exception, WebRequest request) {
+    ExceptionResponse response =
+        new ExceptionResponse(
+            LocalDateTime.now(), exception.getMessage(), request.getDescription(false));
+    return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+  }
 
-    @ExceptionHandler(WrongPasswordException.class)
-    public final ResponseEntity<ExceptionResponse> handleWrongPasswordExceptions(
-            Exception exception,
-            WebRequest request) {
-        ExceptionResponse response = ExceptionResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .title(exception.getMessage())
-                .details(request.getDescription(false))
-                .build();
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
+  @ExceptionHandler(UserAlreadyIsActive.class)
+  public final ResponseEntity<ExceptionResponse> handleUserAlreadyIsActives(
+      Exception exception, WebRequest request) {
+    ExceptionResponse response =
+        new ExceptionResponse(
+            LocalDateTime.now(), exception.getMessage(), request.getDescription(false));
+    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+  }
 
-    @ExceptionHandler(RefreshTokenException.class)
-    public final ResponseEntity<ExceptionResponse> handleRefreshTokenExceptions(
-            Exception exception,
-            WebRequest request) {
-        ExceptionResponse response = ExceptionResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .title(exception.getMessage())
-                .details(request.getDescription(false))
-                .build();
-        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
-    }
+  @ExceptionHandler(WrongPasswordException.class)
+  public final ResponseEntity<ExceptionResponse> handleWrongPasswordExceptions(
+      Exception exception, WebRequest request) {
+    ExceptionResponse response =
+        new ExceptionResponse(
+            LocalDateTime.now(), exception.getMessage(), request.getDescription(false));
+    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+  }
 
-    /*
-     * Email Exceptions
-     */
+  @ExceptionHandler(RefreshTokenException.class)
+  public final ResponseEntity<ExceptionResponse> handleRefreshTokenExceptions(
+      Exception exception, WebRequest request) {
+    ExceptionResponse response =
+        new ExceptionResponse(
+            LocalDateTime.now(), exception.getMessage(), request.getDescription(false));
+    return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+  }
 
-    @ExceptionHandler(EmailSendingException.class)
-    public final ResponseEntity<ExceptionResponse> handleEmailSendingExceptions(
-            Exception exception,
-            WebRequest request) {
-        ExceptionResponse response = ExceptionResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .title(exception.getMessage())
-                .details(request.getDescription(false))
-                .build();
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
+  // INFO: Email Exceptions
 
-    /*
-     * Payment Exceptions
-     */
+  @ExceptionHandler(EmailSendingException.class)
+  public final ResponseEntity<ExceptionResponse> handleEmailSendingExceptions(
+      Exception exception, WebRequest request) {
+    ExceptionResponse response =
+        new ExceptionResponse(
+            LocalDateTime.now(), exception.getMessage(), request.getDescription(false));
+    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+  }
 
-    @ExceptionHandler(EVPGenerationException.class)
-    public final ResponseEntity<ExceptionResponse> handleEVPGenerationExceptions(
-            Exception exception,
-            WebRequest request) {
-        ExceptionResponse response = ExceptionResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .title(exception.getMessage())
-                .details(request.getDescription(false))
-                .build();
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
+  // INFO: Payment Exceptions
 
-    @ExceptionHandler(PixGenerationException.class)
-    public final ResponseEntity<ExceptionResponse> handlePixGenerationExceptions(
-            Exception exception,
-            WebRequest request) {
-        ExceptionResponse response = ExceptionResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .title(exception.getMessage())
-                .details(request.getDescription(false))
-                .build();
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
+  @ExceptionHandler(EVPGenerationException.class)
+  public final ResponseEntity<ExceptionResponse> handleEVPGenerationExceptions(
+      Exception exception, WebRequest request) {
+    ExceptionResponse response =
+        new ExceptionResponse(
+            LocalDateTime.now(), exception.getMessage(), request.getDescription(false));
+    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+  }
 
-    @ExceptionHandler(QRCodeGenerationException.class)
-    public final ResponseEntity<ExceptionResponse> handleQRCodeGenerationExceptions(
-            Exception exception,
-            WebRequest request) {
-        ExceptionResponse response = ExceptionResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .title(exception.getMessage())
-                .details(request.getDescription(false))
-                .build();
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
+  @ExceptionHandler(PixGenerationException.class)
+  public final ResponseEntity<ExceptionResponse> handlePixGenerationExceptions(
+      Exception exception, WebRequest request) {
+    ExceptionResponse response =
+        new ExceptionResponse(
+            LocalDateTime.now(), exception.getMessage(), request.getDescription(false));
+    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(QRCodeGenerationException.class)
+  public final ResponseEntity<ExceptionResponse> handleQRCodeGenerationExceptions(
+      Exception exception, WebRequest request) {
+    ExceptionResponse response =
+        new ExceptionResponse(
+            LocalDateTime.now(), exception.getMessage(), request.getDescription(false));
+    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+  }
 }
