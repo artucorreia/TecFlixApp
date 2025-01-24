@@ -16,20 +16,12 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name = "users")
-@Setter
-@Getter
-@EqualsAndHashCode(of = "id")
-@Builder
 public class User implements UserDetails {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
@@ -136,6 +128,136 @@ public class User implements UserDetails {
 
   @Override
   public boolean isEnabled() {
+    return true;
+  }
+
+  public UUID getId() {
+    return id;
+  }
+
+  public void setId(UUID id) {
+    this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  public Role getRole() {
+    return role;
+  }
+
+  public void setRole(Role role) {
+    this.role = role;
+  }
+
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
+  }
+
+  public void setCreatedAt(LocalDateTime createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  public Boolean getActive() {
+    return active;
+  }
+
+  public void setActive(Boolean active) {
+    this.active = active;
+  }
+
+  public RefreshToken getRefreshToken() {
+    return refreshToken;
+  }
+
+  public void setRefreshToken(RefreshToken refreshToken) {
+    this.refreshToken = refreshToken;
+  }
+
+  public List<Course> getEnrolledCourses() {
+    return enrolledCourses;
+  }
+
+  public void setEnrolledCourses(List<Course> enrolledCourses) {
+    this.enrolledCourses = enrolledCourses;
+  }
+
+  public ProfessorData getProfessorData() {
+    return professorData;
+  }
+
+  public void setProfessorData(ProfessorData professorData) {
+    this.professorData = professorData;
+  }
+
+  public List<Social> getSocials() {
+    return socials;
+  }
+
+  public void setSocials(List<Social> socials) {
+    this.socials = socials;
+  }
+
+  public List<Course> getCoursesTaught() {
+    return coursesTaught;
+  }
+
+  public void setCoursesTaught(List<Course> coursesTaught) {
+    this.coursesTaught = coursesTaught;
+  }
+
+  public List<Payment> getPayments() {
+    return payments;
+  }
+
+  public void setPayments(List<Payment> payments) {
+    this.payments = payments;
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((id == null) ? 0 : id.hashCode());
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    User other = (User) obj;
+    if (id == null) {
+      if (other.id != null) {
+        return false;
+      }
+    } else if (!id.equals(other.id)) {
+      return false;
+    }
     return true;
   }
 }

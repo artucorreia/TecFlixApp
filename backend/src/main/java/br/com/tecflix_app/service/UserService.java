@@ -106,14 +106,14 @@ public class UserService {
 
   private User entityFactory(RegisterDTO data) {
     String passwordEncoded = new BCryptPasswordEncoder().encode(data.getPassword().trim());
-    return User.builder()
-        .name(data.getName().trim())
-        .email(data.getEmail().trim())
-        .password(passwordEncoded)
-        .role(data.getRole())
-        .active(false)
-        .createdAt(data.getCreatedAt())
-        .build();
+    User user = new User();
+    user.setName(data.getName().trim());
+    user.setEmail(data.getEmail().trim());
+    user.setPassword(passwordEncoded);
+    user.setRole(data.getRole());
+    user.setCreatedAt(data.getCreatedAt());
+    user.setActive(false);
+    return user;
   }
 
   @Transactional(rollbackFor = Exception.class)
