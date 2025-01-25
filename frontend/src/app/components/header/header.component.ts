@@ -111,6 +111,11 @@ export class HeaderComponent {
             command: () => console.log('Aprendizado'),
           },
           {
+            label: 'Seja um professor',
+            icon: 'pi pi-book',
+            routerLink: '/professor-register',
+          },
+          {
             separator: true,
           },
           {
