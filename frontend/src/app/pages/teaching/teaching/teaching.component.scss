@@ -36,8 +36,7 @@
 
 
 .container_start {
-  width: 70vw;
-  padding: 10vh 0;
+  padding: 10vh 2rem;
   margin: auto;
 
   .container_panel {
@@ -48,7 +47,7 @@
     padding: 5rem 0;
 
     & .content {
-      width: 30rem;
+      width: 40%;
 
       font-size: 1.1em;
       text-align: justify;
@@ -56,7 +55,7 @@
 
 
     & .image {
-      width: 30%;
+      width: 20rem;
     }
   }
 }
@@ -68,5 +67,37 @@
 
   &>.container_button {
     padding-top: 1rem;
+  }
+}
+
+
+@media(max-width: 768px) {
+  .container_header {
+    padding-top: 10vh;
+
+    & .container_card {
+      display: flex;
+      justify-content: center;
+
+      & .card {
+        margin: 0;
+      }
+    }
+  }
+
+  .container_start {
+    .container_panel {
+      flex-direction: column-reverse;
+
+      & .content {
+        width: 93%;
+      }
+
+      & .image {
+        width: 15rem;
+        padding-bottom: 3rem;
+      }
+    }
+
   }
 }
