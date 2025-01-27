@@ -1,0 +1,134 @@
+<main>
+  <section
+    class="container_header"
+    [ngStyle]="{
+      'background-image': 'url(./teaching/grid.png)',
+    }"
+  >
+    <div class="container_card">
+      <div class="card">
+        <h1 class="title">Venha dar aulas conosco</h1>
+        <div class="message">
+          Torne-se professor na TecFlix e comece a mudar vidas — incluindo a sua
+        </div>
+        <div class="container_button">
+          <p-button label="Começar agora" size="large" routerLink="register" />
+        </div>
+      </div>
+    </div>
+
+    <div class="container_mouse">
+      <div class="mouse"></div>
+    </div>
+  </section>
+  <section class="container_start">
+    <h1 class="title">Como começar</h1>
+    <p-stepper [value]="1" class="basis-[50rem]">
+      <p-step-list>
+        <p-step [value]="1">Planeje sua grade curricular</p-step>
+        <p-step [value]="2">Grave suas aulas</p-step>
+        <p-step [value]="3">Lance seu curso</p-step>
+      </p-step-list>
+      <p-step-panels>
+        <p-step-panel [value]="1">
+          <ng-template #content let-activateCallback="activateCallback">
+            <div class="flex flex-col">
+              <div
+                class="container_panel border-2 border-dashed border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 flex-auto flex justify-center items-center font-medium"
+              >
+                <div class="content">
+                  <p>
+                    Comece com o que você ama e conhece. Depois, escolha um tema
+                    promissor. A maneira como você ensina — o seu toque especial
+                    — fica a seu critério.
+                  </p>
+                </div>
+                <img src="./test.jpg" alt="" class="image" />
+              </div>
+              <div class="flex pt-6 justify-end">
+                <p-button
+                  label="Próximo"
+                  icon="pi pi-arrow-right"
+                  iconPos="right"
+                  (onClick)="activateCallback(2)"
+                />
+              </div>
+            </div>
+          </ng-template>
+        </p-step-panel>
+
+        <p-step-panel [value]="2">
+          <ng-template #content let-activateCallback="activateCallback">
+            <div class="flex flex-col">
+              <div
+                class="container_panel border-2 border-dashed border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 flex-auto flex justify-center items-center font-medium"
+              >
+                <div class="content">
+                  <p>
+                    Use ferramentas básicas, como um smartphone ou uma câmera
+                    DSLR. Providencie um bom microfone e você já pode começar.
+                    Se você não gosta de aparecer na câmera, basta capturar sua
+                    tela. Seja como for, recomendamos ter pelo menos duas horas
+                    de vídeo para um bom curso.
+                  </p>
+                </div>
+                <img src="./test.jpg" alt="" class="image" />
+              </div>
+            </div>
+            <div class="flex pt-6 justify-between">
+              <p-button
+                label="Anterior"
+                severity="secondary"
+                icon="pi pi-arrow-left"
+                (onClick)="activateCallback(1)"
+              />
+              <p-button
+                label="Próximo"
+                icon="pi pi-arrow-right"
+                iconPos="right"
+                (onClick)="activateCallback(3)"
+              />
+            </div>
+          </ng-template>
+        </p-step-panel>
+
+        <p-step-panel [value]="3">
+          <ng-template #content let-activateCallback="activateCallback">
+            <div class="flex flex-col">
+              <div
+                class="container_panel border-2 border-dashed border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 flex-auto flex justify-center items-center font-medium"
+              >
+                <div class="content">
+                  <p>
+                    Promova seu curso em mídias sociais e redes profissionais
+                    para receber suas primeiras classificações e avaliações. Seu
+                    curso poderá ser encontrado na aba "Meus cursos".
+                  </p>
+                </div>
+                <img src="./test.jpg" alt="" class="image" />
+              </div>
+            </div>
+            <div class="flex pt-6 justify-start">
+              <p-button
+                label="Anterior"
+                icon="pi pi-arrow-left"
+                iconPos="right"
+                (onClick)="activateCallback(2)"
+              />
+            </div>
+          </ng-template>
+        </p-step-panel>
+      </p-step-panels>
+    </p-stepper>
+  </section>
+  <div class="divider"></div>
+  <section class="container_footer">
+    <div>
+      <h1 class="title">Torne-se um professor hoje</h1>
+      <p>Junte-se a nossa plataforma agora mesmo.</p>
+    </div>
+    <div class="container_button">
+      <p-button label="Começar agora" size="large" routerLink="register" />
+    </div>
+  </section>
+</main>

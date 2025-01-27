@@ -1,0 +1,72 @@
+@use 'classes';
+@use 'variables' as var;
+
+.title {
+  font-size: 2.2em;
+  font-weight: 600;
+
+  text-align: center;
+}
+
+.container_header {
+  background-size: auto;
+  background-repeat: repeat;
+  padding: 15vh 0 0 0;
+
+  .container_card {
+    padding-bottom: 8vh;
+
+    .card {
+      background-color: #303030;
+      width: 25rem;
+      margin-left: 2rem;
+      padding: 1rem;
+      border-radius: 5px;
+
+    }
+
+    & .container_button {
+      padding-top: 1rem;
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+}
+
+
+.container_start {
+  width: 70vw;
+  padding: 10vh 0;
+  margin: auto;
+
+  .container_panel {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    padding: 5rem 0;
+
+    & .content {
+      width: 30rem;
+
+      font-size: 1.1em;
+      text-align: justify;
+    }
+
+
+    & .image {
+      width: 30%;
+    }
+  }
+}
+
+
+.container_footer {
+  padding: 10vh 0;
+  text-align: center;
+
+  &>.container_button {
+    padding-top: 1rem;
+  }
+}

@@ -5,9 +5,10 @@
 @import "primeicons/primeicons.css";
 
 * {
-    font-family: variables.$font-family;
+  font-family: variables.$font-family;
+  color: #fff;
 }
 
 body {
-    background-color: variables.$bg-color;
+  background-color: variables.$bg-color;
 }

@@ -111,9 +111,9 @@ export class HeaderComponent {
             command: () => console.log('Aprendizado'),
           },
           {
-            label: 'Seja um professor',
+            label: 'Ensine na TecFlix',
             icon: 'pi pi-book',
-            routerLink: '/professor-register',
+            routerLink: '/teaching',
           },
           {
             separator: true,
@@ -159,7 +159,7 @@ export class HeaderComponent {
           console.log(response);
           return;
         }
-        this.mapTags(response);
+        if (response.length != undefined) this.mapTags(response);
         return;
       },
       error: (error) => {

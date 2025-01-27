@@ -1,133 +1,142 @@
 @use 'variables' as variables;
 
 .container_footer {
-    cursor: default;
+  cursor: default;
 
-    background-color: variables.$primary-color;
-    color: white;
+  background-color: variables.$primary-color;
+  color: white;
 
-    padding: 3.125rem 1.875rem 1.875rem 1.875rem;
+  padding: 3.125rem 1.875rem 1.875rem 1.875rem;
 }
 
 .logo {
-    font-size: 1.7em;
-    font-weight: 600;
-    text-transform: uppercase;
-    padding-bottom: 1.25rem;
+  font-size: 1.7em;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding-bottom: 1.25rem;
 
-    font-family: variables.$font-family-logo;
+  font-family: variables.$font-family-logo;
 }
 
 .mid_container {
-    display: flex;
-    justify-content: space-between;
-    align-items: start;
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
 
-    padding-bottom: 6.25rem;
+  padding-bottom: 6.25rem;
 
-    & > * {
-        width: 11.5rem;
+  &>* {
+    width: 11.5rem;
+  }
+
+  .social_title,
+  .contact-title {
+    font-weight: 500;
+  }
+
+  .text_container,
+  .social_title,
+  .contact-title {
+    padding-bottom: 0.625rem;
+  }
+
+  .slogan {
+    line-height: 1.3em;
+  }
+
+  .button {
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 1em;
+    font-weight: 500;
+
+    outline: none;
+    border: 0.094rem solid #fff;
+    border-radius: 0.188rem;
+
+    padding: 0.313rem 0.438rem;
+
+    color: #fff;
+
+    transition-duration: 0.4s;
+
+    &:hover {
+      background-color: #fff;
+      color: variables.$primary-color;
+    }
+  }
+
+  .social_container {
+    .social_title {
+      text-transform: uppercase;
     }
 
-    .social_title, .contact-title {
-        font-weight: 500;
-    }
+    .social_icons {
+      display: flex;
+      align-items: center;
 
-    .text_container, .social_title, .contact-title {
-        padding-bottom: 0.625rem;
-    }
-
-    .slogan {
-        line-height: 1.3em;
-    }
-
-    .button {
+      .pi {
         cursor: pointer;
-        text-transform: uppercase;
-        font-size: 1em;
-        font-weight: 500;
 
-        outline: none;
-        border: 0.094rem solid #fff;
-        border-radius: 0.188rem;
-        
-        padding: 0.313rem 0.438rem;
+        font-size: 1.2em;
 
-        color: #fff;
+        padding: 0.313rem;
 
-        transition-duration: 0.4s;
+        border: 0.063rem solid #fff;
+        border-radius: 50%;
 
-        &:hover {
-            background-color: #fff;
-            color: variables.$primary-color;
-        }
+        margin-right: 0.313rem;
+      }
+
     }
+  }
 
-    .social_container {
-        .social_title {
-            text-transform: uppercase;
-        }
-        .social_icons {
-            display: flex;
-            align-items: center;
-            .pi {
-                cursor: pointer;
-
-                font-size: 1.2em;
-
-                padding: 0.313rem;
-
-                border: 0.063rem solid #fff;
-                border-radius: 50%;
-
-                margin-right: 0.313rem;
-            }
-
-        }
-    }
-
-    .contact {
-        font-weight: 600;
-    }
+  .contact {
+    font-weight: 600;
+  }
 }
 
 .lower_container {
+  display: flex;
+  justify-content: space-between;
+
+  padding-top: 1.875rem;
+
+  .footer_links_container {
     display: flex;
-    justify-content: space-between;
-    
-    padding-top: 1.875rem;
 
-    .footer_links_container {
-        display: flex;
+    font-size: 0.8em;
+    font-weight: 600;
+    text-transform: uppercase;
 
-        font-size: 0.8em;
-        font-weight: 600;
-        text-transform: uppercase;
-        .footer_link {
-            cursor: pointer;
-            padding-right: 0.625rem;
-        }
+    .footer_link {
+      cursor: pointer;
+      padding-right: 0.625rem;
     }
+  }
 
-    .copyright {
-        font-size: 0.8em;
-    }
+  .copyright {
+    font-size: 0.8em;
+  }
 }
 
 @media(max-width: 768px) {
-    .mid_container {
-        flex-wrap: wrap;
-        & > * {
-            padding-bottom: 1rem;
-        }
+  .mid_container {
+    flex-wrap: wrap;
+
+    &>* {
+      padding-bottom: 1rem;
     }
+  }
 }
 
 @media(max-width: 480px) {
-    .mid_container {
-        flex-flow: column;
-        & > * {
-            padding-bottom: 2rem;
-        }
+  .mid_container {
+    flex-flow: column;
+    padding-bottom: 0;
+
+    &>* {
+      padding-bottom: 2rem;
     }
+  }
 }

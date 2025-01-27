@@ -18,7 +18,8 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { AccountComponent } from './pages/account/account.component';
 import { ForgotPasswordComponent } from './pages/auth/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './pages/auth/reset-password/reset-password.component';
-import { ProfessorRegisterComponent } from './pages/professor-register/professor-register.component';
+import { TeachingComponent } from './pages/teaching/teaching/teaching.component';
+import { ProfessorRegisterComponent } from './pages/teaching/professor-register/professor-register.component';
 
 export const routes: Routes = [
   {
@@ -94,7 +95,7 @@ export const routes: Routes = [
       {
         path: '',
         loadComponent: () =>
-          import('./pages/home/home.component').then((c) => HomeComponent),
+          import('./pages/home/home.component').then(() => HomeComponent),
       },
     ],
     canActivate: [authGuard],
@@ -152,14 +153,21 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
-    path: 'professor-register',
+    path: 'teaching',
     component: LoggedLayoutComponent,
     children: [
       {
         path: '',
         loadComponent: () =>
+          import('./pages/teaching/teaching/teaching.component').then(
+            () => TeachingComponent,
+          ),
+      },
+      {
+        path: 'register',
+        loadComponent: () =>
           import(
-            './pages/professor-register/professor-register.component'
+            './pages/teaching/professor-register/professor-register.component'
           ).then(() => ProfessorRegisterComponent),
       },
     ],

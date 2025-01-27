@@ -1,27 +1,82 @@
-@use './variables.scss' as variables;
+@use 'variables' as var;
 
 $button-hover-color: #0f9b7c;
 
 .button {
-    width: variables.$input-width;
-    height: variables.$input-height;
-    background-color: variables.$seccondary-color;
-    border-radius: 10px;
-    box-shadow: var(--p-inputtext-shadow);
-    transition-duration: 0.3s;
+  width: var.$input-width;
+  height: var.$input-height;
+  background-color: var.$seccondary-color;
+  border-radius: 10px;
+  box-shadow: var(--p-inputtext-shadow);
+  transition-duration: 0.3s;
 
-    &:hover {
-        background-color: $button-hover-color;
-    }
+  &:hover {
+    background-color: $button-hover-color;
+  }
 
-    &:disabled {
-        background-color: var(--p-emerald-700);
-    }
+  &:disabled {
+    background-color: var(--p-emerald-700);
+  }
+}
+
+.divider {
+  background-color: var.$seccondary-color;
+  width: 40px;
+  height: 8px;
+
+  border-radius: 10px;
+
+  margin: auto;
 }
 
 .center {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+.container_mouse {
+  padding: 1rem 0;
+  display: flex;
+  justify-content: center;
+
+  & .mouse {
+    position: relative;
+    overflow: hidden;
+    width: 25px;
+    height: 40px;
+    border: 2px solid #303030;
+    border-radius: 60px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      width: 6px;
+      height: 6px;
+      background-color: #303030;
+      border-radius: 50%;
+      animation: drop 2s ease-in infinite;
+      transform: translateX(-50%);
+    }
+
+    @keyframes drop {
+      0% {
+        top: -20px;
+        opacity: 1;
+      }
+
+      80% {
+        top: calc(100% - 20px);
+        opacity: 0.5;
+      }
+
+      100% {
+        top: 100%;
+        opacity: 0;
+      }
+    }
+  }
 }
