@@ -35,7 +35,6 @@ public class ProfessorDataService {
     data.setUser(user);
     data.setBiography(data.getBiography().trim());
     data.setContact(data.getContact().trim());
-    data.setCpf(data.getCpf().trim());
     data.setProfileImage(data.getProfileImage().trim());
     data.setCreatedAt(createdAt);
 

@@ -131,7 +131,7 @@ public class UserController {
                           @ExampleObject(
                               value =
                                   """
-{ "professorData": { "cpf": "string", "birthDate": "1990-10-10", "gender": "MALE", "contact": "string", "occupation": "PROFESSOR", "biography": "string", "profileImage": "string" }, "socials": [{"id": "long"}] }
+{ "professorData": { "birthDate": "1990-10-10", "gender": "MALE", "contact": "string", "occupation": "PROFESSOR", "biography": "string", "profileImage": "string" }, "socials": [{"id": "long"}] }
 """))))
   @ApiResponses(
       value = {

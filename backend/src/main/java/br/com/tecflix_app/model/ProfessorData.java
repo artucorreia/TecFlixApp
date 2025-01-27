@@ -19,9 +19,6 @@ public class ProfessorData implements Serializable {
   @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, unique = true)
   private User user;
 
-  @Column(nullable = false, length = 11, unique = true)
-  private String cpf;
-
   @Column(nullable = false)
   private LocalDate birthdate;
 
@@ -48,7 +45,6 @@ public class ProfessorData implements Serializable {
   public ProfessorData(
       final Long id,
       final User user,
-      final String cpf,
       final LocalDate birthdate,
       final Gender gender,
       final String contact,
@@ -58,7 +54,6 @@ public class ProfessorData implements Serializable {
       final LocalDateTime createdAt) {
     this.id = id;
     this.user = user;
-    this.cpf = cpf;
     this.birthdate = birthdate;
     this.gender = gender;
     this.contact = contact;
@@ -82,14 +77,6 @@ public class ProfessorData implements Serializable {
 
   public void setUser(User user) {
     this.user = user;
-  }
-
-  public String getCpf() {
-    return cpf;
-  }
-
-  public void setCpf(String cpf) {
-    this.cpf = cpf;
   }
 
   public LocalDate getBirthdate() {

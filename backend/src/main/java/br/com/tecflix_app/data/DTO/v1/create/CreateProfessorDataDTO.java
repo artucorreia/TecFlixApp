@@ -13,11 +13,6 @@ import java.time.LocalDateTime;
 public class CreateProfessorDataDTO {
   @JsonIgnore private UserDTO user;
 
-  @NotNull
-  @NotBlank
-  @Size(min = 11, max = 11)
-  private String cpf;
-
   @NotNull private LocalDate birthdate;
 
   @NotNull private Gender gender;
@@ -42,7 +37,6 @@ public class CreateProfessorDataDTO {
 
   public CreateProfessorDataDTO(
       UserDTO user,
-      @NotNull @NotBlank @Size(min = 11, max = 11) String cpf,
       @NotNull LocalDate birthdate,
       @NotNull Gender gender,
       @NotNull @NotBlank @Size(min = 13, max = 13) String contact,
@@ -51,7 +45,6 @@ public class CreateProfessorDataDTO {
       @Size(max = 255) String profileImage,
       LocalDateTime createdAt) {
     this.user = user;
-    this.cpf = cpf;
     this.birthdate = birthdate;
     this.gender = gender;
     this.contact = contact;
@@ -67,14 +60,6 @@ public class CreateProfessorDataDTO {
 
   public void setUser(UserDTO user) {
     this.user = user;
-  }
-
-  public String getCpf() {
-    return cpf;
-  }
-
-  public void setCpf(String cpf) {
-    this.cpf = cpf;
   }
 
   public LocalDate getBirthdate() {
@@ -133,4 +118,3 @@ public class CreateProfessorDataDTO {
     this.createdAt = createdAt;
   }
 }
-

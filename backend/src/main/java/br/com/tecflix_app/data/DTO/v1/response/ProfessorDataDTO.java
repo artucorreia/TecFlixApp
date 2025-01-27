@@ -6,7 +6,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class ProfessorDataDTO {
-  private String cpf;
   private LocalDate birthdate;
   private Gender gender;
   private String contact;
@@ -18,7 +17,6 @@ public class ProfessorDataDTO {
   public ProfessorDataDTO() {}
 
   public ProfessorDataDTO(
-      String cpf,
       LocalDate birthdate,
       Gender gender,
       String contact,
@@ -26,7 +24,6 @@ public class ProfessorDataDTO {
       String biography,
       String profileImage,
       LocalDateTime createdAt) {
-    this.cpf = cpf;
     this.birthdate = birthdate;
     this.gender = gender;
     this.contact = contact;
@@ -34,14 +31,6 @@ public class ProfessorDataDTO {
     this.biography = biography;
     this.profileImage = profileImage;
     this.createdAt = createdAt;
-  }
-
-  public String getCpf() {
-    return cpf;
-  }
-
-  public void setCpf(String cpf) {
-    this.cpf = cpf;
   }
 
   public LocalDate getBirthdate() {
@@ -100,4 +89,3 @@ public class ProfessorDataDTO {
     this.createdAt = createdAt;
   }
 }
-
