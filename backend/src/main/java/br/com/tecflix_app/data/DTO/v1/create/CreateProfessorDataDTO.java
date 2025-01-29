@@ -19,13 +19,13 @@ public class CreateProfessorDataDTO {
 
   @NotNull
   @NotBlank
-  @Size(min = 13, max = 13)
+  @Size(min = 11, max = 25)
   private String contact;
 
   @NotNull private Occupation occupation;
 
   @NotNull
-  @Size(min = 10, max = 1000)
+  @Size(min = 10, max = 2000)
   private String biography;
 
   @Size(max = 255)
@@ -39,9 +39,9 @@ public class CreateProfessorDataDTO {
       UserDTO user,
       @NotNull LocalDate birthdate,
       @NotNull Gender gender,
-      @NotNull @NotBlank @Size(min = 13, max = 13) String contact,
+      @NotNull @NotBlank @Size(min = 11, max = 25) String contact,
       @NotNull Occupation occupation,
-      @NotNull @Size(min = 10, max = 1000) String biography,
+      @NotNull @Size(min = 10, max = 2000) String biography,
       @Size(max = 255) String profileImage,
       LocalDateTime createdAt) {
     this.user = user;

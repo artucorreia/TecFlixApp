@@ -160,12 +160,24 @@ public class Course implements Serializable {
     return totalReviews;
   }
 
+  public void setTotalReviews(Long totalReviews) {
+    this.totalReviews = totalReviews;
+  }
+
   public Double getAverageScore() {
     return averageScore;
   }
 
   public void setAverageScore(Double averageScore) {
     this.averageScore = averageScore;
+  }
+
+  public User getProfessor() {
+    return professor;
+  }
+
+  public void setProfessor(User professor) {
+    this.professor = professor;
   }
 
   public List<User> getStudents() {

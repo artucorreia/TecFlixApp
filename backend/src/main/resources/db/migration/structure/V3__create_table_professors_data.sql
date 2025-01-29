@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS professors_data(
     biography TEXT NOT NULL,
     birthdate DATE NOT NULL,
     gender VARCHAR(8) NOT NULL,
-    contact VARCHAR(13) UNIQUE NOT NULL,
+    contact VARCHAR(25) UNIQUE NOT NULL,
     profile_image VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL  
 );
