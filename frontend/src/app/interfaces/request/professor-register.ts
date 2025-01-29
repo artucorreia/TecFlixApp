@@ -1,21 +1,18 @@
-import { Gender } from '../../enums/gender';
-import { Occupation } from '../../enums/occupation';
-
 export interface ProfessorRegister {
   professorData: ProfessorData;
-  socials: Social[];
+  socials: Social[] | null;
 }
 
 interface ProfessorData {
-  birthdate: Date;
-  gender: Gender;
-  contact: string;
-  occupation: Occupation;
-  biography: string;
-  profileImage: string;
+  birthdate: string | null;
+  gender: string | null;
+  contact: string | null;
+  occupation: string | null;
+  biography: string | null;
+  profileImage: string | null;
 }
 
 interface Social {
-  name: string;
-  url: string;
+  name: string | null;
+  url: string | null;
 }

@@ -1,4 +1,4 @@
 export enum Occupation {
-    PROFESSOR = 'professor',
-    DEVELOPER = 'developer',
+  PROFESSOR = 'professor',
+  DEVELOPER = 'desenvolvedor',
 }

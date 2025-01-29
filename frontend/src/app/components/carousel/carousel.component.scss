@@ -1,46 +1,52 @@
 @use 'variables' as variables;
 
 .container {
-    padding-top: 2rem;
-    & > * {
-        width: 100vw;
-    }
+  padding-top: 2rem;
+
+  &>* {
+    width: 100vw;
+  }
 }
 
 .title {
-    font-size: 2em;
-    color: variables.$primary-color;
-    padding-left: 1.5rem;
+  font-size: 2em;
+  color: variables.$primary-color;
+  padding-left: 1.5rem;
+}
+
+.container_course {
+  max-width: 25rem;
 }
 
 .container_image {
-    transition-duration: .2s;
-    &:hover {
-        cursor: pointer;
-        filter: brightness(90%);
-    }
+  transition-duration: .2s;
+
+  &:hover {
+    cursor: pointer;
+    filter: brightness(90%);
+  }
 }
 
 .container_rating {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .score {
-    width: 1.7rem;
-    height: 1.1em;
-    color: variables.$seccondary-color;
-    font-size: .9em;
+  width: 1.7rem;
+  height: 1.1em;
+  color: variables.$seccondary-color;
+  font-size: .9em;
 }
 
 .total_reviews {
-    font-size: .8em;
-    padding-left: 0.625rem;
-    color: gray;    
+  font-size: .8em;
+  padding-left: 0.625rem;
+  color: gray;
 }
 
 .url {
-    color: gray;
-    font-weight: 400;
+  color: gray;
+  font-weight: 400;
 }

@@ -1,0 +1,82 @@
+<main class="container_form">
+  <h2>Dados do professor</h2>
+  <form [formGroup]="form">
+    <p-iftalabel>
+      <p-datepicker
+        [minDate]="minDate"
+        [maxDate]="maxDate"
+        formControlName="birthDate"
+        dateFormat="dd/mm/yy"
+      />
+      <label for="username">Data de Nascimento</label>
+    </p-iftalabel>
+
+    <p-iftalabel>
+      <p-inputmask
+        formControlName="contact"
+        mask="(99) 9 9999-9999"
+        placeholder="(99) 9 9999-9999"
+      />
+      <label>Contato</label>
+    </p-iftalabel>
+
+    <div class="container_gender">
+      <label for="">Gênero</label>
+      <div class="flex flex-wrap gap-4">
+        @for (gender of genders; track $index) {
+          <div class="flex items-center">
+            <p-radiobutton
+              name="gender"
+              [value]="gender"
+              formControlName="gender"
+              [inputId]="gender.name"
+            />
+            <label [for]="gender.name" class="ml-2 gender">{{
+              gender.name
+            }}</label>
+          </div>
+        }
+      </div>
+    </div>
+    <p-iftalabel>
+      <p-select
+        [options]="ocupations"
+        formControlName="occupation"
+        optionLabel="name"
+        placeholder="Selecione sua ocupação"
+        class="w-full md:w-56"
+      />
+      <label for="">Ocupação</label>
+    </p-iftalabel>
+    <p-iftalabel>
+      <textarea
+        pTextarea
+        formControlName="biography"
+        rows="8"
+        cols="60"
+        [autoResize]="true"
+        style="resize: none"
+        minlength="10"
+        maxlength="2000"
+        placeholder="Se apresente e conte um pouco sobre sua trajetória"
+      ></textarea>
+
+      <label for="">Biografia</label>
+    </p-iftalabel>
+
+    <div>
+      <label for="profile_image">Imagem de Perfil</label>
+      <p-fileupload
+        mode="basic"
+        name="demo[]"
+        chooseIcon="pi pi-upload"
+        url="https://www.primefaces.org/cdn/api/upload.php"
+        accept="image/*"
+        maxFileSize="3000000"
+        (onUpload)="upload($event)"
+        [auto]="true"
+        chooseLabel="Selecionar"
+      />
+    </div>
+  </form>
+</main>
