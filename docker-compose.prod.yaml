@@ -37,8 +37,8 @@ services:
     restart: always
     networks:
       - app
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+    # volumes:
+    #   - postgres_data:/var/lib/postgresql/data
 
   # nginx
   nginx:
@@ -51,6 +51,7 @@ services:
       - ./frontend/dist/tecflix:/usr/share/nginx/html
       # - ./frontend/mime.types:/etc/nginx/mime.types
       - ./data/nginx:/etc/nginx/conf.d
+      - /home/artu/coisa/upload-dir:/usr/share/nginx/media
       # - ./data/certbot/conf:/etc/letsencrypt
       # - ./data/certbot/www:/var/www/certbot
     command: '/bin/sh -c ''while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
@@ -62,8 +63,8 @@ services:
       - backend
     restart: unless-stopped
 
-volumes:
-  postgres_data:
+# volumes:
+#  postgres_data:
 
 networks:
   app:
