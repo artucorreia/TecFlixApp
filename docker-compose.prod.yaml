@@ -37,8 +37,8 @@ services:
     restart: always
     networks:
       - app
-    # volumes:
-    #   - postgres_data:/var/lib/postgresql/data
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
   # nginx
   nginx:
@@ -63,8 +63,8 @@ services:
       - backend
     restart: unless-stopped
 
-# volumes:
-#  postgres_data:
+volumes:
+ postgres_data:
 
 networks:
   app:
