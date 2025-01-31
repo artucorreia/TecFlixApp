@@ -17,6 +17,10 @@ email:
     validation:
       time: ${CODE_VALIDATION_TIME:600000000000} # 10 minutes in nanos
 
+file:
+  upload-dir: ${UPLOAD_DIR:/home/artu/tecflix/media} # absolute path of the folder where the profile images and classes will be saved
+  resources-path: /media/ # path to access media by nginx
+
 security:
   api:
     key: ${API_KEY:password}
@@ -54,6 +58,12 @@ spring:
           auth: true
           starttls:
             enable: true
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 100MB
+      max-request-size: 200MB
 
 spring-doc:
   pathsToMatch:
