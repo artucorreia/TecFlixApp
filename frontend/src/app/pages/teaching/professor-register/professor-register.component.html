@@ -90,12 +90,14 @@
               ></app-professor-data-form>
             </div>
             <div class="flex pt-6 justify-end">
-              <!-- form.invalid form.disabled -->
               <p-button
                 (onClick)="activateCallback(2)"
                 label="Próximo"
                 icon="pi pi-arrow-right"
                 iconPos="right"
+                [disabled]="
+                  professorDataForm.invalid || professorDataForm.disabled
+                "
               />
             </div>
           </ng-template>
@@ -127,6 +129,9 @@
                 label="Próximo"
                 icon="pi pi-arrow-right"
                 iconPos="right"
+                [disabled]="
+                  professorDataForm.invalid || professorDataForm.disabled
+                "
               />
             </div>
           </ng-template>

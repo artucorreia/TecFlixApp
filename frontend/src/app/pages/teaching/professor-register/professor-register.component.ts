@@ -20,6 +20,7 @@ import { MessageUtilService } from '../../../services/util/message-util.service'
 import { Social } from '../../../interfaces/response/social';
 import { ProfessorRegister } from '../../../interfaces/request/professor-register';
 import { ProfessorSocialsFormComponent } from '../../../components/professor-socials-form/professor-socials-form.component';
+import { FileService } from '../../../services/api/file.service';
 
 // local interface
 interface IEnum {
@@ -45,6 +46,7 @@ interface IEnum {
   styleUrl: './professor-register.component.scss',
 })
 export class ProfessorRegisterComponent {
+  private _fileService: FileService = inject(FileService);
   private _userService: UserService = inject(UserService);
   private _apiUtil: ApiUtilService = inject(ApiUtilService);
   private _fb: FormBuilder = inject(FormBuilder);
@@ -81,9 +83,13 @@ export class ProfessorRegisterComponent {
   }
 
   registerProfessor() {
-    let data: ProfessorRegister = this.mapProfessorRegister('');
-    console.log(data);
-    console.log('registrando professor');
+    const profileImage: File | null =
+      this.professorDataForm.controls['profileImage'].value;
+
+    if (profileImage) return this.registerWhitProfilmeImage(profileImage);
+
+    const data: ProfessorRegister = this.mapProfessorRegister('');
+    return this.register(data);
   }
 
   private mapProfessorRegister(profileImage: string): ProfessorRegister {
@@ -108,6 +114,25 @@ export class ProfessorRegisterComponent {
   private formatDate(birthDate: Date | null): string {
     if (!birthDate) return '';
     return birthDate.toISOString().split('T')[0];
+  }
+
+  private registerWhitProfilmeImage(profileImage: File) {
+    this._fileService.uploadFile(profileImage).subscribe({
+      next: (response) => {
+        if (this._apiUtil.isApiError(response)) {
+          this._messageService.display({
+            summary: 'Error',
+            severity: 'error',
+            detail: response.title,
+          });
+          return;
+        }
+        this.register(this.mapProfessorRegister(response.resourcePath));
+        return;
+      },
+
+      error: (error) => console.log('unexpected error', error),
+    });
   }
 
   private register(data: ProfessorRegister) {

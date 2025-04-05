@@ -105,5 +105,6 @@ export class ProfessorDataFormComponent {
   // NOTE: Setting the form's profileImage field
   public upload(event: FileUploadEvent): void {
     this.form.controls['profileImage'].setValue(event.files[0]);
+    console.log('Upload completed');
   }
 }
