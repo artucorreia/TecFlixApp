@@ -19,7 +19,7 @@ email:
       time: ${CODE_VALIDATION_TIME:600000000000} # 10 minutes in nanos
 
 file:
-  upload-dir: ${UPLOAD_DIR:/home/artu/tecflix/media} # absolute path of the folder where the profile images and classes will be saved
+  upload-dir: ${UPLOAD_DIR:./../../tecflix/media} # folder where app images will be saved
   resources-path: /media/ # path to access media by nginx
 
 security:

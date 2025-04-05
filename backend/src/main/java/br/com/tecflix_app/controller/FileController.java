@@ -21,10 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
-@RequestMapping("api/v1/file")
+@RequestMapping("api/v1/files")
 @Tag(name = "File", description = "Endpoints for manager files")
 public class FileController {
   private final FileStorageService service;
@@ -62,11 +61,7 @@ public class FileController {
     String[] subStrings = {UUID.randomUUID().toString(), LocalDateTime.now().toString()};
 
     String fileName = service.storeFile(file, FileNameGenerator.generateFileName(subStrings));
-    String resourcePath =
-        ServletUriComponentsBuilder.fromCurrentContextPath()
-            .path(config.getResourcesPath())
-            .path(fileName)
-            .toUriString();
+    String resourcePath = config.getUploadDir() + '/' + fileName;
 
     return ResponseEntity.ok(
         new UploadFileResponseDTO(fileName, resourcePath, file.getContentType(), file.getSize()));
