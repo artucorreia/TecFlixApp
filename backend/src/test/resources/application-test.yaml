@@ -1,3 +1,18 @@
+website:
+  url: http://localhost:4200
+email:
+  code:
+    validation:
+      time: 600000000000
+security:
+  api:
+    key: password
+  jwt:
+    token:
+      secret: mySecret
+      duration: 43200000
+      refresh:
+        duration: 604800000
 server:
   port: 8081
 spring:
@@ -16,3 +31,14 @@ spring:
   flyway:
     locations: classpath:db/migration/structure
     ignore-migration-patterns: '*:missing'
+  mail:
+    host: sandbox.smtp.mailtrap.io
+    port: 587
+    username: user
+    password: password
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true

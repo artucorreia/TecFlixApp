@@ -1,0 +1,22 @@
+services:
+  # postgres
+  postgres:
+    image: postgres:17-alpine
+    container_name: postgres
+    ports:
+      - "2345:5432"
+    environment:
+      - POSTGRES_DB=tecflixapp_db
+      - POSTGRES_USER=developer
+      - POSTGRES_PASSWORD=01092209
+    restart: on-failure:2
+    networks:
+      - app
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+
+networks:
+  app:

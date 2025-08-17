@@ -7,18 +7,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.stereotype.Service;
 
-import br.com.tecflix_app.data.DTO.v1.response.CustomPagedResponse;
-import br.com.tecflix_app.data.DTO.v1.response.PageMetadata;
+import br.com.tecflix_app.shared.dto.v1.CustomPagedResponse;
+import br.com.tecflix_app.shared.dto.v1.PageMetadata;
 
 @Service
 public class CustomPagedResourcesAssembler<T extends RepresentationModel<T>> {
-        public CustomPagedResponse<T> toModel(Page<T> page, Map<String, String> links, Pageable pageable) {
-                return new CustomPagedResponse<T>(page.getContent(), links,
-                                createPageMetadata(page));
-        }
+  public CustomPagedResponse<T> toModel(
+      Page<T> page, Map<String, String> links, Pageable pageable) {
+    return new CustomPagedResponse<T>(page.getContent(), links, createPageMetadata(page));
+  }
 
-        private PageMetadata createPageMetadata(Page<T> page) {
-                return new PageMetadata(page.getSize(), page.getTotalElements(), page.getTotalPages(),
-                                page.getNumber());
-        }
+  private PageMetadata createPageMetadata(Page<T> page) {
+    return new PageMetadata(
+        page.getSize(), page.getTotalElements(), page.getTotalPages(), page.getNumber());
+  }
 }

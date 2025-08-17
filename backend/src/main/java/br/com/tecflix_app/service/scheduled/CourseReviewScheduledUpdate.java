@@ -7,7 +7,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.tecflix_app.repository.CourseRepository;
+import br.com.tecflix_app.modules.course.infra.persistence.CourseRepository;
 
 @Component
 public class CourseReviewScheduledUpdate {

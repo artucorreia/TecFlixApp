@@ -1,0 +1,39 @@
+package br.com.tecflix_app.modules.user.infra.persistence;
+
+import java.util.Optional;
+import java.util.UUID;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Repository;
+
+import br.com.tecflix_app.modules.user.application.domain.enums.Role;
+import br.com.tecflix_app.modules.user.infra.persistence.projections.UserAccountProjection;
+import br.com.tecflix_app.modules.user.infra.persistence.projections.UserBasicProjection;
+import br.com.tecflix_app.modules.user.infra.persistence.projections.UserProfileProjection;
+
+@Repository
+public interface UserRepository extends JpaRepository<UserEntity, UUID> {
+
+  Optional<UserAccountProjection> findDataById(UUID id);
+
+  @Query("SELECT u FROM UserEntity u WHERE u.email = :email")
+  UserDetails findUserDetailsByEmail(String email);
+
+  @Query("SELECT u.active FROM UserEntity u WHERE u.email = :email")
+  Optional<Boolean> findActiveByEmail(String email);
+
+  @Query("SELECT u.email FROM UserEntity u WHERE u.id = :id")
+  Optional<String> findEmailById(UUID id);
+
+  @Query("SELECT u.role FROM UserEntity u WHERE u.id = :id")
+  Optional<Role> findRoleById(UUID id);
+
+  @Query("SELECT u.id FROM UserEntity u WHERE u.email = :email")
+  Optional<UUID> findIdByEmail(String email);
+
+  Optional<UserBasicProjection> findByEmail(String email);
+
+  Optional<UserProfileProjection> findProfileById(UUID id);
+}
