@@ -13,20 +13,20 @@ import br.com.tecflix_app.modules.shared.exception.general.InaccessibleResource;
 import br.com.tecflix_app.modules.shared.exception.general.RepeatedDataException;
 import br.com.tecflix_app.modules.shared.exception.general.ResourceNotFoundException;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-@RestController
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   /*
    * Validators Exceptions
@@ -39,16 +39,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
       HttpHeaders headers,
       HttpStatusCode status,
       WebRequest request) {
-    List<String> errorMessages =
-        ex.getBindingResult().getFieldErrors().stream()
-            .map(error -> error.getField() + ": " + error.getDefaultMessage())
-            .toList();
+    Map<String, String> errors = new HashMap<>();
+    for (var exception : ex.getBindingResult().getFieldErrors()) {
+      errors.put(exception.getField(), exception.getDefaultMessage());
+    }
 
-    ExceptionResponse response =
-        ExceptionResponse.builder()
+    MethodArgumentNotValidExceptionResponse response =
+        MethodArgumentNotValidExceptionResponse.builder()
+            .success(false)
+            .message("Erro na validação dos campos")
+            .uri(request.getDescription(false))
+            .code(HttpStatus.BAD_REQUEST.value())
+            .fields(errors)
             .timestamp(LocalDateTime.now())
-            .title(String.join(", ", errorMessages))
-            .details(request.getDescription(false))
             .build();
 
     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
@@ -63,9 +66,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
       Exception exception, WebRequest request) {
     ExceptionResponse response =
         ExceptionResponse.builder()
+            .success(false)
+            .message(exception.getMessage())
+            .uri(request.getDescription(false))
+            .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
             .timestamp(LocalDateTime.now())
-            .title(exception.getMessage())
-            .details(request.getDescription(false))
             .build();
     return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
   }
@@ -75,9 +80,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
       Exception exception, WebRequest request) {
     ExceptionResponse response =
         ExceptionResponse.builder()
+            .success(false)
+            .message(exception.getMessage())
+            .uri(request.getDescription(false))
+            .code(HttpStatus.NOT_FOUND.value())
             .timestamp(LocalDateTime.now())
-            .title(exception.getMessage())
-            .details(request.getDescription(false))
             .build();
     return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
   }
@@ -87,9 +94,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
       Exception exception, WebRequest request) {
     ExceptionResponse response =
         ExceptionResponse.builder()
+            .success(false)
+            .message(exception.getMessage())
+            .uri(request.getDescription(false))
+            .code(HttpStatus.BAD_REQUEST.value())
             .timestamp(LocalDateTime.now())
-            .title(exception.getMessage())
-            .details(request.getDescription(false))
             .build();
     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
   }
@@ -99,9 +108,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
       Exception exception, WebRequest request) {
     ExceptionResponse response =
         ExceptionResponse.builder()
+            .success(false)
+            .message(exception.getMessage())
+            .uri(request.getDescription(false))
+            .code(HttpStatus.FORBIDDEN.value())
             .timestamp(LocalDateTime.now())
-            .title(exception.getMessage())
-            .details(request.getDescription(false))
             .build();
     return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
   }
@@ -111,9 +122,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
       Exception exception, WebRequest request) {
     ExceptionResponse response =
         ExceptionResponse.builder()
+            .success(false)
+            .message(exception.getMessage())
+            .uri(request.getDescription(false))
+            .code(HttpStatus.BAD_REQUEST.value())
             .timestamp(LocalDateTime.now())
-            .title(exception.getMessage())
-            .details(request.getDescription(false))
             .build();
     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
   }
@@ -127,9 +140,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
       Exception exception, WebRequest request) {
     ExceptionResponse response =
         ExceptionResponse.builder()
+            .success(false)
+            .message(exception.getMessage())
+            .uri(request.getDescription(false))
+            .code(HttpStatus.UNAUTHORIZED.value())
             .timestamp(LocalDateTime.now())
-            .title(exception.getMessage())
-            .details(request.getDescription(false))
             .build();
     return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
   }
@@ -139,9 +154,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
       Exception exception, WebRequest request) {
     ExceptionResponse response =
         ExceptionResponse.builder()
+            .success(false)
+            .message(exception.getMessage())
+            .uri(request.getDescription(false))
+            .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
             .timestamp(LocalDateTime.now())
-            .title(exception.getMessage())
-            .details(request.getDescription(false))
             .build();
     return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
   }
@@ -151,9 +168,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
       Exception exception, WebRequest request) {
     ExceptionResponse response =
         ExceptionResponse.builder()
+            .success(false)
+            .message(exception.getMessage())
+            .uri(request.getDescription(false))
+            .code(HttpStatus.UNAUTHORIZED.value())
             .timestamp(LocalDateTime.now())
-            .title(exception.getMessage())
-            .details(request.getDescription(false))
             .build();
     return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
   }
@@ -163,9 +182,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
       Exception exception, WebRequest request) {
     ExceptionResponse response =
         ExceptionResponse.builder()
+            .success(false)
+            .message(exception.getMessage())
+            .uri(request.getDescription(false))
+            .code(HttpStatus.FORBIDDEN.value())
             .timestamp(LocalDateTime.now())
-            .title(exception.getMessage())
-            .details(request.getDescription(false))
             .build();
     return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
   }
@@ -175,9 +196,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
       Exception exception, WebRequest request) {
     ExceptionResponse response =
         ExceptionResponse.builder()
+            .success(false)
+            .message(exception.getMessage())
+            .uri(request.getDescription(false))
+            .code(HttpStatus.BAD_REQUEST.value())
             .timestamp(LocalDateTime.now())
-            .title(exception.getMessage())
-            .details(request.getDescription(false))
             .build();
     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
   }
@@ -187,9 +210,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
       Exception exception, WebRequest request) {
     ExceptionResponse response =
         ExceptionResponse.builder()
+            .success(false)
+            .message(exception.getMessage())
+            .uri(request.getDescription(false))
+            .code(HttpStatus.BAD_REQUEST.value())
             .timestamp(LocalDateTime.now())
-            .title(exception.getMessage())
-            .details(request.getDescription(false))
             .build();
     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
   }
@@ -199,9 +224,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
       Exception exception, WebRequest request) {
     ExceptionResponse response =
         ExceptionResponse.builder()
+            .success(false)
+            .message(exception.getMessage())
+            .uri(request.getDescription(false))
+            .code(HttpStatus.UNAUTHORIZED.value())
             .timestamp(LocalDateTime.now())
-            .title(exception.getMessage())
-            .details(request.getDescription(false))
             .build();
     return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
   }
@@ -215,9 +242,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
       Exception exception, WebRequest request) {
     ExceptionResponse response =
         ExceptionResponse.builder()
+            .success(false)
+            .message(exception.getMessage())
+            .uri(request.getDescription(false))
+            .code(HttpStatus.BAD_REQUEST.value())
             .timestamp(LocalDateTime.now())
-            .title(exception.getMessage())
-            .details(request.getDescription(false))
             .build();
     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
   }

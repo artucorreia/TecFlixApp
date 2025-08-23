@@ -5,12 +5,12 @@ import java.util.Map;
 
 import lombok.*;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Builder
-public class ExceptionResponse {
+public class MethodArgumentNotValidExceptionResponse {
   private Boolean success;
   private String message;
   private String uri;
