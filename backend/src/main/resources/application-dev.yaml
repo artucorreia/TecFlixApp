@@ -47,8 +47,15 @@ spring:
           starttls:
             enable: true
 
-spring-doc:
-  pathsToMatch:
-    - /api/**
+springdoc:
+  api-docs:
+    path: /api-docs
   swagger-ui:
     use-root-path: true
+    path: /swagger-ui.html
+    operationsSorter: method
+    tagsSorter: alpha
+    tryItOutEnabled: true
+    filter: true
+  pathsToMatch:
+    - /api/**

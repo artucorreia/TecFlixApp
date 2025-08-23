@@ -19,6 +19,8 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.UUID;
@@ -34,6 +36,8 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/auth")
+@SecurityRequirements(
+    value = {@SecurityRequirement(name = "bearerAuth"), @SecurityRequirement(name = "X-API-KEY")})
 @Tag(name = "Authentication", description = "Endpoints for registration and login to the system")
 public class AuthController {
 
@@ -185,7 +189,8 @@ public class AuthController {
         @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
       })
-  public ResponseEntity<GenericResponseDTO<UUID>> register(@Valid @RequestBody RegisterRequest data) {
+  public ResponseEntity<GenericResponseDTO<UUID>> register(
+      @Valid @RequestBody RegisterRequest data) {
     return ResponseEntity.status(HttpStatus.CREATED).body(userService.register(data));
   }
 

@@ -74,15 +74,19 @@ public class SecurityConfig {
                     .hasAnyRole("ADMIN", "PROFESSOR")
 
                     // swagger
-                    .requestMatchers("/v3/api-docs/**")
+                    .requestMatchers("/")
+                    .permitAll()
+                    .requestMatchers("/api-docs/**")
                     .permitAll()
                     .requestMatchers("/swagger-ui/**")
                     .permitAll()
                     .requestMatchers("/swagger-ui.html")
                     .permitAll()
+                    .requestMatchers("/swagger-config")
+                    .permitAll()
+                    .requestMatchers("/v3/api-docs")
+                    .permitAll()
                     .anyRequest()
-
-
                     .hasAnyRole("ADMIN", "USER", "PROFESSOR"))
         // api key filter
         .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)

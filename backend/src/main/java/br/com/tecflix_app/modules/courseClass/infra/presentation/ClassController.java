@@ -3,6 +3,8 @@ package br.com.tecflix_app.modules.courseClass.infra.presentation;
 import java.util.List;
 import java.util.UUID;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,6 +32,8 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("api/v1/classes")
+@SecurityRequirements(
+    value = {@SecurityRequirement(name = "bearerAuth"), @SecurityRequirement(name = "X-API-KEY")})
 @Tag(name = "Class", description = "Endpoints to manager classes")
 public class ClassController {
 
