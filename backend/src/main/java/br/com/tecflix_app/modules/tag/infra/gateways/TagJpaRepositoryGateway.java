@@ -1,7 +1,7 @@
 package br.com.tecflix_app.modules.tag.infra.gateways;
 
 import br.com.tecflix_app.modules.tag.application.domain.entity.Tag;
-import br.com.tecflix_app.modules.tag.application.gateways.TagGateway;
+import br.com.tecflix_app.modules.tag.application.gateways.TagRepositoryGateway;
 import br.com.tecflix_app.modules.tag.infra.gateways.mapper.TagGatewayMapper;
 import br.com.tecflix_app.modules.tag.infra.persistence.TagEntity;
 import br.com.tecflix_app.modules.tag.infra.persistence.TagRepository;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class TagJpaRepositoryGateway implements TagGateway {
+public class TagJpaRepositoryGateway implements TagRepositoryGateway {
 
   private final TagRepository tagRepository;
   private final TagGatewayMapper tagGatewayMapper;
