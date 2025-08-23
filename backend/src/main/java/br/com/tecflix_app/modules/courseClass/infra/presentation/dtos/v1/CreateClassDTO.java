@@ -1,4 +1,4 @@
-package br.com.tecflix_app.modules.courseClass.infra.dtos.v1;
+package br.com.tecflix_app.modules.courseClass.infra.presentation.dtos.v1;
 
 import java.time.LocalDateTime;
 

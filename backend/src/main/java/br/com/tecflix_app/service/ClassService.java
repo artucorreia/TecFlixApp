@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.tecflix_app.modules.courseClass.infra.presentation.ClassController;
-import br.com.tecflix_app.modules.courseClass.infra.dtos.v1.CreateClassDTO;
-import br.com.tecflix_app.modules.courseClass.infra.dtos.v1.ClassDTO;
+import br.com.tecflix_app.modules.courseClass.infra.presentation.dtos.v1.CreateClassDTO;
+import br.com.tecflix_app.modules.courseClass.infra.presentation.dtos.v1.ClassDTO;
 import br.com.tecflix_app.modules.shared.dto.v1.GenericResponseDTO;
 import br.com.tecflix_app.modules.shared.exception.general.ResourceNotFoundException;
 import br.com.tecflix_app.mapper.contract.IMapperService;
