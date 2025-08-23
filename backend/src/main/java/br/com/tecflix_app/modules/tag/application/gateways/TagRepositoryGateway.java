@@ -8,5 +8,7 @@ import java.util.Optional;
 public interface TagRepositoryGateway {
   Optional<Tag> findById(Long tagId);
 
+  List<Tag> findAllById(List<Long> ids);
+
   List<Tag> findAll();
 }

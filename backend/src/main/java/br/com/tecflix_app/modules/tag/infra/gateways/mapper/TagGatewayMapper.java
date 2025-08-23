@@ -4,10 +4,14 @@ import br.com.tecflix_app.modules.tag.application.domain.entity.Tag;
 import br.com.tecflix_app.modules.tag.infra.persistence.TagEntity;
 import org.mapstruct.Mapper;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface TagGatewayMapper {
 
-  TagEntity toEntity(Tag tag);
+  TagEntity domainToEntity(Tag tag);
 
-  Tag toDomain(TagEntity tagEntity);
+  List<Tag> entityToDomain(List<TagEntity> tagEntities);
+
+  Tag entityToDomain(TagEntity tagEntity);
 }

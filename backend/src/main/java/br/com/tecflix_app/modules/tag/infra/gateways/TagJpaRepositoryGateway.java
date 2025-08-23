@@ -21,12 +21,18 @@ public class TagJpaRepositoryGateway implements TagRepositoryGateway {
   @Override
   public Optional<Tag> findById(Long tagId) {
     Optional<TagEntity> tagEntity = tagRepository.findById(tagId);
-    return tagEntity.map(tagGatewayMapper::toDomain);
+    return tagEntity.map(tagGatewayMapper::entityToDomain);
+  }
+
+  @Override
+  public List<Tag> findAllById(List<Long> ids) {
+    List<TagEntity> tagEntities = tagRepository.findAllById(ids);
+    return tagGatewayMapper.entityToDomain(tagEntities);
   }
 
   @Override
   public List<Tag> findAll() {
     List<TagEntity> tagEntities = tagRepository.findAll();
-    return tagEntities.stream().map(tagGatewayMapper::toDomain).toList();
+    return tagEntities.stream().map(tagGatewayMapper::entityToDomain).toList();
   }
 }

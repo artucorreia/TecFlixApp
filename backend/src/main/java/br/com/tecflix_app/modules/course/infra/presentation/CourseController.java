@@ -1,10 +1,18 @@
 package br.com.tecflix_app.modules.course.infra.presentation;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
+import br.com.tecflix_app.modules.course.application.domain.entity.Course;
+import br.com.tecflix_app.modules.course.application.usecases.CreateCourseUseCase;
+import br.com.tecflix_app.modules.course.constant.CourseConstant;
+import br.com.tecflix_app.modules.course.infra.presentation.mapper.CoursePresentationMapper;
+import br.com.tecflix_app.modules.shared.dto.v1.ResponseDTO;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -47,16 +55,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @SecurityRequirements(
     value = {@SecurityRequirement(name = "bearerAuth"), @SecurityRequirement(name = "X-API-KEY")})
 @Tag(name = "Course", description = "Endpoints to manager courses")
+@RequiredArgsConstructor
 public class CourseController {
-  //
+
+  private final CreateCourseUseCase createCourseUseCase;
   private final CourseService service;
   private final ReviewService reviewService;
-
-  @Autowired
-  public CourseController(CourseService service, ReviewService reviewService) {
-    this.service = service;
-    this.reviewService = reviewService;
-  }
+  private final CoursePresentationMapper coursePresentationMapper;
 
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   @Operation(
@@ -181,14 +186,20 @@ public class CourseController {
             content =
                 @Content(
                     mediaType = "application/json",
-                    schema = @Schema(implementation = GenericResponseDTO.class))),
+                    schema = @Schema(implementation = ResponseDTO.class))),
         @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
         @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
         @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
       })
-  public ResponseEntity<GenericResponseDTO<UUID>> create(@Valid @RequestBody CreateCourseDTO data) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(service.create(data));
+  public ResponseEntity<ResponseDTO<Object>> create(
+      @Valid @RequestBody CreateCourseDTO createCourseDTO) {
+    Course course = coursePresentationMapper.createDTOToDomain(createCourseDTO);
+    createCourseUseCase.execute(course);
+    ResponseDTO<Object> responseDTO =
+        new ResponseDTO<>(
+            true, CourseConstant.MESSAGE_201, CourseConstant.CODE_201, null, LocalDateTime.now());
+    return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
   }
 
   /*
