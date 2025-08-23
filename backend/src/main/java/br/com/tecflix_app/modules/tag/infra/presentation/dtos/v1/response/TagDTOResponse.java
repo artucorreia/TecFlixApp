@@ -1,4 +1,4 @@
-package br.com.tecflix_app.modules.tag.infra.dtos.v1.response;
+package br.com.tecflix_app.modules.tag.infra.presentation.dtos.v1.response;
 
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class TagResponse {
+public class TagDTOResponse {
   private Long id;
   private String name;
   private Boolean active;

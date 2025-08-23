@@ -3,7 +3,7 @@ package br.com.tecflix_app.modules.tag.infra.presentation;
 import br.com.tecflix_app.modules.tag.application.domain.entity.Tag;
 import br.com.tecflix_app.modules.tag.application.usecases.FindAllTagsCase;
 import br.com.tecflix_app.modules.tag.application.usecases.FindTagByIdCase;
-import br.com.tecflix_app.modules.tag.infra.dtos.v1.response.TagResponse;
+import br.com.tecflix_app.modules.tag.infra.presentation.dtos.v1.response.TagDTOResponse;
 import br.com.tecflix_app.modules.tag.infra.presentation.mapper.TagPresentationMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -48,17 +48,17 @@ public class TagController {
             content =
                 @Content(
                     mediaType = "application/json",
-                    schema = @Schema(implementation = TagResponse.class))),
+                    schema = @Schema(implementation = TagDTOResponse.class))),
         @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
         @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
         @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
         @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
       })
-  public ResponseEntity<TagResponse> findById(@PathVariable Long id) {
+  public ResponseEntity<TagDTOResponse> findById(@PathVariable Long id) {
     Tag tag = findTagByIdCase.execute(id);
-    TagResponse tagResponse = tagPresentationMapper.toResponse(tag);
-    return ResponseEntity.ok(tagResponse);
+    TagDTOResponse tagDTOResponse = tagPresentationMapper.toResponse(tag);
+    return ResponseEntity.ok(tagDTOResponse);
   }
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -75,13 +75,13 @@ public class TagController {
             content =
                 @Content(
                     mediaType = "application/json",
-                    array = @ArraySchema(schema = @Schema(implementation = TagResponse.class)))),
+                    array = @ArraySchema(schema = @Schema(implementation = TagDTOResponse.class)))),
         @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
         @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
         @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
       })
-  public ResponseEntity<List<TagResponse>> findAll() {
+  public ResponseEntity<List<TagDTOResponse>> findAll() {
     List<Tag> tags = findAllTagsCase.execute();
     return ResponseEntity.ok(tagPresentationMapper.toResponse(tags));
   }

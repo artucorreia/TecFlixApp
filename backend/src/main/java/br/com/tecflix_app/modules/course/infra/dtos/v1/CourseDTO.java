@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import br.com.tecflix_app.modules.module.infra.dtos.v1.ModuleDTO;
-import br.com.tecflix_app.modules.tag.infra.dtos.v1.response.TagResponse;
+import br.com.tecflix_app.modules.tag.infra.presentation.dtos.v1.response.TagDTOResponse;
 import br.com.tecflix_app.modules.user.infra.dtos.v1.UserDTO;
 import org.springframework.hateoas.RepresentationModel;
 
@@ -30,5 +30,5 @@ public class CourseDTO extends RepresentationModel<CourseDTO> {
   private Double averageScore;
   private UserDTO professor;
   private List<ModuleDTO> modules;
-  private List<TagResponse> tags;
+  private List<TagDTOResponse> tags;
 }

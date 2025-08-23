@@ -3,7 +3,7 @@ package br.com.tecflix_app.service;
 import java.util.List;
 import java.util.logging.Logger;
 
-import br.com.tecflix_app.modules.tag.infra.dtos.v1.response.TagResponse;
+import br.com.tecflix_app.modules.tag.infra.presentation.dtos.v1.response.TagDTOResponse;
 import org.springframework.stereotype.Service;
 
 import br.com.tecflix_app.modules.shared.exception.general.ResourceNotFoundException;
@@ -24,21 +24,21 @@ public class TagService {
     this.mapper = mapper;
   }
 
-  public TagResponse findById(Long id) {
+  public TagDTOResponse findById(Long id) {
     LOGGER.info("Finding tag by id");
-    TagResponse tag =
+    TagDTOResponse tag =
         mapper.map(
             repository
                 .findById(id)
                 .orElseThrow(
                     () -> new ResourceNotFoundException("Nenhuma tag encontrada para este id")),
-            TagResponse.class);
+            TagDTOResponse.class);
     return tag;
   }
 
-  public List<TagResponse> findAll() {
+  public List<TagDTOResponse> findAll() {
     LOGGER.info("Finding all tags");
-    return mapper.map(repository.findAll(), TagResponse.class);
+    return mapper.map(repository.findAll(), TagDTOResponse.class);
   }
 
 //  private TagDTO addLiks(TagDTO data, String rel) {

@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import br.com.tecflix_app.modules.tag.infra.dtos.v1.response.TagResponse;
+import br.com.tecflix_app.modules.tag.infra.presentation.dtos.v1.response.TagDTOResponse;
 import br.com.tecflix_app.modules.user.infra.dtos.v1.UserDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -34,7 +34,7 @@ public class CreateCourseDTO {
   @Size(max = 255)
   private String capeImage;
 
-  @NotEmpty private List<TagResponse> tags;
+  @NotEmpty private List<TagDTOResponse> tags;
 
   @JsonIgnore private UserDTO professor;
 
