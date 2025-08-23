@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 import br.com.tecflix_app.modules.tag.infra.dtos.v1.response.TagResponse;
 import org.springframework.stereotype.Service;
 
-import br.com.tecflix_app.shared.exception.general.ResourceNotFoundException;
+import br.com.tecflix_app.modules.shared.exception.general.ResourceNotFoundException;
 import br.com.tecflix_app.mapper.contract.IMapperService;
 import br.com.tecflix_app.modules.tag.infra.persistence.TagRepository;
 

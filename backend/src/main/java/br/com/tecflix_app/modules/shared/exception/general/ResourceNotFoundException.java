@@ -1,4 +1,4 @@
-package br.com.tecflix_app.shared.exception.general;
+package br.com.tecflix_app.modules.shared.exception.general;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

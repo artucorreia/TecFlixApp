@@ -1,17 +1,17 @@
-package br.com.tecflix_app.shared.exception;
+package br.com.tecflix_app.modules.shared.exception;
 
 import br.com.tecflix_app.modules.auth.domain.exception.InvalidApiKeyException;
 import br.com.tecflix_app.modules.auth.domain.exception.InvalidTokenException;
 import br.com.tecflix_app.modules.auth.domain.exception.JwtCreationTokenException;
-import br.com.tecflix_app.shared.exception.auth.InactiveUserException;
-import br.com.tecflix_app.shared.exception.auth.RefreshTokenException;
-import br.com.tecflix_app.shared.exception.auth.UserAlreadyIsActive;
-import br.com.tecflix_app.shared.exception.auth.WrongPasswordException;
-import br.com.tecflix_app.shared.exception.email.EmailSendingException;
-import br.com.tecflix_app.shared.exception.general.ActionNotAllowedException;
-import br.com.tecflix_app.shared.exception.general.InaccessibleResource;
-import br.com.tecflix_app.shared.exception.general.RepeatedDataException;
-import br.com.tecflix_app.shared.exception.general.ResourceNotFoundException;
+import br.com.tecflix_app.modules.shared.exception.auth.InactiveUserException;
+import br.com.tecflix_app.modules.shared.exception.auth.RefreshTokenException;
+import br.com.tecflix_app.modules.shared.exception.auth.UserAlreadyIsActive;
+import br.com.tecflix_app.modules.shared.exception.auth.WrongPasswordException;
+import br.com.tecflix_app.modules.shared.exception.email.EmailSendingException;
+import br.com.tecflix_app.modules.shared.exception.general.ActionNotAllowedException;
+import br.com.tecflix_app.modules.shared.exception.general.InaccessibleResource;
+import br.com.tecflix_app.modules.shared.exception.general.RepeatedDataException;
+import br.com.tecflix_app.modules.shared.exception.general.ResourceNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.http.HttpHeaders;

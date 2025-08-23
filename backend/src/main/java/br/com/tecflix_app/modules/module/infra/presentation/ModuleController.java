@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.tecflix_app.modules.module.infra.dtos.v1.CreateModuleDTO;
-import br.com.tecflix_app.shared.dto.v1.GenericResponseDTO;
+import br.com.tecflix_app.modules.shared.dto.v1.GenericResponseDTO;
 import br.com.tecflix_app.modules.module.infra.dtos.v1.ModuleDTO;
 import br.com.tecflix_app.service.ModuleService;
 import io.swagger.v3.oas.annotations.Operation;

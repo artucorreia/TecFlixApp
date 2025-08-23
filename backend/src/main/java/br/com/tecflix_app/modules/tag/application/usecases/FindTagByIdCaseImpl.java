@@ -2,7 +2,7 @@ package br.com.tecflix_app.modules.tag.application.usecases;
 
 import br.com.tecflix_app.modules.tag.application.domain.entity.Tag;
 import br.com.tecflix_app.modules.tag.application.gateways.TagGateway;
-import br.com.tecflix_app.shared.exception.general.ResourceNotFoundException;
+import br.com.tecflix_app.modules.shared.exception.general.ResourceNotFoundException;
 import java.util.Optional;
 import java.util.logging.Logger;
 

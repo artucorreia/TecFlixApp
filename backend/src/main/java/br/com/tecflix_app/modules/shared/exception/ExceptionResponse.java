@@ -1,4 +1,4 @@
-package br.com.tecflix_app.shared.exception;
+package br.com.tecflix_app.modules.shared.exception;
 
 import java.time.LocalDateTime;
 

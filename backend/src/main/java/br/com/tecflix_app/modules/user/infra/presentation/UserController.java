@@ -1,7 +1,7 @@
 package br.com.tecflix_app.modules.user.infra.presentation;
 
 import br.com.tecflix_app.modules.user.infra.dtos.v1.RegisterProfessorDTO;
-import br.com.tecflix_app.shared.dto.v1.GenericResponseDTO;
+import br.com.tecflix_app.modules.shared.dto.v1.GenericResponseDTO;
 import br.com.tecflix_app.modules.user.infra.dtos.v1.UserDTO;
 import br.com.tecflix_app.modules.user.infra.persistence.projections.UserAccountProjection;
 import br.com.tecflix_app.modules.user.infra.persistence.projections.UserBasicProjection;

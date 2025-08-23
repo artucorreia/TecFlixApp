@@ -1,4 +1,4 @@
-package br.com.tecflix_app.shared.exception.auth;
+package br.com.tecflix_app.modules.shared.exception.auth;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

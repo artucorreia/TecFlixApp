@@ -1,6 +1,6 @@
-package br.com.tecflix_app.shared.email;
+package br.com.tecflix_app.modules.shared.email;
 
-import br.com.tecflix_app.shared.exception.email.EmailSendingException;
+import br.com.tecflix_app.modules.shared.exception.email.EmailSendingException;
 import jakarta.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

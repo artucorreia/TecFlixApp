@@ -12,10 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.tecflix_app.modules.review.infra.dtos.v1.CreateReviewDTO;
 import br.com.tecflix_app.modules.course.infra.dtos.v1.CourseDTO;
-import br.com.tecflix_app.shared.dto.v1.GenericResponseDTO;
+import br.com.tecflix_app.modules.shared.dto.v1.GenericResponseDTO;
 import br.com.tecflix_app.modules.review.infra.dtos.v1.ReviewDTO;
 import br.com.tecflix_app.modules.user.infra.dtos.v1.UserDTO;
-import br.com.tecflix_app.shared.exception.general.ActionNotAllowedException;
+import br.com.tecflix_app.modules.shared.exception.general.ActionNotAllowedException;
 import br.com.tecflix_app.mapper.contract.IMapperService;
 import br.com.tecflix_app.modules.review.infra.persistence.ReviewEntity;
 import br.com.tecflix_app.modules.review.infra.persistence.ReviewRepository;

@@ -9,14 +9,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.tecflix_app.modules.emailCode.infra.presentation.dto.v1.EmailCodeDTO;
 import br.com.tecflix_app.modules.auth.infra.dtos.v1.request.NewPasswordRequest;
-import br.com.tecflix_app.shared.dto.v1.GenericResponseDTO;
+import br.com.tecflix_app.modules.shared.dto.v1.GenericResponseDTO;
 import br.com.tecflix_app.modules.user.infra.dtos.v1.UserDTO;
-import br.com.tecflix_app.shared.exception.auth.UserAlreadyIsActive;
-import br.com.tecflix_app.shared.exception.general.ResourceNotFoundException;
+import br.com.tecflix_app.modules.shared.exception.auth.UserAlreadyIsActive;
+import br.com.tecflix_app.modules.shared.exception.general.ResourceNotFoundException;
 import br.com.tecflix_app.mapper.contract.IMapperService;
 import br.com.tecflix_app.modules.emailCode.infra.persistence.EmailCodeEntity;
 import br.com.tecflix_app.modules.emailCode.infra.persistence.EmailCodeRepository;
-import br.com.tecflix_app.shared.email.EmailSenderService;
+import br.com.tecflix_app.modules.shared.email.EmailSenderService;
 import br.com.tecflix_app.service.util.EmailCodeGenerator;
 
 @Service

@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import br.com.tecflix_app.shared.exception.auth.InactiveUserException;
+import br.com.tecflix_app.modules.shared.exception.auth.InactiveUserException;
 import br.com.tecflix_app.modules.auth.domain.exception.InvalidTokenException;
 import br.com.tecflix_app.service.UserService;
 import jakarta.servlet.FilterChain;

@@ -7,8 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.stereotype.Service;
 
-import br.com.tecflix_app.shared.dto.v1.CustomPagedResponse;
-import br.com.tecflix_app.shared.dto.v1.PageMetadata;
+import br.com.tecflix_app.modules.shared.dto.v1.CustomPagedResponse;
+import br.com.tecflix_app.modules.shared.dto.v1.PageMetadata;
 
 @Service
 public class CustomPagedResourcesAssembler<T extends RepresentationModel<T>> {

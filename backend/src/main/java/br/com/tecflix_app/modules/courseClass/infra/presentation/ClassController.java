@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.tecflix_app.modules.courseClass.infra.dtos.v1.CreateClassDTO;
 import br.com.tecflix_app.modules.courseClass.infra.dtos.v1.ClassDTO;
-import br.com.tecflix_app.shared.dto.v1.GenericResponseDTO;
+import br.com.tecflix_app.modules.shared.dto.v1.GenericResponseDTO;
 import br.com.tecflix_app.service.ClassService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;

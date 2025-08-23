@@ -4,8 +4,8 @@ import br.com.tecflix_app.modules.refreshToken.infra.persistence.RefreshTokenEnt
 import br.com.tecflix_app.modules.refreshToken.infra.persistence.RefreshTokenRepository;
 import br.com.tecflix_app.modules.user.infra.persistence.UserEntity;
 import br.com.tecflix_app.modules.user.infra.persistence.UserRepository;
-import br.com.tecflix_app.shared.exception.auth.RefreshTokenException;
-import br.com.tecflix_app.shared.exception.general.ResourceNotFoundException;
+import br.com.tecflix_app.modules.shared.exception.auth.RefreshTokenException;
+import br.com.tecflix_app.modules.shared.exception.general.ResourceNotFoundException;
 import java.time.Instant;
 import java.util.UUID;
 import java.util.logging.Logger;
