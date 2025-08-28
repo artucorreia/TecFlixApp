@@ -2,6 +2,7 @@ package br.com.tecflix_app.modules.course.application.domain.entity;
 
 import br.com.tecflix_app.modules.tag.application.domain.entity.Tag;
 import br.com.tecflix_app.modules.user.application.domain.entity.User;
+import br.com.tecflix_app.modules.module.application.domain.entity.Module;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
