@@ -3,7 +3,7 @@ package br.com.tecflix_app.modules.course.application.usecases;
 import br.com.tecflix_app.modules.course.application.domain.entity.Course;
 
 /**
- * Use case responsible for creating a new course in the application.
+ * Use case responsible for creating a new course in the system.
  *
  * @author arthurcorreia.dev@gmail.com
  */
