@@ -33,5 +33,5 @@ public class SocialEntity implements Serializable {
 
   @ManyToOne
   @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-  private UserEntity userEntity;
+  private UserEntity user;
 }

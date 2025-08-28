@@ -38,6 +38,6 @@ public class TagEntity implements Serializable {
   @Column(name = "created_at", nullable = false)
   private LocalDateTime createdAt;
 
-  @ManyToMany(mappedBy = "tagEntities")
-  private List<CourseEntity> courseEntities;
+  @ManyToMany(mappedBy = "tags")
+  private List<CourseEntity> courses;
 }

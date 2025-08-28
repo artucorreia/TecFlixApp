@@ -45,5 +45,5 @@ public class ClassEntity implements Serializable {
 
   @ManyToOne
   @JoinColumn(name = "module_id", referencedColumnName = "id", nullable = false)
-  private ModuleEntity moduleEntity;
+  private ModuleEntity module;
 }

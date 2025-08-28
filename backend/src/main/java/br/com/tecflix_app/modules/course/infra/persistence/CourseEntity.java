@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 import br.com.tecflix_app.modules.module.infra.persistence.ModuleEntity;
+import br.com.tecflix_app.modules.review.infra.persistence.ReviewEntity;
 import br.com.tecflix_app.modules.tag.infra.persistence.TagEntity;
 import br.com.tecflix_app.modules.user.infra.persistence.UserEntity;
 import jakarta.persistence.Column;
@@ -73,13 +74,16 @@ public class CourseEntity implements Serializable {
       inverseJoinColumns = @JoinColumn(name = "student_id"))
   private List<UserEntity> students;
 
-  @OneToMany(mappedBy = "courseEntity")
-  private List<ModuleEntity> moduleEntities;
+  @OneToMany(mappedBy = "course")
+  private List<ModuleEntity> modules;
+
+  @OneToMany(mappedBy = "course")
+  private List<ReviewEntity> reviews;
 
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(
       name = "courses_tags",
       joinColumns = @JoinColumn(name = "course_id"),
       inverseJoinColumns = @JoinColumn(name = "tag_id"))
-  private List<TagEntity> tagEntities;
+  private List<TagEntity> tags;
 }

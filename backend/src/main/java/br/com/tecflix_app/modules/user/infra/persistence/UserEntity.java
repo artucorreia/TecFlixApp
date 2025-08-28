@@ -1,6 +1,7 @@
 package br.com.tecflix_app.modules.user.infra.persistence;
 
 import br.com.tecflix_app.modules.course.infra.persistence.CourseEntity;
+import br.com.tecflix_app.modules.emailCode.infra.persistence.EmailCodeEntity;
 import br.com.tecflix_app.modules.professorData.infra.persistence.ProfessorDataEntity;
 import br.com.tecflix_app.modules.refreshToken.infra.persistence.RefreshTokenEntity;
 import br.com.tecflix_app.modules.review.infra.persistence.ReviewEntity;
@@ -62,23 +63,26 @@ public class UserEntity implements UserDetails {
   @Column(nullable = false)
   private Boolean active;
 
-  @OneToOne(mappedBy = "userEntity")
-  private RefreshTokenEntity refreshTokenEntity;
+  @OneToOne(mappedBy = "user")
+  private RefreshTokenEntity refreshToken;
+
+  @OneToOne(mappedBy = "user")
+  private EmailCodeEntity emailCode;
 
   @ManyToMany(mappedBy = "students")
-  private List<CourseEntity> enrolledCourseEntities;
+  private List<CourseEntity> enrolledCourses;
 
-  @OneToOne(mappedBy = "userEntity")
-  private ProfessorDataEntity professorDataEntity;
+  @OneToOne(mappedBy = "user")
+  private ProfessorDataEntity professorData;
 
-  @OneToMany(mappedBy = "userEntity")
-  private List<SocialEntity> socialEntities;
+  @OneToMany(mappedBy = "user")
+  private List<SocialEntity> socials;
 
   @OneToMany(mappedBy = "professor")
   private List<CourseEntity> coursesTaught;
 
-  @OneToMany(mappedBy = "userEntity")
-  private List<ReviewEntity> reviewEntities;
+  @OneToMany(mappedBy = "user")
+  private List<ReviewEntity> reviews;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

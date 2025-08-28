@@ -40,5 +40,5 @@ public class RefreshTokenEntity implements Serializable {
 
   @OneToOne
   @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-  private UserEntity userEntity;
+  private UserEntity user;
 }

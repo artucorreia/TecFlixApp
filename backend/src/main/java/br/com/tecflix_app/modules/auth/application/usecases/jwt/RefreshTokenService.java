@@ -38,7 +38,7 @@ public class RefreshTokenService {
         RefreshTokenEntity.builder()
             .id(null)
             .token(UUID.randomUUID().toString())
-            .userEntity(getUser(userId))
+            .user(getUser(userId))
             .expiresAt(Instant.now().plusMillis(duration))
             .build();
     return repository.save(entity);
@@ -54,7 +54,7 @@ public class RefreshTokenService {
   public UUID resolve(String token) {
     RefreshTokenEntity refreshTokenEntity = findByToken(token);
     verifyTokenExpiration(refreshTokenEntity);
-    return refreshTokenEntity.getUserEntity().getId();
+    return refreshTokenEntity.getUser().getId();
   }
 
   private RefreshTokenEntity findByToken(String token) {

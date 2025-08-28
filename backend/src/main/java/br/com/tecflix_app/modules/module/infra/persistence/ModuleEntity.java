@@ -44,8 +44,8 @@ public class ModuleEntity implements Serializable {
 
   @ManyToOne
   @JoinColumn(name = "course_id", referencedColumnName = "id", nullable = false)
-  private CourseEntity courseEntity;
+  private CourseEntity course;
 
-  @OneToMany(mappedBy = "moduleEntity")
-  private List<ClassEntity> classEntities;
+  @OneToMany(mappedBy = "module")
+  private List<ClassEntity> classes;
 }

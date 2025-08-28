@@ -28,7 +28,7 @@ public class ProfessorDataEntity implements Serializable {
 
   @OneToOne
   @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, unique = true)
-  private UserEntity userEntity;
+  private UserEntity user;
 
   @Column(nullable = false, length = 11, unique = true)
   private String cpf;

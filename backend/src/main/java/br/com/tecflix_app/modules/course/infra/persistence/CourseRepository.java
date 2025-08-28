@@ -31,7 +31,7 @@ public interface CourseRepository extends JpaRepository<CourseEntity, UUID> {
                 FROM
                     CourseEntity c
                 JOIN
-                    c.tagEntities t
+                    c.tags t
                 JOIN
                     c.professor p
                 WHERE
@@ -59,7 +59,7 @@ public interface CourseRepository extends JpaRepository<CourseEntity, UUID> {
                 FROM
                     CourseEntity c
                 JOIN
-                    c.tagEntities t
+                    c.tags t
                 WHERE
                     t.id IN :tagIds
                 AND
