@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import br.com.tecflix_app.modules.course.infra.dtos.v1.CourseDTO;
+import br.com.tecflix_app.modules.course.infra.presentation.dtos.v1.CourseResponseDTO;
 import br.com.tecflix_app.modules.user.infra.dtos.v1.UserDTO;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -33,7 +33,7 @@ public class CreateReviewDTO {
 
   @JsonIgnore private UserDTO user;
 
-  @JsonIgnore private CourseDTO course;
+  @JsonIgnore private CourseResponseDTO course;
 
   @JsonIgnore private LocalDateTime createdAt = LocalDateTime.now();
 }

@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import br.com.tecflix_app.modules.course.infra.dtos.v1.CourseDTO;
+import br.com.tecflix_app.modules.course.infra.presentation.dtos.v1.CourseResponseDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -23,7 +23,7 @@ public class CreateModuleDTO {
   @Size(min = 5, max = 40)
   private String title;
 
-  @NotNull private CourseDTO course;
+  @NotNull private CourseResponseDTO course;
 
   @JsonIgnore private Boolean active = true;
 

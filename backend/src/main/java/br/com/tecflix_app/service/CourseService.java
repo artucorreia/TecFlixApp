@@ -3,7 +3,6 @@ package br.com.tecflix_app.service;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -12,17 +11,12 @@ import java.util.logging.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import br.com.tecflix_app.modules.course.infra.presentation.CourseController;
-import br.com.tecflix_app.modules.course.infra.dtos.v1.CreateCourseDTO;
-import br.com.tecflix_app.modules.course.infra.dtos.v1.CourseDTO;
+import br.com.tecflix_app.modules.course.infra.presentation.dtos.v1.CourseResponseDTO;
 import br.com.tecflix_app.modules.shared.dto.v1.CustomPagedResponse;
-import br.com.tecflix_app.modules.shared.dto.v1.GenericResponseDTO;
-import br.com.tecflix_app.modules.user.infra.dtos.v1.UserDTO;
 import br.com.tecflix_app.modules.shared.exception.general.ResourceNotFoundException;
 import br.com.tecflix_app.mapper.contract.IMapperService;
-import br.com.tecflix_app.modules.course.infra.persistence.CourseEntity;
 import br.com.tecflix_app.modules.course.infra.persistence.projections.CourseProjection;
 import br.com.tecflix_app.modules.course.infra.persistence.CourseRepository;
 import br.com.tecflix_app.modules.auth.application.usecases.jwt.TokenService;
@@ -37,14 +31,14 @@ public class CourseService {
   private final CourseValidatorService courseValidatorService;
   private final TokenService tokenService;
   private final IMapperService mapper;
-  private final CustomPagedResourcesAssembler<CourseDTO> assembler;
+  private final CustomPagedResourcesAssembler<CourseResponseDTO> assembler;
 
   public CourseService(
       CourseRepository repository,
       CourseValidatorService courseValidatorService,
       TokenService tokenService,
       IMapperService mapper,
-      CustomPagedResourcesAssembler<CourseDTO> assembler) {
+      CustomPagedResourcesAssembler<CourseResponseDTO> assembler) {
     this.repository = repository;
     this.courseValidatorService = courseValidatorService;
     this.tokenService = tokenService;
@@ -52,88 +46,88 @@ public class CourseService {
     this.assembler = assembler;
   }
 
-  public CourseDTO findById(UUID id) {
+  public CourseResponseDTO findById(UUID id) {
     LOGGER.info("Finding course by id");
-    CourseDTO courseDTO =
+    CourseResponseDTO courseResponseDTO =
         mapper.map(
             repository
                 .findDetailsById(id)
                 .orElseThrow(
                     () -> new ResourceNotFoundException("Nenhum curso encontrado para este id")),
-            CourseDTO.class);
-    return addLiks(courseDTO, "courses");
+            CourseResponseDTO.class);
+    return addLiks(courseResponseDTO, "courses");
   }
 
-  public CustomPagedResponse<CourseDTO> findAll(Pageable pageable) {
+  public CustomPagedResponse<CourseResponseDTO> findAll(Pageable pageable) {
     LOGGER.info("Finding all courses");
 
     Page<CourseProjection> entities = repository.findAllBy(pageable);
-    Page<CourseDTO> courses = entities.map(course -> mapper.map(course, CourseDTO.class));
+    Page<CourseResponseDTO> courses = entities.map(course -> mapper.map(course, CourseResponseDTO.class));
 
     courses = addLiks(courses, "courses");
 
     return assembler.toModel(courses, addPageLinks(courses, pageable), pageable);
   }
 
-  public CustomPagedResponse<CourseDTO> findByFilter(
+  public CustomPagedResponse<CourseResponseDTO> findByFilter(
       Long[] tagIds, String term, Pageable pageable) {
     if (tagIds != null && term != null) return findByTagIdsAndTerm(tagIds, term, pageable);
     if (tagIds != null) return findByTagIds(tagIds, pageable);
     return findByTerm(term, pageable);
   }
 
-  public CustomPagedResponse<CourseDTO> findByTagIds(Long[] tagIds, Pageable pageable) {
+  public CustomPagedResponse<CourseResponseDTO> findByTagIds(Long[] tagIds, Pageable pageable) {
     LOGGER.info("Finding courses by tag ids");
 
     Page<CourseProjection> entities = repository.findByTagIds(tagIds, pageable);
-    Page<CourseDTO> courses = entities.map(course -> mapper.map(course, CourseDTO.class));
+    Page<CourseResponseDTO> courses = entities.map(course -> mapper.map(course, CourseResponseDTO.class));
 
     courses = addLiks(courses, "courses");
     return assembler.toModel(courses, addPageLinks(courses, pageable), pageable);
   }
 
-  public CustomPagedResponse<CourseDTO> findByTerm(String term, Pageable pageable) {
+  public CustomPagedResponse<CourseResponseDTO> findByTerm(String term, Pageable pageable) {
     LOGGER.info("Finding courses by term");
 
     Page<CourseProjection> entities = repository.findByTerm(term, pageable);
-    Page<CourseDTO> courses = entities.map(course -> mapper.map(course, CourseDTO.class));
+    Page<CourseResponseDTO> courses = entities.map(course -> mapper.map(course, CourseResponseDTO.class));
 
     courses = addLiks(courses, "courses");
     return assembler.toModel(courses, addPageLinks(courses, pageable), pageable);
   }
 
-  public CustomPagedResponse<CourseDTO> findByTagIdsAndTerm(
+  public CustomPagedResponse<CourseResponseDTO> findByTagIdsAndTerm(
       Long[] tagIds, String term, Pageable pageable) {
     LOGGER.info("Finding courses by tag ids and term");
 
     Page<CourseProjection> entities = repository.findByTagIdsAndTerm(tagIds, term, pageable);
-    Page<CourseDTO> courses = entities.map(course -> mapper.map(course, CourseDTO.class));
+    Page<CourseResponseDTO> courses = entities.map(course -> mapper.map(course, CourseResponseDTO.class));
 
     courses = addLiks(courses, "courses");
     return assembler.toModel(courses, addPageLinks(courses, pageable), pageable);
   }
 
-  @Transactional(rollbackFor = Exception.class)
-  public GenericResponseDTO<UUID> create(CreateCourseDTO data) {
-    LOGGER.info("Creating a new course");
+//  @Transactional(rollbackFor = Exception.class)
+//  public GenericResponseDTO<UUID> create(CreateCourseDTO data) {
+//    LOGGER.info("Creating a new course");
+//
+//    courseValidatorService.validateTags(data.getTags());
+//
+//    data.setTitle(data.getTitle().trim());
+//    data.setDescription(data.getDescription().trim());
+//
+//    UserDTO professor = new UserDTO();
+//    professor.setId(tokenService.getUserId());
+//    data.setProfessor(professor);
+//
+//    CourseEntity entity = mapper.map(data, CourseEntity.class);
+//
+//    UUID id = repository.save(entity).getId();
+//
+//    return new GenericResponseDTO<>(id, "Curso criado com sucesso", LocalDateTime.now());
+//  }
 
-    courseValidatorService.validateTags(data.getTags());
-
-    data.setTitle(data.getTitle().trim());
-    data.setDescription(data.getDescription().trim());
-
-    UserDTO professor = new UserDTO();
-    professor.setId(tokenService.getUserId());
-    data.setProfessor(professor);
-
-    CourseEntity entity = mapper.map(data, CourseEntity.class);
-
-    UUID id = repository.save(entity).getId();
-
-    return new GenericResponseDTO<>(id, "Curso criado com sucesso", LocalDateTime.now());
-  }
-
-  private CourseDTO addLiks(CourseDTO data, String rel) {
+  private CourseResponseDTO addLiks(CourseResponseDTO data, String rel) {
     data.add(linkTo(methodOn(CourseController.class).findById(data.getId())).withSelfRel());
     data.add(
         linkTo(methodOn(CourseController.class).findAll(0, 0, "totalScoreReviews,ASC"))
@@ -141,14 +135,14 @@ public class CourseService {
     return data;
   }
 
-  private Page<CourseDTO> addLiks(Page<CourseDTO> data, String rel) {
-    for (CourseDTO courseDTO : data) {
-      courseDTO = addLiks(courseDTO, rel);
+  private Page<CourseResponseDTO> addLiks(Page<CourseResponseDTO> data, String rel) {
+    for (CourseResponseDTO courseResponseDTO : data) {
+      courseResponseDTO = addLiks(courseResponseDTO, rel);
     }
     return data;
   }
 
-  private Map<String, String> addPageLinks(Page<CourseDTO> page, Pageable pageable) {
+  private Map<String, String> addPageLinks(Page<CourseResponseDTO> page, Pageable pageable) {
     Map<String, String> links = new LinkedHashMap<>();
     links.put(
         "self",

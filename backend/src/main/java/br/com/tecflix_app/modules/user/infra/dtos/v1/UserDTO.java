@@ -6,8 +6,9 @@ import java.util.UUID;
 
 import br.com.tecflix_app.modules.professorData.infra.dtos.v1.ProfessorDataDTO;
 import br.com.tecflix_app.modules.social.infra.dtos.v1.response.SocialResponse;
-import br.com.tecflix_app.modules.course.infra.dtos.v1.CourseDTO;
+import br.com.tecflix_app.modules.course.infra.presentation.dtos.v1.CourseResponseDTO;
 import br.com.tecflix_app.modules.user.application.domain.enums.Role;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Setter
 @Getter
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDTO {
   private UUID id;
   private String name;
@@ -24,9 +26,9 @@ public class UserDTO {
   private Role role;
   private LocalDateTime createdAt;
   private Boolean active;
-  private List<CourseDTO> enrolledCourses;
+  private List<CourseResponseDTO> enrolledCourses;
   private ProfessorDataDTO professorData;
   private List<SocialResponse> socials;
-  private List<CourseDTO> coursesTaught;
+  private List<CourseResponseDTO> coursesTaught;
   // private List<Payment> payments;
 }

@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.tecflix_app.modules.course.infra.dtos.v1.CreateCourseDTO;
 import br.com.tecflix_app.modules.review.infra.dtos.v1.CreateReviewDTO;
-import br.com.tecflix_app.modules.course.infra.dtos.v1.CourseDTO;
+import br.com.tecflix_app.modules.course.infra.presentation.dtos.v1.CourseResponseDTO;
 import br.com.tecflix_app.modules.shared.dto.v1.CustomPagedResponse;
 import br.com.tecflix_app.modules.shared.dto.v1.GenericResponseDTO;
 import br.com.tecflix_app.modules.review.infra.dtos.v1.ReviewDTO;
@@ -108,7 +108,7 @@ public class CourseController {
         @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
       })
-  public ResponseEntity<CustomPagedResponse<CourseDTO>> findAll(
+  public ResponseEntity<CustomPagedResponse<CourseResponseDTO>> findAll(
       @RequestParam(name = "page", defaultValue = "0") Integer page,
       @RequestParam(name = "size", defaultValue = "10") Integer size,
       @RequestParam(name = "direction", defaultValue = "averageScore,asc") String direction) {
@@ -142,7 +142,7 @@ public class CourseController {
         @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
       })
-  public ResponseEntity<CustomPagedResponse<CourseDTO>> search(
+  public ResponseEntity<CustomPagedResponse<CourseResponseDTO>> search(
       @RequestParam(name = "tags", required = false) Long[] tags,
       @RequestParam(name = "term", required = false) String term,
       @RequestParam(name = "page", defaultValue = "0") Integer page,
