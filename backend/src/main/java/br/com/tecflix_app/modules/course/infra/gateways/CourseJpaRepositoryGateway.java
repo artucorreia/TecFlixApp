@@ -5,6 +5,7 @@ import br.com.tecflix_app.modules.course.application.gateways.CourseRepositoryGa
 import br.com.tecflix_app.modules.course.infra.gateways.mapper.CourseGatewaysMapper;
 import br.com.tecflix_app.modules.course.infra.persistence.CourseEntity;
 import br.com.tecflix_app.modules.course.infra.persistence.CourseRepository;
+import br.com.tecflix_app.modules.course.infra.persistence.projections.CourseDetailsProjection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -20,8 +21,8 @@ public class CourseJpaRepositoryGateway implements CourseRepositoryGateway {
 
   @Override
   public Optional<Course> findById(UUID id) {
-    Optional<CourseEntity> courseEntity = courseRepository.findById(id);
-    return courseEntity.map(courseGatewaysMapper::entityToDomain);
+    Optional<CourseDetailsProjection> courseEntity = courseRepository.findDetailsById(id);
+    return courseEntity.map(courseGatewaysMapper::detailsProjectionToDomain);
   }
 
   @Override

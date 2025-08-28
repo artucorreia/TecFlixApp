@@ -12,7 +12,7 @@ public class Module implements Serializable {
   private Boolean active;
   private LocalDateTime createdAt;
   private Course course;
-  private List<Class> classEntities;
+  private List<Class> classes;
 
   public Module() {}
 
@@ -22,13 +22,13 @@ public class Module implements Serializable {
       Boolean active,
       LocalDateTime createdAt,
       Course course,
-      List<Class> classEntities) {
+      List<Class> classes) {
     this.id = id;
     this.title = title;
     this.active = active;
     this.createdAt = createdAt;
     this.course = course;
-    this.classEntities = classEntities;
+    this.classes = classes;
   }
 
   public Long getId() {
@@ -71,11 +71,11 @@ public class Module implements Serializable {
     this.course = course;
   }
 
-  public List<Class> getClassEntities() {
-    return classEntities;
+  public List<Class> getClasses() {
+    return classes;
   }
 
-  public void setClassEntities(List<Class> classEntities) {
-    this.classEntities = classEntities;
+  public void setClasses(List<Class> classes) {
+    this.classes = classes;
   }
 }

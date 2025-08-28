@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,5 +16,4 @@ public class ResponseDTO<T> {
   private String message;
   private Integer code;
   private T data;
-  private LocalDateTime timestamp;
 }

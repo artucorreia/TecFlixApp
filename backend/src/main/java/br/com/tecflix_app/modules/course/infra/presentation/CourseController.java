@@ -1,19 +1,17 @@
 package br.com.tecflix_app.modules.course.infra.presentation;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 import br.com.tecflix_app.modules.course.application.domain.entity.Course;
 import br.com.tecflix_app.modules.course.application.usecases.CreateCourseUseCase;
+import br.com.tecflix_app.modules.course.application.usecases.FindCourseByIdUseCase;
 import br.com.tecflix_app.modules.course.constant.CourseConstant;
 import br.com.tecflix_app.modules.course.infra.presentation.mapper.CoursePresentationMapper;
 import br.com.tecflix_app.modules.shared.dto.v1.ResponseDTO;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -29,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.tecflix_app.modules.course.infra.dtos.v1.CreateCourseDTO;
+import br.com.tecflix_app.modules.course.infra.presentation.dtos.v1.CreateCourseDTO;
 import br.com.tecflix_app.modules.review.infra.dtos.v1.CreateReviewDTO;
 import br.com.tecflix_app.modules.course.infra.presentation.dtos.v1.CourseResponseDTO;
 import br.com.tecflix_app.modules.shared.dto.v1.CustomPagedResponse;
@@ -58,6 +56,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequiredArgsConstructor
 public class CourseController {
 
+  private final FindCourseByIdUseCase findCourseByIdUseCase;
   private final CreateCourseUseCase createCourseUseCase;
   private final CourseService service;
   private final ReviewService reviewService;
@@ -84,8 +83,13 @@ public class CourseController {
         @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
       })
-  public ResponseEntity<CourseDTO> findById(@PathVariable UUID id) {
-    return ResponseEntity.ok(service.findById(id));
+  public ResponseEntity<ResponseDTO<CourseResponseDTO>> findById(@PathVariable UUID id) {
+    Course course = findCourseByIdUseCase.execute(id);
+    CourseResponseDTO courseResponseDTO = coursePresentationMapper.domainToResponseDTO(course);
+    ResponseDTO<CourseResponseDTO> response =
+        new ResponseDTO<>(
+            true, CourseConstant.MESSAGE_200, CourseConstant.CODE_200, courseResponseDTO);
+    return ResponseEntity.ok(response);
   }
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -197,8 +201,7 @@ public class CourseController {
     Course course = coursePresentationMapper.createDTOToDomain(createCourseDTO);
     createCourseUseCase.execute(course);
     ResponseDTO<Object> responseDTO =
-        new ResponseDTO<>(
-            true, CourseConstant.MESSAGE_201, CourseConstant.CODE_201, null, LocalDateTime.now());
+        new ResponseDTO<>(true, CourseConstant.MESSAGE_201, CourseConstant.CODE_201, null);
     return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
   }
 
