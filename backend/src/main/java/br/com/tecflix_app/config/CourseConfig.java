@@ -25,13 +25,11 @@ public class CourseConfig {
   public CreateCourseUseCase createCourseUseCase(
       CourseRepositoryGateway courseRepositoryGateway,
       AuthenticatedUserGateway authenticatedUserGateway,
-      FindTagByIdCase findTagByIdCase,
       FindAllTagsByIdUseCase findAllTagsByIdUseCase,
       FindUserByIdUseCase findUserByIdUseCase) {
     return new CreateCourseUseCaseImpl(
         courseRepositoryGateway,
         authenticatedUserGateway,
-        findTagByIdCase,
         findAllTagsByIdUseCase,
         findUserByIdUseCase);
   }

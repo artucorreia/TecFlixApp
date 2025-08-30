@@ -26,8 +26,12 @@ public interface UserGatewaysMapper {
   @Named("entityToDomainWithoutCourses")
   @Mappings(
       value = {
+        @Mapping(target = "password", ignore = true),
+        @Mapping(target = "role", ignore = true),
+        @Mapping(target = "refreshToken", ignore = true),
         @Mapping(target = "coursesTaught", ignore = true),
-        @Mapping(target = "enrolledCourses", ignore = true)
+        @Mapping(target = "socials", ignore = true),
+        @Mapping(target = "enrolledCourses", ignore = true),
       })
   User entityToDomain(UserEntity userEntity);
 

@@ -20,19 +20,16 @@ public class CreateCourseUseCaseImpl implements CreateCourseUseCase {
   private final Logger LOGGER = Logger.getLogger(CreateCourseUseCaseImpl.class.getName());
   private final CourseRepositoryGateway courseRepositoryGateway;
   private final AuthenticatedUserGateway authenticatedUserGateway;
-  private final FindTagByIdCase findTagByIdCase;
   private final FindAllTagsByIdUseCase findAllTagsByIdUseCase;
   private final FindUserByIdUseCase findUserByIdUseCase;
 
   public CreateCourseUseCaseImpl(
       CourseRepositoryGateway courseRepositoryGateway,
       AuthenticatedUserGateway authenticatedUserGateway,
-      FindTagByIdCase findTagByIdCase,
       FindAllTagsByIdUseCase findAllTagsByIdUseCase,
       FindUserByIdUseCase findUserByIdUseCase) {
     this.courseRepositoryGateway = courseRepositoryGateway;
     this.authenticatedUserGateway = authenticatedUserGateway;
-    this.findTagByIdCase = findTagByIdCase;
     this.findAllTagsByIdUseCase = findAllTagsByIdUseCase;
     this.findUserByIdUseCase = findUserByIdUseCase;
   }
@@ -44,15 +41,16 @@ public class CreateCourseUseCaseImpl implements CreateCourseUseCase {
     Optional<UUID> optionalProfessorUUID = authenticatedUserGateway.findId();
     if (optionalProfessorUUID.isEmpty())
       throw new ResourceNotFoundException(
-          "Deu um erro pra encontrar o id do cara logado"); // TODO: create a new exception for this
+          "Erro ao resgatar usuário logado"); // TODO: create a new exception for this
     User professor = findUserByIdUseCase.execute(optionalProfessorUUID.get());
     course.setProfessor(professor);
 
-    validateTags(course.getTags());
     List<Long> tagIds = course.getTags().stream().map(Tag::getId).toList();
     List<Tag> tags = findAllTagsByIdUseCase.execute(tagIds);
-    course.setTags(tags);
 
+    validateTags(tagIds, tags);
+
+    course.setTags(tags);
     course.setTitle(course.getTitle().trim());
     course.setDescription(course.getDescription().trim());
     course.setActive(true);
@@ -63,10 +61,11 @@ public class CreateCourseUseCaseImpl implements CreateCourseUseCase {
     courseRepositoryGateway.save(course);
   }
 
-  private void validateTags(List<Tag> tags) {
+  private void validateTags(List<Long> tagIds, List<Tag> tagsFound) {
     LOGGER.info("Validating tags");
-    for (Tag tag : tags) {
-      findTagByIdCase.execute(tag.getId());
-    }
+    int courseTagListSize = tagIds.size();
+    int foundTagListSize = tagsFound.size();
+    if (courseTagListSize != foundTagListSize)
+      throw new ResourceNotFoundException("Tags não encontradas");
   }
 }
