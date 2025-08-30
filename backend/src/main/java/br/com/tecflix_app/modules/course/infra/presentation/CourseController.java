@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import br.com.tecflix_app.modules.course.application.domain.entity.Course;
 import br.com.tecflix_app.modules.course.application.usecases.CreateCourseUseCase;
-import br.com.tecflix_app.modules.course.application.usecases.FindCourseByIdUseCase;
+import br.com.tecflix_app.modules.course.application.usecases.FindCourseDetailsByIdUseCase;
 import br.com.tecflix_app.modules.course.constant.CourseConstant;
 import br.com.tecflix_app.modules.course.infra.presentation.mapper.CoursePresentationMapper;
 import br.com.tecflix_app.modules.shared.dto.v1.ResponseDTO;
@@ -56,7 +56,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequiredArgsConstructor
 public class CourseController {
 
-  private final FindCourseByIdUseCase findCourseByIdUseCase;
+  private final FindCourseDetailsByIdUseCase findCourseDetailsByIdUseCase;
   private final CreateCourseUseCase createCourseUseCase;
   private final CourseService service;
   private final ReviewService reviewService;
@@ -84,7 +84,7 @@ public class CourseController {
         @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
       })
   public ResponseEntity<ResponseDTO<CourseResponseDTO>> findById(@PathVariable UUID id) {
-    Course course = findCourseByIdUseCase.execute(id);
+    Course course = findCourseDetailsByIdUseCase.execute(id);
     CourseResponseDTO courseResponseDTO = coursePresentationMapper.domainToResponseDTO(course);
     ResponseDTO<CourseResponseDTO> response =
         new ResponseDTO<>(

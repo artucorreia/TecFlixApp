@@ -9,7 +9,7 @@ import java.util.UUID;
  *
  * @author arthurcorreia.dev@gmail.com
  */
-public interface FindCourseByIdUseCase {
+public interface FindCourseDetailsByIdUseCase {
 
   /**
    * Finds and returns a {@link Course} by its unique ID.
