@@ -2,6 +2,7 @@ package br.com.tecflix_app.modules.module.infra.presentation;
 
 import java.util.List;
 
+import br.com.tecflix_app.modules.module.infra.presentation.dtos.v1.ModuleResponseDTO;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.tecflix_app.modules.module.infra.dtos.v1.CreateModuleDTO;
+import br.com.tecflix_app.modules.module.infra.presentation.dtos.v1.CreateModuleDTO;
 import br.com.tecflix_app.modules.shared.dto.v1.GenericResponseDTO;
-import br.com.tecflix_app.modules.module.infra.dtos.v1.ModuleDTO;
 import br.com.tecflix_app.service.ModuleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -57,14 +57,14 @@ public class ModuleController {
             content =
                 @Content(
                     mediaType = "application/json",
-                    schema = @Schema(implementation = ModuleDTO.class))),
+                    schema = @Schema(implementation = ModuleResponseDTO.class))),
         @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
         @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
         @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
         @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
       })
-  public ResponseEntity<ModuleDTO> findById(@PathVariable Long id) {
+  public ResponseEntity<ModuleResponseDTO> findById(@PathVariable Long id) {
     return ResponseEntity.ok(service.findById(id));
   }
 
@@ -82,13 +82,14 @@ public class ModuleController {
             content =
                 @Content(
                     mediaType = "application/json",
-                    array = @ArraySchema(schema = @Schema(implementation = ModuleDTO.class)))),
+                    array =
+                        @ArraySchema(schema = @Schema(implementation = ModuleResponseDTO.class)))),
         @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
         @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
         @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
       })
-  public ResponseEntity<List<ModuleDTO>> findAll() {
+  public ResponseEntity<List<ModuleResponseDTO>> findAll() {
     return ResponseEntity.ok(service.findByAll());
   }
 

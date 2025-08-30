@@ -1,4 +1,4 @@
-package br.com.tecflix_app.modules.module.infra.dtos.v1;
+package br.com.tecflix_app.modules.module.infra.presentation.dtos.v1;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,7 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ModuleDTO extends RepresentationModel<ModuleDTO> {
+public class ModuleResponseDTO extends RepresentationModel<ModuleResponseDTO> {
   private Long id;
   private String title;
   private Boolean active;

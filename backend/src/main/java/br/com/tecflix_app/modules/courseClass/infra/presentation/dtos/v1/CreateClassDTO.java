@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import br.com.tecflix_app.modules.module.infra.dtos.v1.ModuleDTO;
+import br.com.tecflix_app.modules.module.infra.presentation.dtos.v1.ModuleResponseDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -28,7 +28,7 @@ public class CreateClassDTO {
   @Size(max = 255)
   private String videoPath;
 
-  @NotNull private ModuleDTO module;
+  @NotNull private ModuleResponseDTO module;
 
   @JsonIgnore private Boolean active = true;
 

@@ -4,14 +4,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.logging.Logger;
 
+import br.com.tecflix_app.modules.module.infra.presentation.dtos.v1.ModuleResponseDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.tecflix_app.modules.module.infra.persistence.ModuleEntity;
 import br.com.tecflix_app.modules.module.infra.presentation.ModuleController;
-import br.com.tecflix_app.modules.module.infra.dtos.v1.CreateModuleDTO;
+import br.com.tecflix_app.modules.module.infra.presentation.dtos.v1.CreateModuleDTO;
 import br.com.tecflix_app.modules.shared.dto.v1.GenericResponseDTO;
-import br.com.tecflix_app.modules.module.infra.dtos.v1.ModuleDTO;
 import br.com.tecflix_app.modules.shared.exception.general.ResourceNotFoundException;
 import br.com.tecflix_app.mapper.contract.IMapperService;
 import br.com.tecflix_app.modules.module.infra.persistence.ModuleRepository;
@@ -37,22 +37,22 @@ public class ModuleService {
     this.mapper = mapper;
   }
 
-  public ModuleDTO findById(Long id) {
+  public ModuleResponseDTO findById(Long id) {
     LOGGER.info("Finding module by id");
-    ModuleDTO module =
+    ModuleResponseDTO module =
         mapper.map(
             repository
                 .findById(id)
                 .orElseThrow(
                     () -> new ResourceNotFoundException("Nenhum módulo encontrado para este id")),
-            ModuleDTO.class);
+            ModuleResponseDTO.class);
 
     return addLiks(module, "modules");
   }
 
-  public List<ModuleDTO> findByAll() {
+  public List<ModuleResponseDTO> findByAll() {
     LOGGER.info("Finding all modules");
-    List<ModuleDTO> modules = mapper.map(repository.findAll(), ModuleDTO.class);
+    List<ModuleResponseDTO> modules = mapper.map(repository.findAll(), ModuleResponseDTO.class);
     return addLiks(modules, "modules");
   }
 
@@ -70,13 +70,13 @@ public class ModuleService {
     return new GenericResponseDTO<>(id, "Módulo criado com sucesso", LocalDateTime.now());
   }
 
-  private ModuleDTO addLiks(ModuleDTO data, String rel) {
+  private ModuleResponseDTO addLiks(ModuleResponseDTO data, String rel) {
     data.add(linkTo(methodOn(ModuleController.class).findById(data.getId())).withSelfRel());
     data.add(linkTo(methodOn(ModuleController.class).findAll()).withRel(rel));
     return data;
   }
 
-  private List<ModuleDTO> addLiks(List<ModuleDTO> data, String rel) {
+  private List<ModuleResponseDTO> addLiks(List<ModuleResponseDTO> data, String rel) {
     return data.stream().map(obj -> obj = addLiks(obj, rel)).toList();
   }
 }

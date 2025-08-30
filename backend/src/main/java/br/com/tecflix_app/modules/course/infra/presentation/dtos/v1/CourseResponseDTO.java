@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import br.com.tecflix_app.modules.module.infra.dtos.v1.ModuleDTO;
+import br.com.tecflix_app.modules.module.infra.presentation.dtos.v1.ModuleResponseDTO;
 import br.com.tecflix_app.modules.tag.infra.presentation.dtos.v1.response.TagResponseDTO;
 import br.com.tecflix_app.modules.user.infra.dtos.v1.UserDTO;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -31,6 +31,6 @@ public class CourseResponseDTO extends RepresentationModel<CourseResponseDTO> {
   private Long totalReviews;
   private Double averageScore;
   private UserDTO professor;
-  private List<ModuleDTO> modules;
+  private List<ModuleResponseDTO> modules;
   private List<TagResponseDTO> tags;
 }
