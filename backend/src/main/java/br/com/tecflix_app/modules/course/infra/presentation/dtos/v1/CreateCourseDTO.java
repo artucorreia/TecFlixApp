@@ -3,11 +3,9 @@ package br.com.tecflix_app.modules.course.infra.presentation.dtos.v1;
 import java.util.List;
 
 import br.com.tecflix_app.modules.shared.dto.v1.IdDTO;
-import br.com.tecflix_app.modules.tag.infra.presentation.dtos.v1.response.TagDTOResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

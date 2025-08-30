@@ -13,7 +13,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class TagDTOResponse {
+public class TagResponseDTO {
   private Long id;
   private String name;
   private Boolean active;
