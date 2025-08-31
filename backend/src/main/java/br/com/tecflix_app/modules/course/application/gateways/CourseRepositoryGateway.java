@@ -8,5 +8,7 @@ import java.util.UUID;
 public interface CourseRepositoryGateway {
   Optional<Course> findById(UUID id);
 
+  Optional<Course> findByDetailsId(UUID id);
+
   void save(Course course);
 }

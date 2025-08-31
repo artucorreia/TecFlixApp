@@ -6,7 +6,6 @@ import br.com.tecflix_app.modules.course.application.gateways.CourseRepositoryGa
 import br.com.tecflix_app.modules.shared.exception.general.ResourceNotFoundException;
 import br.com.tecflix_app.modules.tag.application.domain.entity.Tag;
 import br.com.tecflix_app.modules.tag.application.usecases.FindAllTagsByIdUseCase;
-import br.com.tecflix_app.modules.tag.application.usecases.FindTagByIdCase;
 import br.com.tecflix_app.modules.user.application.domain.entity.User;
 import br.com.tecflix_app.modules.user.application.usecases.FindUserByIdUseCase;
 
@@ -62,7 +61,7 @@ public class CreateCourseUseCaseImpl implements CreateCourseUseCase {
   }
 
   private void validateTags(List<Long> tagIds, List<Tag> tagsFound) {
-    LOGGER.info("Validating tags");
+    LOGGER.info("Validating if the tags exists");
     int courseTagListSize = tagIds.size();
     int foundTagListSize = tagsFound.size();
     if (courseTagListSize != foundTagListSize)

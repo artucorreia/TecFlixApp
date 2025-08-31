@@ -6,18 +6,18 @@ import br.com.tecflix_app.modules.shared.exception.general.ResourceNotFoundExcep
 
 import java.util.UUID;
 
-public class FindCourseDetailsByIdUseCaseImpl implements FindCourseDetailsByIdUseCase {
+public class FindCourseByIdUseCaseImpl implements FindCourseByIdUseCase {
 
   private final CourseRepositoryGateway courseRepositoryGateway;
 
-  public FindCourseDetailsByIdUseCaseImpl(CourseRepositoryGateway courseRepositoryGateway) {
+  public FindCourseByIdUseCaseImpl(CourseRepositoryGateway courseRepositoryGateway) {
     this.courseRepositoryGateway = courseRepositoryGateway;
   }
 
   @Override
   public Course execute(UUID id) {
     return courseRepositoryGateway
-        .findByDetailsId(id)
+        .findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Nenhum curso encontrado para este id"));
   }
 }

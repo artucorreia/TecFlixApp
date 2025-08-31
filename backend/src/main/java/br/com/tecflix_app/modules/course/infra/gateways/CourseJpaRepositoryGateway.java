@@ -21,8 +21,15 @@ public class CourseJpaRepositoryGateway implements CourseRepositoryGateway {
 
   @Override
   public Optional<Course> findById(UUID id) {
-    Optional<CourseDetailsProjection> courseEntity = courseRepository.findDetailsById(id);
-    return courseEntity.map(courseGatewaysMapper::detailsProjectionToDomain);
+    Optional<CourseEntity> courseEntityOptional = courseRepository.findById(id);
+    return courseEntityOptional.map(courseGatewaysMapper::entityToDomain);
+  }
+
+  @Override
+  public Optional<Course> findByDetailsId(UUID id) {
+    Optional<CourseDetailsProjection> courseDetailsProjectionOptional =
+        courseRepository.findDetailsById(id);
+    return courseDetailsProjectionOptional.map(courseGatewaysMapper::detailsProjectionToDomain);
   }
 
   @Override

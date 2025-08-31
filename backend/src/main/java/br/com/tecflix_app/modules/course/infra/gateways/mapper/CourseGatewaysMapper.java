@@ -35,6 +35,8 @@ public interface CourseGatewaysMapper {
   @Mappings(
       value = {
         @Mapping(target = "students", ignore = true),
+        @Mapping(target = "modules", ignore = true),
+        @Mapping(target = "tags", ignore = true),
         @Mapping(
             target = "professor",
             source = "professor",
