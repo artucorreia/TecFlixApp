@@ -2,6 +2,7 @@ package br.com.tecflix_app.modules.module.infra.gateways.mapper;
 
 import br.com.tecflix_app.modules.course.infra.persistence.projections.CourseDetailsProjection;
 import br.com.tecflix_app.modules.module.application.domain.entity.Module;
+import br.com.tecflix_app.modules.module.infra.persistence.ModuleEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -17,4 +18,6 @@ public interface ModuleGatewaysMapper {
       @Mapping(target = "course", ignore = true)
   })
   Module detailsProjectionToDomain(CourseDetailsProjection.ModuleCourseDetailsProjection module);
+
+  ModuleEntity domainToEntity(Module module);
 }

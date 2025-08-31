@@ -2,9 +2,15 @@ package br.com.tecflix_app.modules.module.infra.presentation;
 
 import java.util.List;
 
+import br.com.tecflix_app.modules.module.application.domain.entity.Module;
+import br.com.tecflix_app.modules.module.application.usecases.CreateModuleUseCase;
+import br.com.tecflix_app.modules.module.constant.ModuleConstant;
 import br.com.tecflix_app.modules.module.infra.presentation.dtos.v1.ModuleResponseDTO;
+import br.com.tecflix_app.modules.module.infra.presentation.mapper.ModulePresentationMapper;
+import br.com.tecflix_app.modules.shared.dto.v1.ResponseDTO;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,14 +40,12 @@ import jakarta.validation.Valid;
 @SecurityRequirements(
     value = {@SecurityRequirement(name = "bearerAuth"), @SecurityRequirement(name = "X-API-KEY")})
 @Tag(name = "Module", description = "Endpoints to manager modules")
+@RequiredArgsConstructor
 public class ModuleController {
 
   private final ModuleService service;
-
-  @Autowired
-  public ModuleController(ModuleService service) {
-    this.service = service;
-  }
+  private final CreateModuleUseCase createModuleUseCase;
+  private final ModulePresentationMapper modulePresentationMapper;
 
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   @Operation(
@@ -110,7 +114,7 @@ public class ModuleController {
                           @ExampleObject(
                               value =
                                   """
-                    { "title": "string", "course": {"id": "uuid"} }
+                    { "title": "string", "courseId": "uuid" }
                     """))))
   @ApiResponses(
       value = {
@@ -120,14 +124,19 @@ public class ModuleController {
             content =
                 @Content(
                     mediaType = "application/json",
-                    schema = @Schema(implementation = GenericResponseDTO.class))),
+                    schema = @Schema(implementation = ResponseDTO.class))),
         @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
         @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
         @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
         @ApiResponse(responseCode = "404", description = "Course Not Found", content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
       })
-  public ResponseEntity<GenericResponseDTO<Long>> create(@Valid @RequestBody CreateModuleDTO data) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(service.create(data));
+  public ResponseEntity<ResponseDTO<Object>> create(
+      @Valid @RequestBody CreateModuleDTO createModuleDTO) {
+    Module module = modulePresentationMapper.createDTOToDomain(createModuleDTO);
+    createModuleUseCase.execute(module);
+    ResponseDTO<Object> response =
+        new ResponseDTO<>(true, ModuleConstant.MESSAGE_201, ModuleConstant.CODE_201, null);
+    return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 }

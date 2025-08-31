@@ -56,19 +56,19 @@ public class ModuleService {
     return addLiks(modules, "modules");
   }
 
-  @Transactional(rollbackFor = Exception.class)
-  public GenericResponseDTO<Long> create(CreateModuleDTO data) {
-    LOGGER.info("Creating a new module to course: " + data.getCourse().getId());
-
-    moduleValidatorService.validateCourse(data.getCourse().getId());
-
-    data.setTitle(data.getTitle().trim());
-
-    ModuleEntity entity = mapper.map(data, ModuleEntity.class);
-    Long id = repository.save(entity).getId();
-
-    return new GenericResponseDTO<>(id, "Módulo criado com sucesso", LocalDateTime.now());
-  }
+//  @Transactional(rollbackFor = Exception.class)
+//  public GenericResponseDTO<Long> create(CreateModuleDTO data) {
+//    LOGGER.info("Creating a new module to course: " + data.getCourse().getId());
+//
+//    moduleValidatorService.validateCourse(data.getCourse().getId());
+//
+//    data.setTitle(data.getTitle().trim());
+//
+//    ModuleEntity entity = mapper.map(data, ModuleEntity.class);
+//    Long id = repository.save(entity).getId();
+//
+//    return new GenericResponseDTO<>(id, "Módulo criado com sucesso", LocalDateTime.now());
+//  }
 
   private ModuleResponseDTO addLiks(ModuleResponseDTO data, String rel) {
     data.add(linkTo(methodOn(ModuleController.class).findById(data.getId())).withSelfRel());
