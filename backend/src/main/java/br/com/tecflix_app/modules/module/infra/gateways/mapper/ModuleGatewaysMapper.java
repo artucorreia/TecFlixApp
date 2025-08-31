@@ -12,12 +12,20 @@ import org.mapstruct.Named;
 public interface ModuleGatewaysMapper {
 
   @Named("moduleDetailsProjectionToModule")
-  @Mappings(value = {
-      @Mapping(target = "active", ignore = true),
-      @Mapping(target = "createdAt", ignore = true),
-      @Mapping(target = "course", ignore = true)
-  })
+  @Mappings(
+      value = {
+        @Mapping(target = "active", ignore = true),
+        @Mapping(target = "createdAt", ignore = true),
+        @Mapping(target = "course", ignore = true)
+      })
   Module detailsProjectionToDomain(CourseDetailsProjection.ModuleCourseDetailsProjection module);
 
   ModuleEntity domainToEntity(Module module);
+
+  @Mappings(
+      value = {
+        @Mapping(target = "course", ignore = true),
+        @Mapping(target = "classes", ignore = true),
+      })
+  Module entityToDomain(ModuleEntity moduleEntity);
 }

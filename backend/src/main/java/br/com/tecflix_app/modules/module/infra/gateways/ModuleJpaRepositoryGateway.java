@@ -8,11 +8,19 @@ import br.com.tecflix_app.modules.module.infra.persistence.ModuleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 @RequiredArgsConstructor
 public class ModuleJpaRepositoryGateway implements ModuleRepositoryGateway {
   private final ModuleRepository moduleRepository;
   private final ModuleGatewaysMapper moduleGatewaysMapper;
+
+  @Override
+  public Optional<Module> findById(Long id) {
+    Optional<ModuleEntity> moduleEntityOptional = moduleRepository.findById(id);
+    return moduleEntityOptional.map(moduleGatewaysMapper::entityToDomain);
+  }
 
   @Override
   public void save(Module module) {
