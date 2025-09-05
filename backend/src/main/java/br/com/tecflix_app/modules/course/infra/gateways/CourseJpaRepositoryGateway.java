@@ -34,7 +34,7 @@ public class CourseJpaRepositoryGateway implements CourseRepositoryGateway {
 
   @Override
   public void save(Course course) {
-    CourseEntity courseEntity = courseGatewaysMapper.entityToDomain(course);
+    CourseEntity courseEntity = courseGatewaysMapper.domainToEntity(course);
     courseRepository.save(courseEntity);
   }
 }

@@ -44,5 +44,5 @@ public interface CourseGatewaysMapper {
       })
   Course entityToDomain(CourseEntity courseEntity);
 
-  CourseEntity entityToDomain(Course course);
+  CourseEntity domainToEntity(Course course);
 }
