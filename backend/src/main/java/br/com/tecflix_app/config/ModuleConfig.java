@@ -1,5 +1,6 @@
 package br.com.tecflix_app.config;
 
+import br.com.tecflix_app.modules.auth.application.gateways.AuthenticatedUserGateway;
 import br.com.tecflix_app.modules.course.application.usecases.FindCourseByIdUseCase;
 import br.com.tecflix_app.modules.module.application.gateways.ModuleRepositoryGateway;
 import br.com.tecflix_app.modules.module.application.usecases.CreateModuleUseCase;
@@ -21,7 +22,9 @@ public class ModuleConfig {
   @Bean
   public CreateModuleUseCase createModuleUseCase(
       ModuleRepositoryGateway moduleRepositoryGateway,
-      FindCourseByIdUseCase findCourseByIdUseCase) {
-    return new CreateModuleUseCaseImpl(moduleRepositoryGateway, findCourseByIdUseCase);
+      FindCourseByIdUseCase findCourseByIdUseCase,
+      AuthenticatedUserGateway authenticatedUserGateway) {
+    return new CreateModuleUseCaseImpl(
+        moduleRepositoryGateway, findCourseByIdUseCase, authenticatedUserGateway);
   }
 }
