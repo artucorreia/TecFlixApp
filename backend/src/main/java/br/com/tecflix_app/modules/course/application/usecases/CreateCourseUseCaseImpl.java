@@ -3,6 +3,7 @@ package br.com.tecflix_app.modules.course.application.usecases;
 import br.com.tecflix_app.modules.auth.application.gateways.AuthenticatedUserGateway;
 import br.com.tecflix_app.modules.course.application.domain.entity.Course;
 import br.com.tecflix_app.modules.course.application.gateways.CourseRepositoryGateway;
+import br.com.tecflix_app.modules.shared.exception.auth.AuthenticatedUserException;
 import br.com.tecflix_app.modules.shared.exception.general.ResourceNotFoundException;
 import br.com.tecflix_app.modules.tag.application.domain.entity.Tag;
 import br.com.tecflix_app.modules.tag.application.usecases.FindAllTagsByIdUseCase;
@@ -37,11 +38,11 @@ public class CreateCourseUseCaseImpl implements CreateCourseUseCase {
   public void execute(Course course) {
     LOGGER.info("Creating a new course");
 
-    Optional<UUID> optionalProfessorUUID = authenticatedUserGateway.findId();
-    if (optionalProfessorUUID.isEmpty())
-      throw new ResourceNotFoundException(
-          "Erro ao resgatar usuário logado"); // TODO: create a new exception for this
-    User professor = findUserByIdUseCase.execute(optionalProfessorUUID.get());
+    UUID optionalProfessorUUID =
+        authenticatedUserGateway
+            .findId()
+            .orElseThrow(() -> new AuthenticatedUserException("Erro ao resgatar usuário logado"));
+    User professor = findUserByIdUseCase.execute(optionalProfessorUUID);
     course.setProfessor(professor);
 
     List<Long> tagIds = course.getTags().stream().map(Tag::getId).toList();

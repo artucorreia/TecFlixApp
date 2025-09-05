@@ -3,10 +3,7 @@ package br.com.tecflix_app.modules.shared.exception;
 import br.com.tecflix_app.modules.auth.domain.exception.InvalidApiKeyException;
 import br.com.tecflix_app.modules.auth.domain.exception.InvalidTokenException;
 import br.com.tecflix_app.modules.auth.domain.exception.JwtCreationTokenException;
-import br.com.tecflix_app.modules.shared.exception.auth.InactiveUserException;
-import br.com.tecflix_app.modules.shared.exception.auth.RefreshTokenException;
-import br.com.tecflix_app.modules.shared.exception.auth.UserAlreadyIsActive;
-import br.com.tecflix_app.modules.shared.exception.auth.WrongPasswordException;
+import br.com.tecflix_app.modules.shared.exception.auth.*;
 import br.com.tecflix_app.modules.shared.exception.email.EmailSendingException;
 import br.com.tecflix_app.modules.shared.exception.general.ActionNotAllowedException;
 import br.com.tecflix_app.modules.shared.exception.general.InaccessibleResource;
@@ -221,6 +218,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler(RefreshTokenException.class)
   public final ResponseEntity<ExceptionResponse> handleRefreshTokenExceptions(
+      Exception exception, WebRequest request) {
+    ExceptionResponse response =
+        ExceptionResponse.builder()
+            .success(false)
+            .message(exception.getMessage())
+            .uri(request.getDescription(false))
+            .code(HttpStatus.UNAUTHORIZED.value())
+            .timestamp(LocalDateTime.now())
+            .build();
+    return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+  }
+
+  @ExceptionHandler(AuthenticatedUserException.class)
+  public final ResponseEntity<ExceptionResponse> handleAuthenticatedUserExceptions(
       Exception exception, WebRequest request) {
     ExceptionResponse response =
         ExceptionResponse.builder()
