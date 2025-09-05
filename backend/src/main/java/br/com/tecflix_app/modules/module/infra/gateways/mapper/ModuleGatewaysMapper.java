@@ -24,7 +24,13 @@ public interface ModuleGatewaysMapper {
 
   @Mappings(
       value = {
-        @Mapping(target = "course", ignore = true),
+        @Mapping(target = "course.modules", ignore = true),
+        @Mapping(target = "course.professor.coursesTaught", ignore = true),
+        @Mapping(target = "course.professor.enrolledCourses", ignore = true),
+        @Mapping(target = "course.professor.refreshToken", ignore = true),
+        @Mapping(target = "course.professor.socials", ignore = true),
+        @Mapping(target = "course.professor.professorData", ignore = true),
+        @Mapping(target = "course.tags", ignore = true),
         @Mapping(target = "classes", ignore = true),
       })
   Module entityToDomain(ModuleEntity moduleEntity);
