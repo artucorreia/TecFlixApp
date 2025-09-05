@@ -3,8 +3,14 @@ package br.com.tecflix_app.modules.courseClass.infra.presentation;
 import java.util.List;
 import java.util.UUID;
 
+import br.com.tecflix_app.modules.courseClass.application.domain.entity.Class;
+import br.com.tecflix_app.modules.courseClass.application.usecases.CreateClassUseCase;
+import br.com.tecflix_app.modules.courseClass.constant.ClassConstant;
+import br.com.tecflix_app.modules.courseClass.infra.presentation.mapper.ClassPresentationMapper;
+import br.com.tecflix_app.modules.shared.dto.v1.ResponseDTO;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -35,14 +41,12 @@ import jakarta.validation.Valid;
 @SecurityRequirements(
     value = {@SecurityRequirement(name = "bearerAuth"), @SecurityRequirement(name = "X-API-KEY")})
 @Tag(name = "Class", description = "Endpoints to manager classes")
+@RequiredArgsConstructor
 public class ClassController {
 
   private final ClassService service;
-
-  @Autowired
-  public ClassController(ClassService service) {
-    this.service = service;
-  }
+  private final CreateClassUseCase createClassUseCase;
+  private final ClassPresentationMapper classPresentationMapper;
 
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   @Operation(
@@ -110,7 +114,7 @@ public class ClassController {
                           @ExampleObject(
                               value =
                                   """
-                    { "title": "string", "videoPath": "string", "module": {"id": "long"} }
+                    { "title": "string", "videoPath": "string", "moduleId": "long" }
                     """))))
   @ApiResponses(
       value = {
@@ -127,7 +131,12 @@ public class ClassController {
         @ApiResponse(responseCode = "404", description = "Module Not Found", content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
       })
-  public ResponseEntity<GenericResponseDTO<UUID>> create(@Valid @RequestBody CreateClassDTO data) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(service.create(data));
+  public ResponseEntity<ResponseDTO<Object>> create(
+      @Valid @RequestBody CreateClassDTO createClassDTO) {
+    Class courseClass = classPresentationMapper.createDTOToDomain(createClassDTO);
+    createClassUseCase.execute(courseClass);
+    ResponseDTO<Object> response =
+        new ResponseDTO<>(true, ClassConstant.MESSAGE_201, ClassConstant.CODE_201, null);
+    return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 }
