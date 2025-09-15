@@ -1,4 +1,4 @@
-package br.com.tecflix_app.modules.auth.infra.dtos.v1.response;
+package br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -14,7 +14,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class TokenResponse {
+public class TokenResponseDTO {
   private UUID userId;
   private String accessToken;
   private String refreshToken;

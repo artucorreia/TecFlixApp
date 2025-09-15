@@ -1,4 +1,4 @@
-package br.com.tecflix_app.modules.auth.infra.dtos.v1.request;
+package br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class NewPasswordRequest {
+public class NewPasswordDTO {
   @NotNull
   @NotBlank
   @Size(min = 8, max = 50)

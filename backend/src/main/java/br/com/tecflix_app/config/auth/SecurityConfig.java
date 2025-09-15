@@ -1,7 +1,7 @@
 package br.com.tecflix_app.config.auth;
 
-import br.com.tecflix_app.modules.auth.application.usecases.apiKey.AuthenticationFilter;
-import br.com.tecflix_app.modules.auth.application.usecases.jwt.SecurityFilter;
+import br.com.tecflix_app.modules.auth.infra.security.apiKey.AuthenticationFilter;
+import br.com.tecflix_app.modules.auth.infra.security.jwt.SecurityFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

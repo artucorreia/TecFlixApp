@@ -1,4 +1,4 @@
-package br.com.tecflix_app.modules.auth.infra.dtos.v1.request;
+package br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class AuthenticationRequest {
+public class AuthenticationDTO {
   @Email private String email;
 
   @Size(min = 8, max = 50)

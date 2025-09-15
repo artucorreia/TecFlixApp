@@ -19,7 +19,7 @@ import br.com.tecflix_app.modules.shared.exception.general.ActionNotAllowedExcep
 import br.com.tecflix_app.mapper.contract.IMapperService;
 import br.com.tecflix_app.modules.review.infra.persistence.ReviewEntity;
 import br.com.tecflix_app.modules.review.infra.persistence.ReviewRepository;
-import br.com.tecflix_app.modules.auth.application.usecases.jwt.TokenService;
+import br.com.tecflix_app.modules.auth.infra.security.jwt.TokenService;
 
 @Service
 public class ReviewService {

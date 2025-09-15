@@ -1,4 +1,4 @@
-package br.com.tecflix_app.modules.auth.application.usecases.apiKey;
+package br.com.tecflix_app.modules.auth.infra.security.apiKey;
 
 import java.util.Collection;
 

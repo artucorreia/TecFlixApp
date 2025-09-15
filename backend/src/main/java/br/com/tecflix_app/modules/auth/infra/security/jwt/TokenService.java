@@ -1,4 +1,4 @@
-package br.com.tecflix_app.modules.auth.application.usecases.jwt;
+package br.com.tecflix_app.modules.auth.infra.security.jwt;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -14,7 +14,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 
-import br.com.tecflix_app.modules.auth.infra.dtos.v1.response.TokenResponse;
+import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.TokenResponseDTO;
 import br.com.tecflix_app.modules.auth.domain.exception.JwtCreationTokenException;
 
 @Service
@@ -33,7 +33,7 @@ public class TokenService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public TokenResponse generateToken(UUID userId) {
+    public TokenResponseDTO generateToken(UUID userId) {
         LOGGER.info("Generating token");
 
         try {
@@ -48,7 +48,7 @@ public class TokenService {
                     .sign(algorithm);
 
 
-            return TokenResponse.builder()
+            return TokenResponseDTO.builder()
                 .userId(userId)
                 .accessToken(token)
                 .refreshToken(

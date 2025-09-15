@@ -1,9 +1,9 @@
 package br.com.tecflix_app.service;
 
 import br.com.tecflix_app.mapper.contract.IMapperService;
-import br.com.tecflix_app.modules.auth.infra.dtos.v1.request.NewPasswordRequest;
-import br.com.tecflix_app.modules.auth.infra.dtos.v1.request.RegisterRequest;
-import br.com.tecflix_app.modules.auth.application.usecases.jwt.TokenService;
+import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.NewPasswordDTO;
+import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.RegisterDTO;
+import br.com.tecflix_app.modules.auth.infra.security.jwt.TokenService;
 import br.com.tecflix_app.modules.user.application.domain.enums.Role;
 import br.com.tecflix_app.modules.user.infra.persistence.UserEntity;
 import br.com.tecflix_app.modules.user.infra.persistence.UserRepository;
@@ -103,7 +103,7 @@ public class UserService {
             () -> new ResourceNotFoundException("Nenhum usuário encontrado para este email"));
   }
 
-  private UserEntity entityFactory(RegisterRequest data) {
+  private UserEntity entityFactory(RegisterDTO data) {
     String passwordEncoded = new BCryptPasswordEncoder().encode(data.getPassword().trim());
 
     return UserEntity.builder()
@@ -117,7 +117,7 @@ public class UserService {
   }
 
   @Transactional(rollbackFor = Exception.class)
-  public GenericResponseDTO<UUID> register(RegisterRequest data) {
+  public GenericResponseDTO<UUID> register(RegisterDTO data) {
     LOGGER.info("Creating a new user");
     validatorService.checkEmail(data.getEmail().trim());
 
@@ -173,7 +173,7 @@ public class UserService {
 
   // change password
   @Transactional(rollbackFor = Exception.class)
-  public GenericResponseDTO<UUID> changePassword(NewPasswordRequest data) {
+  public GenericResponseDTO<UUID> changePassword(NewPasswordDTO data) {
     LOGGER.info("Changing user password");
 
     UUID userId = tokenService.getUserId();
@@ -186,7 +186,7 @@ public class UserService {
 
   // reset password
   @Transactional(rollbackFor = Exception.class)
-  public GenericResponseDTO<UUID> resetPassword(UUID userId, NewPasswordRequest data) {
+  public GenericResponseDTO<UUID> resetPassword(UUID userId, NewPasswordDTO data) {
     LOGGER.info("Resetting user password");
 
     UserEntity user = findEntityById(userId);

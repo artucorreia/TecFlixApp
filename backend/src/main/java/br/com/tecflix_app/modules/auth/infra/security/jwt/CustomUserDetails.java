@@ -1,4 +1,4 @@
-package br.com.tecflix_app.modules.auth.infra.security;
+package br.com.tecflix_app.modules.auth.infra.security.jwt;
 
 import br.com.tecflix_app.modules.user.infra.persistence.UserEntity;
 import lombok.AllArgsConstructor;

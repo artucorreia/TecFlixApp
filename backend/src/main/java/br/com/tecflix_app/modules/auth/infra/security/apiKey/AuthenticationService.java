@@ -1,4 +1,4 @@
-package br.com.tecflix_app.modules.auth.application.usecases.apiKey;
+package br.com.tecflix_app.modules.auth.infra.security.apiKey;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;

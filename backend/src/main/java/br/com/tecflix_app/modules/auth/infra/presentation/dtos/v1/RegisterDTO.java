@@ -1,4 +1,4 @@
-package br.com.tecflix_app.modules.auth.infra.dtos.v1.request;
+package br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1;
 
 import br.com.tecflix_app.modules.user.application.domain.enums.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import lombok.Getter;
 
 @Getter
-public class RegisterRequest {
+public class RegisterDTO {
   @NotBlank
   @Size(min = 3, max = 30)
   private String name;

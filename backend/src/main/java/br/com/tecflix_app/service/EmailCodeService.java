@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.tecflix_app.modules.emailCode.infra.presentation.dto.v1.EmailCodeDTO;
-import br.com.tecflix_app.modules.auth.infra.dtos.v1.request.NewPasswordRequest;
+import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.NewPasswordDTO;
 import br.com.tecflix_app.modules.shared.dto.v1.GenericResponseDTO;
 import br.com.tecflix_app.modules.user.infra.dtos.v1.UserDTO;
 import br.com.tecflix_app.modules.shared.exception.auth.UserAlreadyIsActive;
@@ -84,7 +84,7 @@ public class EmailCodeService {
   }
 
   // validate code and reset password
-  public GenericResponseDTO<UUID> validate(String code, UUID userId, NewPasswordRequest data) {
+  public GenericResponseDTO<UUID> validate(String code, UUID userId, NewPasswordDTO data) {
     // check if the code exists
     findByCodeAndUserId(code, userId);
     return userService.resetPassword(userId, data);

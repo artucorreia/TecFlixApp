@@ -19,7 +19,7 @@ import br.com.tecflix_app.modules.shared.exception.general.ResourceNotFoundExcep
 import br.com.tecflix_app.mapper.contract.IMapperService;
 import br.com.tecflix_app.modules.course.infra.persistence.projections.CourseProjection;
 import br.com.tecflix_app.modules.course.infra.persistence.CourseRepository;
-import br.com.tecflix_app.modules.auth.application.usecases.jwt.TokenService;
+import br.com.tecflix_app.modules.auth.infra.security.jwt.TokenService;
 import br.com.tecflix_app.service.util.CourseValidatorService;
 import br.com.tecflix_app.service.util.CustomPagedResourcesAssembler;
 

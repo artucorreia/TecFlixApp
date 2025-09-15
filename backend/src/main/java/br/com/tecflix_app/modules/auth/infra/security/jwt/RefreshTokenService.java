@@ -1,4 +1,4 @@
-package br.com.tecflix_app.modules.auth.application.usecases.jwt;
+package br.com.tecflix_app.modules.auth.infra.security.jwt;
 
 import br.com.tecflix_app.modules.refreshToken.infra.persistence.RefreshTokenEntity;
 import br.com.tecflix_app.modules.refreshToken.infra.persistence.RefreshTokenRepository;

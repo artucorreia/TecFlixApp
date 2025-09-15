@@ -1,19 +1,17 @@
 package br.com.tecflix_app.modules.auth.infra.presentation;
 
-import br.com.tecflix_app.modules.auth.infra.dtos.v1.request.AuthenticationRequest;
-import br.com.tecflix_app.modules.auth.infra.dtos.v1.request.NewPasswordRequest;
-import br.com.tecflix_app.modules.auth.infra.dtos.v1.request.RegisterRequest;
-import br.com.tecflix_app.modules.auth.infra.dtos.v1.response.TokenResponse;
-import br.com.tecflix_app.modules.auth.application.usecases.jwt.RefreshTokenService;
-import br.com.tecflix_app.modules.auth.application.usecases.jwt.TokenService;
-import br.com.tecflix_app.modules.auth.infra.security.CustomUserDetails;
+import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.AuthenticationDTO;
+import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.NewPasswordDTO;
+import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.RegisterDTO;
+import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.TokenResponseDTO;
+import br.com.tecflix_app.modules.auth.infra.security.jwt.RefreshTokenService;
+import br.com.tecflix_app.modules.auth.infra.security.jwt.TokenService;
+import br.com.tecflix_app.modules.auth.infra.security.jwt.CustomUserDetails;
 import br.com.tecflix_app.modules.refreshToken.infra.dtos.v1.RefreshTokenDTO;
-import br.com.tecflix_app.modules.user.infra.persistence.UserEntity;
 import br.com.tecflix_app.service.EmailCodeService;
 import br.com.tecflix_app.service.UserService;
 import br.com.tecflix_app.modules.shared.dto.v1.GenericResponseDTO;
 import br.com.tecflix_app.modules.shared.exception.auth.InactiveUserException;
-import br.com.tecflix_app.modules.shared.exception.auth.WrongPasswordException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -90,21 +88,21 @@ public class AuthController {
             content =
                 @Content(
                     mediaType = "application/json",
-                    schema = @Schema(implementation = TokenResponse.class))),
+                    schema = @Schema(implementation = TokenResponseDTO.class))),
         @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
         @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
         @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
         @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
       })
-  public ResponseEntity<TokenResponse> login(@Valid @RequestBody AuthenticationRequest data) {
+  public ResponseEntity<TokenResponseDTO> login(@Valid @RequestBody AuthenticationDTO data) {
     if (!userService.findActiveByEmail(data.getEmail()))
       throw new InactiveUserException("O usuário está inativo");
 
     UsernamePasswordAuthenticationToken usernamePassword =
         new UsernamePasswordAuthenticationToken(data.getEmail(), data.getPassword());
 
-    TokenResponse token;
+    TokenResponseDTO token;
     try {
       Authentication auth = authenticationManager.authenticate(usernamePassword);
       CustomUserDetails customUserDetails = (CustomUserDetails) auth.getPrincipal();
@@ -144,14 +142,14 @@ public class AuthController {
             content =
                 @Content(
                     mediaType = "application/json",
-                    schema = @Schema(implementation = TokenResponse.class))),
+                    schema = @Schema(implementation = TokenResponseDTO.class))),
         @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
         @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
         @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
         @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
       })
-  public ResponseEntity<TokenResponse> refreshToken(@Valid @RequestBody RefreshTokenDTO data) {
+  public ResponseEntity<TokenResponseDTO> refreshToken(@Valid @RequestBody RefreshTokenDTO data) {
     UUID userId = refreshTokenService.resolve(data.getToken());
     return ResponseEntity.ok(tokenService.generateToken(userId));
   }
@@ -191,7 +189,7 @@ public class AuthController {
         @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
       })
   public ResponseEntity<GenericResponseDTO<UUID>> register(
-      @Valid @RequestBody RegisterRequest data) {
+      @Valid @RequestBody RegisterDTO data) {
     return ResponseEntity.status(HttpStatus.CREATED).body(userService.register(data));
   }
 
@@ -285,7 +283,7 @@ public class AuthController {
         @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
       })
   public ResponseEntity<GenericResponseDTO<UUID>> changePassword(
-      @Valid @RequestBody NewPasswordRequest data) {
+      @Valid @RequestBody NewPasswordDTO data) {
     return ResponseEntity.ok(userService.changePassword(data));
   }
 
@@ -327,7 +325,7 @@ public class AuthController {
   public ResponseEntity<GenericResponseDTO<UUID>> resetPassword(
       @RequestParam(required = true) String code,
       @RequestParam(required = true) UUID userId,
-      @Valid @RequestBody NewPasswordRequest data) {
+      @Valid @RequestBody NewPasswordDTO data) {
     return ResponseEntity.status(HttpStatus.CREATED)
         .body(emailCodeService.validate(code, userId, data));
   }
