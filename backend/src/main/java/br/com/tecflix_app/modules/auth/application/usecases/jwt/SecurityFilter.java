@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import br.com.tecflix_app.modules.auth.infra.security.CustomUserDetails;
+import br.com.tecflix_app.modules.user.infra.persistence.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -48,10 +50,12 @@ public class SecurityFilter extends OncePerRequestFilter {
         if (!userService.findActiveByEmail(userEmail))
           throw new InactiveUserException("O usuário está inativo");
 
-        UserDetails user = userService.findUserDetailsByEmail(userEmail);
+        CustomUserDetails customUserDetails =
+            new CustomUserDetails(userService.findUserDetailsByEmail(userEmail));
 
         UsernamePasswordAuthenticationToken authentication =
-            new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+            new UsernamePasswordAuthenticationToken(
+                customUserDetails.getUser(), null, customUserDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
       }
 

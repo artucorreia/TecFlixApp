@@ -6,6 +6,7 @@ import br.com.tecflix_app.modules.auth.infra.dtos.v1.request.RegisterRequest;
 import br.com.tecflix_app.modules.auth.infra.dtos.v1.response.TokenResponse;
 import br.com.tecflix_app.modules.auth.application.usecases.jwt.RefreshTokenService;
 import br.com.tecflix_app.modules.auth.application.usecases.jwt.TokenService;
+import br.com.tecflix_app.modules.auth.infra.security.CustomUserDetails;
 import br.com.tecflix_app.modules.refreshToken.infra.dtos.v1.RefreshTokenDTO;
 import br.com.tecflix_app.modules.user.infra.persistence.UserEntity;
 import br.com.tecflix_app.service.EmailCodeService;
@@ -106,10 +107,10 @@ public class AuthController {
     TokenResponse token;
     try {
       Authentication auth = authenticationManager.authenticate(usernamePassword);
-      UserEntity user = (UserEntity) auth.getPrincipal();
-      token = tokenService.generateToken(user.getId());
+      CustomUserDetails customUserDetails = (CustomUserDetails) auth.getPrincipal();
+      token = tokenService.generateToken(customUserDetails.getUser().getId());
     } catch (AuthenticationException e) {
-      throw new WrongPasswordException("Senha incorreta");
+      throw new RuntimeException(e.getMessage());
     }
 
     return ResponseEntity.ok(token);

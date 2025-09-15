@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
 import br.com.tecflix_app.modules.user.application.domain.enums.Role;
@@ -19,7 +18,7 @@ public interface UserRepository extends JpaRepository<UserEntity, UUID> {
   Optional<UserAccountProjection> findDataById(UUID id);
 
   @Query("SELECT u FROM UserEntity u WHERE u.email = :email")
-  UserDetails findUserDetailsByEmail(String email);
+  UserEntity findByEmail(String email);
 
   @Query("SELECT u.active FROM UserEntity u WHERE u.email = :email")
   Optional<Boolean> findActiveByEmail(String email);
@@ -33,7 +32,7 @@ public interface UserRepository extends JpaRepository<UserEntity, UUID> {
   @Query("SELECT u.id FROM UserEntity u WHERE u.email = :email")
   Optional<UUID> findIdByEmail(String email);
 
-  Optional<UserBasicProjection> findByEmail(String email);
+  Optional<UserBasicProjection> findUserBasicProjectionByEmail(String email);
 
   Optional<UserProfileProjection> findProfileById(UUID id);
 }

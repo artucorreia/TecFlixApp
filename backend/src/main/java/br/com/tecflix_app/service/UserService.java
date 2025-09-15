@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,9 +49,9 @@ public class UserService {
     this.mapper = mapper;
   }
 
-  public UserDetails findUserDetailsByEmail(String email) {
+  public UserEntity findUserDetailsByEmail(String email) {
     LOGGER.info("Finding user details by email");
-    return repository.findUserDetailsByEmail(email);
+    return repository.findByEmail(email);
   }
 
   public UserDTO findById(UUID id) {
@@ -83,7 +82,7 @@ public class UserService {
     LOGGER.info("Finding user's id by email");
     return mapper.map(
         repository
-            .findByEmail(email)
+            .findUserBasicProjectionByEmail(email)
             .orElseThrow(
                 () -> new ResourceNotFoundException("Nenhum usuário encontrado para este email")),
         UserDTO.class);
