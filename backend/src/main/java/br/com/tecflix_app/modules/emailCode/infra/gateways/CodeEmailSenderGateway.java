@@ -44,8 +44,7 @@ public class CodeEmailSenderGateway implements CodeSenderGateway {
   public void sendCodeToValidateUser(UUID userId, String email, String name, String code) {
     LOGGER.info(String.format("Sending validation code to user: %s (%s)", name, email));
 
-    String path = buildValidationPath(code, userId);
-    String url = frontendUrl + path;
+    String url = buildValidationUrl(code, userId);
     try {
       emailSenderService.sendEmailCode(
           VALIDATION_SUBJECT,
@@ -70,8 +69,7 @@ public class CodeEmailSenderGateway implements CodeSenderGateway {
   public void sendCodeToResetPassword(UUID userId, String email, String name, String code) {
     LOGGER.info(String.format("Sending password reset code to user: %s (%s)", name, email));
 
-    String path = buildResetPasswordPath(code, userId);
-    String url = frontendUrl + path;
+    String url = buildResetPasswordUrl(code, userId);
     try {
       emailSenderService.sendEmailCode(
           RESET_SUBJECT,
@@ -92,12 +90,12 @@ public class CodeEmailSenderGateway implements CodeSenderGateway {
     }
   }
 
-  private String buildValidationPath(String code, UUID userId) {
+  private String buildValidationUrl(String code, UUID userId) {
     String relativePath = String.format(VALIDATION_PATH_TEMPLATE, code, userId);
     return frontendUrl + relativePath;
   }
 
-  private String buildResetPasswordPath(String code, UUID userId) {
+  private String buildResetPasswordUrl(String code, UUID userId) {
     String relativePath = String.format(RESET_PASSWORD_PATH_TEMPLATE, code, userId);
     return frontendUrl + relativePath;
   }
