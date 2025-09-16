@@ -69,7 +69,9 @@ public class AuthenticationFilter extends OncePerRequestFilter {
       InvalidApiKeyException ex)
       throws IOException {
     response.setStatus(HttpStatus.UNAUTHORIZED.value());
-    response.setContentType("application/json");
+    response.setContentType("application/json; charset=UTF-8");
+    response.setCharacterEncoding("UTF-8");
+
     ExceptionResponse exceptionResponse =
         ExceptionResponse.builder()
             .success(false)

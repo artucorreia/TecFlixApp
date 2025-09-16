@@ -80,7 +80,8 @@ public class SecurityFilter extends OncePerRequestFilter {
       HttpServletRequest request, HttpServletResponse response, InvalidTokenException ex)
       throws IOException {
     response.setStatus(HttpStatus.FORBIDDEN.value());
-    response.setContentType("application/json");
+    response.setContentType("application/json; charset=UTF-8");
+    response.setCharacterEncoding("UTF-8");
 
     ExceptionResponse exceptionResponse =
         ExceptionResponse.builder()
