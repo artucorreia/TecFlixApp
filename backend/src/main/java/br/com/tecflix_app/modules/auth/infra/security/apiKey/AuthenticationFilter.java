@@ -3,6 +3,10 @@ package br.com.tecflix_app.modules.auth.infra.security.apiKey;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
+import br.com.tecflix_app.modules.shared.exception.ExceptionResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -20,6 +24,10 @@ import jakarta.servlet.http.HttpServletResponse;
 public class AuthenticationFilter extends OncePerRequestFilter {
 
   private final AuthenticationService authenticationService;
+  private final ObjectMapper objectMapper =
+      new ObjectMapper()
+          .registerModule(new JavaTimeModule())
+          .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
   @Autowired
   public AuthenticationFilter(AuthenticationService authenticationService) {
@@ -51,21 +59,26 @@ public class AuthenticationFilter extends OncePerRequestFilter {
       SecurityContextHolder.getContext().setAuthentication(authentication);
       filterChain.doFilter(request, response);
     } catch (InvalidApiKeyException e) {
-      handleException(httpResponse, e);
+      handleException(httpRequest, httpResponse, e);
     }
   }
 
-  private void handleException(HttpServletResponse response, InvalidApiKeyException e)
+  private void handleException(
+      HttpServletRequest httpServletRequest,
+      HttpServletResponse response,
+      InvalidApiKeyException ex)
       throws IOException {
     response.setStatus(HttpStatus.UNAUTHORIZED.value());
     response.setContentType("application/json");
-    response
-        .getWriter()
-        .write(
-            "{\"timestamp\":\""
-                + LocalDateTime.now()
-                + "\",\"title\":\""
-                + e.getMessage()
-                + "\",\"details\":\"null or incorrect API KEY\"}");
+    ExceptionResponse exceptionResponse =
+        ExceptionResponse.builder()
+            .success(false)
+            .message(ex.getMessage())
+            .uri(httpServletRequest.getRequestURI())
+            .code(HttpStatus.UNAUTHORIZED.value())
+            .timestamp(LocalDateTime.now())
+            .build();
+    String json = objectMapper.writeValueAsString(exceptionResponse);
+    response.getWriter().write(json);
   }
 }

@@ -4,6 +4,10 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import br.com.tecflix_app.modules.shared.exception.ExceptionResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,6 +27,10 @@ import jakarta.servlet.http.HttpServletResponse;
 public class SecurityFilter extends OncePerRequestFilter {
   private final TokenService tokenService;
   private final UserService userService;
+  private final ObjectMapper objectMapper =
+      new ObjectMapper()
+          .registerModule(new JavaTimeModule())
+          .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
   @Autowired
   public SecurityFilter(TokenService tokenService, UserService userService) {
@@ -57,8 +65,8 @@ public class SecurityFilter extends OncePerRequestFilter {
       }
 
       filterChain.doFilter(request, response);
-    } catch (InvalidTokenException e) {
-      handleException(response, e);
+    } catch (InvalidTokenException ex) {
+      handleException(request, response, ex);
     }
   }
 
@@ -68,17 +76,21 @@ public class SecurityFilter extends OncePerRequestFilter {
     return authHeader.replace("Bearer ", "");
   }
 
-  private void handleException(HttpServletResponse response, InvalidTokenException e)
+  private void handleException(
+      HttpServletRequest request, HttpServletResponse response, InvalidTokenException ex)
       throws IOException {
     response.setStatus(HttpStatus.FORBIDDEN.value());
     response.setContentType("application/json");
-    response
-        .getWriter()
-        .write(
-            "{\"timestamp\":\""
-                + LocalDateTime.now()
-                + "\",\"title\":\""
-                + e.getMessage()
-                + "\",\"details\":\"Token error\"}");
+
+    ExceptionResponse exceptionResponse =
+        ExceptionResponse.builder()
+            .success(false)
+            .message(ex.getMessage())
+            .uri(request.getRequestURI())
+            .code(HttpStatus.FORBIDDEN.value())
+            .timestamp(LocalDateTime.now())
+            .build();
+    String json = objectMapper.writeValueAsString(exceptionResponse);
+    response.getWriter().write(json);
   }
 }
