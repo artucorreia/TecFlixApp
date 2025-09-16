@@ -2,7 +2,7 @@ package br.com.tecflix_app.modules.user.application.domain.entity;
 
 import br.com.tecflix_app.modules.course.application.domain.entity.Course;
 import br.com.tecflix_app.modules.professorData.application.domain.entity.ProfessorData;
-import br.com.tecflix_app.modules.auth.domain.entity.entity.RefreshToken;
+import br.com.tecflix_app.modules.auth.domain.entity.RefreshToken;
 import br.com.tecflix_app.modules.social.application.domain.entity.Social;
 import br.com.tecflix_app.modules.user.application.domain.enums.Role;
 
