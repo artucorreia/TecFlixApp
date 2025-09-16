@@ -8,4 +8,8 @@ public class AuthConstant {
 
   public static String MESSAGE_201 = "Recurso criado com sucesso";
   public static int CODE_201 = 201;
+
+  public static String REGISTER_MESSAGE_201 =
+      "Usuário registrado e e-mail de validação enviado com sucesso";
+  public static int REGISTER_CODE_201 = 201;
 }

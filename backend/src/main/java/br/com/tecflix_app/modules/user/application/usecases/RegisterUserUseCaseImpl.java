@@ -1,5 +1,8 @@
 package br.com.tecflix_app.modules.user.application.usecases;
 
+import br.com.tecflix_app.modules.emailCode.application.domain.entity.EmailCode;
+import br.com.tecflix_app.modules.emailCode.application.gateways.CodeSenderGateway;
+import br.com.tecflix_app.modules.emailCode.application.usecases.CreateAccountValidationCodeUseCase;
 import br.com.tecflix_app.modules.shared.exception.general.RepeatedDataException;
 import br.com.tecflix_app.modules.user.application.domain.entity.User;
 import br.com.tecflix_app.modules.user.application.domain.enums.Role;
@@ -13,22 +16,34 @@ public class RegisterUserUseCaseImpl implements RegisterUserUseCase {
   private final Logger LOGGER = Logger.getLogger(RegisterUserUseCaseImpl.class.getName());
 
   private final UserRepositoryGateway userRepositoryGateway;
+  private final CreateAccountValidationCodeUseCase createAccountValidationCodeUseCase;
+  private final CodeSenderGateway codeSenderGateway;
 
-  public RegisterUserUseCaseImpl(UserRepositoryGateway userRepositoryGateway) {
+  public RegisterUserUseCaseImpl(
+      UserRepositoryGateway userRepositoryGateway,
+      CreateAccountValidationCodeUseCase createAccountValidationCodeUseCase,
+      CodeSenderGateway codeSenderGateway) {
     this.userRepositoryGateway = userRepositoryGateway;
+    this.createAccountValidationCodeUseCase = createAccountValidationCodeUseCase;
+    this.codeSenderGateway = codeSenderGateway;
   }
 
   @Override
   public void execute(User user) {
     LOGGER.info("Registering a new user");
-    checkEmail(user.getEmail().trim());
-    userRepositoryGateway.save(treatFields(user));
+
+    boolean emailAlreadyInUse = checkIfEmailAlreadyExists(user.getEmail().trim());
+    if (emailAlreadyInUse) throw new RepeatedDataException("Este email já está em uso");
+
+    User savedUser = userRepositoryGateway.save(treatFields(user));
+    EmailCode savedEmailCode = createAccountValidationCodeUseCase.execute(savedUser.getId());
+    codeSenderGateway.sendCodeToValidateUser(
+        savedUser.getId(), user.getEmail(), user.getName(), savedEmailCode.getCode());
   }
 
-  private void checkEmail(String email) {
-    LOGGER.info("Checking if email is already in use");
-    if (userRepositoryGateway.findByEmail(email).isPresent())
-      throw new RepeatedDataException("Este email já está em uso");
+  private boolean checkIfEmailAlreadyExists(String email) {
+    LOGGER.info("Checking if the email is already in use");
+    return userRepositoryGateway.findByEmail(email).isPresent();
   }
 
   private User treatFields(User user) {

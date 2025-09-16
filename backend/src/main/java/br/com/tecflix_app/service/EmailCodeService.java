@@ -59,7 +59,7 @@ public class EmailCodeService {
     EmailCodeDTO emailCode =
         EmailCodeDTO.builder()
             .user(userDTO)
-            .code(EmailCodeGenerator.genarateCode())
+            .code(EmailCodeGenerator.generateCode())
             .createdAt(LocalDateTime.now())
             .build();
 

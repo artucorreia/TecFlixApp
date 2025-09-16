@@ -190,7 +190,8 @@ public class AuthController {
     User user = authPresentationMapper.map(data);
     registerUserUseCase.execute(user);
     ResponseDTO<Object> responseDTO =
-        new ResponseDTO<>(true, AuthConstant.MESSAGE_201, AuthConstant.CODE_201, null);
+        new ResponseDTO<>(
+            true, AuthConstant.REGISTER_MESSAGE_201, AuthConstant.REGISTER_CODE_201, null);
     return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
   }
 

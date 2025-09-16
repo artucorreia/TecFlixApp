@@ -30,8 +30,9 @@ public class UserJpaRepositoryGateway implements UserRepositoryGateway {
   }
 
   @Override
-  public void save(User user) {
+  public User save(User user) {
     UserEntity userEntity = userGatewaysMapper.domainToEntity(user);
-    userRepository.save(userEntity);
+    UserEntity savedUserEntity = userRepository.save(userEntity);
+    return userGatewaysMapper.entityToDomain(savedUserEntity);
   }
 }
