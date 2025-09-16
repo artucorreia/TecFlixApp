@@ -18,6 +18,6 @@ public class TokenResponseDTO {
   private UUID userId;
   private String accessToken;
   private String refreshToken;
-  private Instant createdAt;
+  private Instant issuedAt;
   private Instant expiresAt;
 }

@@ -7,17 +7,18 @@ website:
 email:
   code:
     validation:
-      time: ${CODE_VALIDATION_TIME:600000000000} # 10 minutes in nanos
+      time: ${CODE_VALIDATION_TIME:10m}
 
 security:
   api:
     key: ${API_KEY:password}
   jwt:
     token:
+      issuer: ${TOKEN_ISSUER:tecflix}
       secret: ${TOKEN_SECRET:mySecret}
-      duration: ${TOKEN_DURATION:43200000} # 12 hours
+      duration: ${TOKEN_DURATION:15m}
       refresh:
-        duration: ${REFRESH_TOKEN_DURATION:604800000} # 168 hours
+        duration: ${REFRESH_TOKEN_DURATION:168h}
 
 spring:
   application:

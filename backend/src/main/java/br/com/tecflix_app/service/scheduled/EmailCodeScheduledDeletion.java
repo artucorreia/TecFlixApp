@@ -1,6 +1,8 @@
 package br.com.tecflix_app.service.scheduled;
 
 import br.com.tecflix_app.modules.emailCode.infra.persistence.EmailCodeRepository;
+
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +16,7 @@ public class EmailCodeScheduledDeletion {
   private final Logger LOGGER = Logger.getLogger(EmailCodeScheduledDeletion.class.getName());
 
   @Value("${email.code.validation.time}")
-  private Long validationTime;
+  private Duration validationTime;
 
   private final EmailCodeRepository repository;
 
@@ -27,7 +29,7 @@ public class EmailCodeScheduledDeletion {
   @Transactional(rollbackFor = Exception.class)
   public void emailCodeDeletion() {
     LOGGER.info("Deleting email codes");
-    LocalDateTime time = LocalDateTime.now().minusNanos(validationTime);
+    LocalDateTime time = LocalDateTime.now().minus(validationTime);
     repository.deleteAllByCreatedAtBefore(time);
   }
 }

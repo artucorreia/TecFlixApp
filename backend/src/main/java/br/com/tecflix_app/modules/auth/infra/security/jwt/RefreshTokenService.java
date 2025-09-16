@@ -6,15 +6,20 @@ import br.com.tecflix_app.modules.user.infra.persistence.UserEntity;
 import br.com.tecflix_app.modules.user.infra.persistence.UserRepository;
 import br.com.tecflix_app.modules.shared.exception.auth.RefreshTokenException;
 import br.com.tecflix_app.modules.shared.exception.general.ResourceNotFoundException;
+
+import java.time.Duration;
 import java.time.Instant;
 import java.util.UUID;
 import java.util.logging.Logger;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class RefreshTokenService {
   private final Logger LOGGER = Logger.getLogger(RefreshTokenService.class.getName());
 
@@ -22,13 +27,7 @@ public class RefreshTokenService {
   private final UserRepository userRepository;
 
   @Value("${security.jwt.token.refresh.duration}")
-  private Long duration;
-
-  @Autowired
-  public RefreshTokenService(RefreshTokenRepository repository, UserRepository userRepository) {
-    this.repository = repository;
-    this.userRepository = userRepository;
-  }
+  private Duration duration;
 
   @Transactional(rollbackFor = Exception.class)
   public RefreshTokenEntity create(UUID userId) {
@@ -39,7 +38,7 @@ public class RefreshTokenService {
             .id(null)
             .token(UUID.randomUUID().toString())
             .user(getUser(userId))
-            .expiresAt(Instant.now().plusMillis(duration))
+            .expiresAt(Instant.now().plus(duration))
             .build();
     return repository.save(entity);
   }
