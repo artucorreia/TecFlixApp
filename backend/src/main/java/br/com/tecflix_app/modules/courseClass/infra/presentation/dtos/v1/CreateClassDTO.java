@@ -13,14 +13,14 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CreateClassDTO {
-  @NotNull(message = "O título da aula é obrigatório")
-  @NotBlank(message = "O título da aula é obrigatório")
-  @Size(min = 5, max = 20, message = "O título da aula deve ter entre 5 e 20 caracteres")
+  @NotNull(message = "O campo 'title' é obrigatório")
+  @NotBlank(message = "O campo 'title' não pode estar em branco")
+  @Size(min = 5, max = 20, message = "O campo 'title' deve ter entre 5 e 20 caracteres")
   private String title;
 
-  @NotNull(message = "O caminho do vídeo da aula é obrigatório")
-  @NotBlank(message = "O caminho do vídeo da aula é obrigatório")
-  @Size(max = 255, message = "O caminho do vídeo da aula deve ter no máximo 200 caracteres")
+  @NotNull(message = "O campo 'videoPath' é obrigatório")
+  @NotBlank(message = "O campo 'videoPath' não pode estar em branco")
+  @Size(max = 255, message = "O campo 'videoPath' deve ter no máximo 255 caracteres")
   private String videoPath;
 
   @NotNull(message = "O id do módulo é obrigatório")

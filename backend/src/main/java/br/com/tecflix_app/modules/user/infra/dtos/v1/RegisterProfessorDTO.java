@@ -19,7 +19,9 @@ import lombok.Setter;
 @Setter
 @Getter
 public class RegisterProfessorDTO {
-  @NotNull @Valid private CreateProfessorDataDTO professorData;
+  @NotNull(message = "O campo 'professorData' é obrigatório")
+  @Valid
+  private CreateProfessorDataDTO professorData;
 
   @Valid private List<CreateSocialRequest> socials;
 

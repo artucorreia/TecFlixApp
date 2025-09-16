@@ -13,8 +13,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class NewPasswordDTO {
-  @NotNull
-  @NotBlank
-  @Size(min = 8, max = 50)
+  @NotNull(message = "O campo 'newPassword' é obrigatório")
+  @NotBlank(message = "O campo 'newPassword' não pode estar em branco")
+  @Size(min = 8, max = 50, message = "O campo 'newPassword' deve ter entre 8 e 50 caracteres")
   private String newPassword;
 }

@@ -15,9 +15,9 @@ import java.util.UUID;
 @Getter
 @Setter
 public class CreateModuleDTO {
-  @NotNull(message = "O título do módulo é obrigatório")
-  @NotBlank(message = "O título do módulo é obrigatório")
-  @Size(min = 5, max = 40, message = "O título do módulo deve ter entre 5 e 40 caracteres")
+  @NotNull(message = "O campo 'title' é obrigatório")
+  @NotBlank(message = "O campo 'title' não pode estar em branco")
+  @Size(min = 5, max = 40, message = "O campo 'title' deve ter entre 5 e 40 caracteres")
   private String title;
 
   @NotNull(message = "O id do curso é obrigatório")

@@ -8,13 +8,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class RefreshTokenDTO {
-  @NotBlank
-  @NotNull
-  @Size(max = 36)
+  @NotNull(message = "O campo 'token' é obrigatório")
+  @NotBlank(message = "O campo 'token' não pode estar em branco")
+  @Size(min = 36, max = 36, message = "O campo 'token' deve ter 36 caracteres")
   private String token;
 }
