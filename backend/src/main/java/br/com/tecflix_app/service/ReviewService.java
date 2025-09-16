@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+import br.com.tecflix_app.modules.auth.application.gateways.AuthenticatedUserGateway;
+import br.com.tecflix_app.modules.shared.exception.general.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,18 +29,17 @@ public class ReviewService {
 
   private final ReviewRepository repository;
   private final CourseService courseService;
-  private final TokenService tokenService;
+  private final AuthenticatedUserGateway authenticatedUserGateway;
   private final IMapperService mapper;
 
-  @Autowired
   public ReviewService(
       ReviewRepository repository,
       CourseService courseService,
-      TokenService tokenService,
+      AuthenticatedUserGateway authenticatedUserGateway,
       IMapperService mapper) {
     this.repository = repository;
     this.courseService = courseService;
-    this.tokenService = tokenService;
+    this.authenticatedUserGateway = authenticatedUserGateway;
     this.mapper = mapper;
   }
 
@@ -58,7 +59,10 @@ public class ReviewService {
     // check if courseId is valid
     courseService.findById(courseId);
 
-    UUID userId = tokenService.getUserId();
+    UUID userId =
+        authenticatedUserGateway
+            .findId()
+            .orElseThrow(() -> new ResourceNotFoundException("Erro ao resgatar usuário logado"));
     Optional<Long> entityId = repository.findIdByCourseIdAndUserId(courseId, userId);
     if (entityId.isPresent()) throw new ActionNotAllowedException("Você já avaliou este curso");
 

@@ -1,6 +1,7 @@
 package br.com.tecflix_app.service;
 
 import br.com.tecflix_app.mapper.contract.IMapperService;
+import br.com.tecflix_app.modules.auth.application.gateways.AuthenticatedUserGateway;
 import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.NewPasswordDTO;
 import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.RegisterDTO;
 import br.com.tecflix_app.modules.auth.infra.security.jwt.TokenService;
@@ -17,7 +18,6 @@ import br.com.tecflix_app.modules.shared.exception.general.ResourceNotFoundExcep
 import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.logging.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,24 +28,23 @@ public class UserService {
 
   private final UserRepository repository;
   private final UserValidatorService validatorService;
-  private final TokenService tokenService;
   private final ProfessorDataService professorDataService;
   private final SocialService socialService;
+  private final AuthenticatedUserGateway authenticatedUserGateway;
   private final IMapperService mapper;
 
-  @Autowired
   public UserService(
       UserRepository repository,
       UserValidatorService validatorService,
-      TokenService tokenService,
       ProfessorDataService professorDataService,
       SocialService socialService,
+      AuthenticatedUserGateway authenticatedUserGateway,
       IMapperService mapper) {
     this.repository = repository;
     this.validatorService = validatorService;
-    this.tokenService = tokenService;
     this.professorDataService = professorDataService;
     this.socialService = socialService;
+    this.authenticatedUserGateway = authenticatedUserGateway;
     this.mapper = mapper;
   }
 
@@ -140,7 +139,11 @@ public class UserService {
   }
 
   public UserDTO findMe() {
-    UUID id = tokenService.getUserId();
+    UUID id =
+        authenticatedUserGateway
+            .findId()
+            .orElseThrow(() -> new ResourceNotFoundException("Erro ao resgatar usuário logado"));
+
     return mapper.map(
         repository
             .findDataById(id)
@@ -176,7 +179,10 @@ public class UserService {
   public GenericResponseDTO<UUID> changePassword(NewPasswordDTO data) {
     LOGGER.info("Changing user password");
 
-    UUID userId = tokenService.getUserId();
+    UUID userId =
+        authenticatedUserGateway
+            .findId()
+            .orElseThrow(() -> new ResourceNotFoundException("Erro ao resgatar usuário logado"));
     UserEntity user = findEntityById(userId);
     String newPassword = new BCryptPasswordEncoder().encode(data.getNewPassword().trim());
     user.setPassword(newPassword);
