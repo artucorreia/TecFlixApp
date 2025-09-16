@@ -3,6 +3,7 @@ package br.com.tecflix_app.service;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import br.com.tecflix_app.modules.shared.exception.email.EmailSendingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -96,23 +97,39 @@ public class EmailCodeService {
 
   private void sendEmailToValidateUser(UUID userId, String email, String name, String code) {
     String path = "/sing-up/authenticate-code?code=" + code + "&userId=" + userId;
-    emailSenderService.sendEmailCode(
-        email,
-        name,
-        "Clique no botão abaixo para validar o seu e-mail:",
-        "Validar E-mail",
-        path,
-        "Código de Validação:" + code);
+    try {
+      emailSenderService.sendEmailCode(
+          "Validar E-mail",
+          "no-reply@tecflix",
+          "templates/generic-mail-template.html",
+          email,
+          name,
+          "Clique no botão abaixo para validar o seu e-mail:",
+          "Validar E-mail",
+          path,
+          "Código de Validação:" + code);
+
+    } catch (Exception ex) {
+      throw new EmailSendingException("Ocorreu um erro ao enviar o email");
+    }
   }
 
   private void sendEmailToResetPassword(UUID userId, String email, String name, String code) {
     String path = "/sing-in/reset-password?code=" + code + "&userId=" + userId;
-    emailSenderService.sendEmailCode(
-        email,
-        name,
-        "Clique no botão abaixo para resetar sua senha:",
-        "Resetar Senha",
-        path,
-        "Acesse o link para resetar sua senha");
+    try {
+      emailSenderService.sendEmailCode(
+          "Resetar Senha",
+          "no-reply@tecflix",
+          "templates/generic-mail-template.html",
+          email,
+          name,
+          "Clique no botão abaixo para resetar sua senha:",
+          "Resetar Senha",
+          path,
+          "Acesse o link para resetar sua senha");
+
+    } catch (Exception ex) {
+      throw new EmailSendingException("Ocorreu um erro ao enviar o email");
+    }
   }
 }

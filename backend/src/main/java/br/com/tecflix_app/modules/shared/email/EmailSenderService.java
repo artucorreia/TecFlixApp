@@ -1,63 +1,53 @@
 package br.com.tecflix_app.modules.shared.email;
 
-import br.com.tecflix_app.modules.shared.exception.email.EmailSendingException;
+import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.util.logging.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+
+import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 @Service
+@Validated
+@RequiredArgsConstructor
 public class EmailSenderService {
-  private final Logger LOGGER = Logger.getLogger(EmailSenderService.class.getName());
   private final JavaMailSender javaMailSender;
 
-  @Value("${website.url}")
-  private String WEBSITE_URL;
-
-  @Autowired
-  public EmailSenderService(JavaMailSender javaMailSender) {
-    this.javaMailSender = javaMailSender;
-  }
-
   public void sendEmailCode(
-      String email,
-      String name,
-      String templateMessage,
-      String buttonText,
-      String path,
-      String helperText) {
-    LOGGER.info("Sending email code to user");
+      @NotNull String subject,
+      @NotNull String fromAddress,
+      @NotNull String emailTemplatePath,
+      @NotNull String email,
+      @NotNull String name,
+      @NotNull String templateMessage,
+      @NotNull String buttonText,
+      @NotNull String url,
+      @NotNull String helperText)
+      throws MessagingException, IOException {
+    MimeMessage message = javaMailSender.createMimeMessage();
+    MimeMessageHelper helper = new MimeMessageHelper(message, true);
+    helper.setTo("<" + email + ">");
+    helper.setFrom(fromAddress);
+    helper.setSubject(subject);
 
-    try {
-      MimeMessage message = javaMailSender.createMimeMessage();
-      MimeMessageHelper helper = new MimeMessageHelper(message, true);
-      helper.setTo("<" + email + ">");
-      helper.setFrom("no-reply@tecflix");
-      helper.setSubject("Validação de Email");
+    String template = getTemplate(emailTemplatePath);
+    template = template.replace("${name}", name);
+    template = template.replace("${message}", templateMessage);
+    template = template.replace("${button_text}", buttonText);
 
-      String template = getTemplate("templates/generic-mail-template.html");
-      template = template.replace("${name}", name);
-      template = template.replace("${message}", templateMessage);
-      template = template.replace("${button_text}", buttonText);
+    template = template.replace("${url}", url);
+    template = template.replace("${currentYear}", String.valueOf(LocalDateTime.now().getYear()));
 
-      String url = WEBSITE_URL + path;
+    helper.setText(helperText, template);
 
-      template = template.replace("${url}", url);
-      template = template.replace("${currentYear}", String.valueOf(LocalDateTime.now().getYear()));
-
-      helper.setText(helperText, template);
-
-      javaMailSender.send(message);
-    } catch (Exception e) {
-      throw new EmailSendingException("Ocorreu um erro ao enviar o email");
-    }
+    javaMailSender.send(message);
   }
 
   private String getTemplate(String path) throws IOException {
