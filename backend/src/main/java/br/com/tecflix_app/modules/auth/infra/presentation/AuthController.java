@@ -1,14 +1,19 @@
 package br.com.tecflix_app.modules.auth.infra.presentation;
 
+import br.com.tecflix_app.modules.auth.constant.AuthConstant;
 import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.AuthenticationDTO;
 import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.NewPasswordDTO;
 import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.RegisterDTO;
 import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.TokenResponseDTO;
+import br.com.tecflix_app.modules.auth.infra.presentation.mapper.AuthPresentationMapper;
 import br.com.tecflix_app.modules.auth.infra.security.refreshToken.RefreshTokenService;
 import br.com.tecflix_app.modules.auth.infra.security.jwt.TokenService;
 import br.com.tecflix_app.modules.auth.infra.security.jwt.CustomUserDetails;
 import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.RefreshTokenDTO;
+import br.com.tecflix_app.modules.shared.dto.v1.ResponseDTO;
 import br.com.tecflix_app.modules.shared.exception.auth.WrongPasswordException;
+import br.com.tecflix_app.modules.user.application.domain.entity.User;
+import br.com.tecflix_app.modules.user.application.usecases.RegisterUserUseCase;
 import br.com.tecflix_app.service.EmailCodeService;
 import br.com.tecflix_app.service.UserService;
 import br.com.tecflix_app.modules.shared.dto.v1.GenericResponseDTO;
@@ -23,8 +28,10 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+
 import java.util.UUID;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +46,7 @@ import org.springframework.web.bind.annotation.*;
 @SecurityRequirements(
     value = {@SecurityRequirement(name = "bearerAuth"), @SecurityRequirement(name = "X-API-KEY")})
 @Tag(name = "Authentication", description = "Endpoints for registration and login to the system")
+@RequiredArgsConstructor
 public class AuthController {
 
   private final UserService userService;
@@ -47,19 +55,8 @@ public class AuthController {
   private final TokenService tokenService;
   private final RefreshTokenService refreshTokenService;
 
-  @Autowired
-  public AuthController(
-      UserService userService,
-      EmailCodeService emailCodeService,
-      AuthenticationManager authenticationManager,
-      TokenService tokenService,
-      RefreshTokenService refreshTokenService) {
-    this.userService = userService;
-    this.emailCodeService = emailCodeService;
-    this.authenticationManager = authenticationManager;
-    this.tokenService = tokenService;
-    this.refreshTokenService = refreshTokenService;
-  }
+  private final RegisterUserUseCase registerUserUseCase;
+  private final AuthPresentationMapper authPresentationMapper;
 
   @PostMapping(
       value = "/login",
@@ -189,9 +186,12 @@ public class AuthController {
         @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
       })
-  public ResponseEntity<GenericResponseDTO<UUID>> register(
-      @Valid @RequestBody RegisterDTO data) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(userService.register(data));
+  public ResponseEntity<ResponseDTO<Object>> register(@Valid @RequestBody RegisterDTO data) {
+    User user = authPresentationMapper.map(data);
+    registerUserUseCase.execute(user);
+    ResponseDTO<Object> responseDTO =
+        new ResponseDTO<>(true, AuthConstant.MESSAGE_201, AuthConstant.CODE_201, null);
+    return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
   }
 
   @PostMapping(value = "/send-code/{userId}")

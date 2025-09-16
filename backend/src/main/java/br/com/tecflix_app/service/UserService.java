@@ -18,6 +18,8 @@ import br.com.tecflix_app.modules.shared.exception.general.ResourceNotFoundExcep
 import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.logging.Logger;
+
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,7 +52,9 @@ public class UserService {
 
   public UserEntity findUserDetailsByEmail(String email) {
     LOGGER.info("Finding user details by email");
-    return repository.findByEmail(email);
+    return repository
+        .findByEmail(email)
+        .orElseThrow(() -> new ResourceNotFoundException("Nenhum usuário encontrado para este email"));
   }
 
   public UserDTO findById(UUID id) {
@@ -102,29 +106,29 @@ public class UserService {
             () -> new ResourceNotFoundException("Nenhum usuário encontrado para este email"));
   }
 
-  private UserEntity entityFactory(RegisterDTO data) {
-    String passwordEncoded = new BCryptPasswordEncoder().encode(data.getPassword().trim());
+//  private UserEntity entityFactory(RegisterDTO data) {
+//    String passwordEncoded = new BCryptPasswordEncoder().encode(data.getPassword().trim());
+//
+//    return UserEntity.builder()
+//        .name(data.getName().trim())
+//        .email(data.getEmail().trim())
+//        .password(passwordEncoded)
+//        .role(data.getRole())
+//        .active(false)
+//        .createdAt(data.getCreatedAt())
+//        .build();
+//  }
 
-    return UserEntity.builder()
-        .name(data.getName().trim())
-        .email(data.getEmail().trim())
-        .password(passwordEncoded)
-        .role(data.getRole())
-        .active(false)
-        .createdAt(data.getCreatedAt())
-        .build();
-  }
-
-  @Transactional(rollbackFor = Exception.class)
-  public GenericResponseDTO<UUID> register(RegisterDTO data) {
-    LOGGER.info("Creating a new user");
-    validatorService.checkEmail(data.getEmail().trim());
-
-    UserEntity entity = entityFactory(data);
-    UUID userId = repository.save(entity).getId();
-
-    return new GenericResponseDTO<>(userId, "Usuário criado com sucesso", LocalDateTime.now());
-  }
+//  @Transactional(rollbackFor = Exception.class)
+//  public GenericResponseDTO<UUID> register(RegisterDTO data) {
+//    LOGGER.info("Creating a new user");
+//    validatorService.checkEmail(data.getEmail().trim());
+//
+//    UserEntity entity = entityFactory(data);
+//    UUID userId = repository.save(entity).getId();
+//
+//    return new GenericResponseDTO<>(userId, "Usuário criado com sucesso", LocalDateTime.now());
+//  }
 
   @Transactional(rollbackFor = Exception.class)
   public GenericResponseDTO<UUID> activateUser(UUID userId) {

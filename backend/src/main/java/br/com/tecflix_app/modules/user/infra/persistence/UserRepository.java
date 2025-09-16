@@ -18,7 +18,7 @@ public interface UserRepository extends JpaRepository<UserEntity, UUID> {
   Optional<UserAccountProjection> findDataById(UUID id);
 
   @Query("SELECT u FROM UserEntity u WHERE u.email = :email")
-  UserEntity findByEmail(String email);
+  Optional<UserEntity> findByEmail(String email);
 
   @Query("SELECT u.active FROM UserEntity u WHERE u.email = :email")
   Optional<Boolean> findActiveByEmail(String email);

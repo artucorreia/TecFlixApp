@@ -1,5 +1,6 @@
 package br.com.tecflix_app.modules.auth.infra.security.jwt;
 
+import br.com.tecflix_app.modules.user.infra.persistence.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -7,6 +8,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import br.com.tecflix_app.modules.user.infra.persistence.UserRepository;
+
+import java.util.Optional;
 
 @Service
 public class AuthorizationService implements UserDetailsService {
@@ -20,6 +23,11 @@ public class AuthorizationService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    return new CustomUserDetails(repository.findByEmail(username));
+    UserEntity userEntity =
+        repository
+            .findByEmail(username)
+            .orElseThrow(
+                () -> new UsernameNotFoundException("Nenhum usuário encontrado para este email"));
+    return new CustomUserDetails(userEntity);
   }
 }
