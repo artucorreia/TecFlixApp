@@ -3,7 +3,7 @@ package br.com.tecflix_app.modules.user.infra.persistence;
 import br.com.tecflix_app.modules.course.infra.persistence.CourseEntity;
 import br.com.tecflix_app.modules.emailCode.infra.persistence.EmailCodeEntity;
 import br.com.tecflix_app.modules.professorData.infra.persistence.ProfessorDataEntity;
-import br.com.tecflix_app.modules.refreshToken.infra.persistence.RefreshTokenEntity;
+import br.com.tecflix_app.modules.auth.infra.persistence.RefreshTokenEntity;
 import br.com.tecflix_app.modules.review.infra.persistence.ReviewEntity;
 import br.com.tecflix_app.modules.social.infra.persistence.SocialEntity;
 import br.com.tecflix_app.modules.user.application.domain.enums.Role;

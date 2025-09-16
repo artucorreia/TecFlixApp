@@ -1,4 +1,4 @@
-package br.com.tecflix_app.modules.refreshToken.infra.dtos.v1;
+package br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

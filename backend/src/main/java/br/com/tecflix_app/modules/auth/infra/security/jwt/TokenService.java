@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+import br.com.tecflix_app.modules.auth.infra.security.refreshToken.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

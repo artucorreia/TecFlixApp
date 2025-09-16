@@ -1,7 +1,7 @@
-package br.com.tecflix_app.modules.auth.infra.security.jwt;
+package br.com.tecflix_app.modules.auth.infra.security.refreshToken;
 
-import br.com.tecflix_app.modules.refreshToken.infra.persistence.RefreshTokenEntity;
-import br.com.tecflix_app.modules.refreshToken.infra.persistence.RefreshTokenRepository;
+import br.com.tecflix_app.modules.auth.infra.persistence.RefreshTokenEntity;
+import br.com.tecflix_app.modules.auth.infra.persistence.RefreshTokenRepository;
 import br.com.tecflix_app.modules.user.infra.persistence.UserEntity;
 import br.com.tecflix_app.modules.user.infra.persistence.UserRepository;
 import br.com.tecflix_app.modules.shared.exception.auth.RefreshTokenException;
@@ -13,7 +13,6 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,4 +1,4 @@
-package br.com.tecflix_app.modules.refreshToken.application.domain.entity;
+package br.com.tecflix_app.modules.auth.domain.entity;
 
 import br.com.tecflix_app.modules.user.application.domain.entity.User;
 import java.io.Serializable;

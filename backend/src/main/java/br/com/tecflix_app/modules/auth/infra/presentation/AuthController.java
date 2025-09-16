@@ -4,10 +4,10 @@ import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.Authentication
 import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.NewPasswordDTO;
 import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.RegisterDTO;
 import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.TokenResponseDTO;
-import br.com.tecflix_app.modules.auth.infra.security.jwt.RefreshTokenService;
+import br.com.tecflix_app.modules.auth.infra.security.refreshToken.RefreshTokenService;
 import br.com.tecflix_app.modules.auth.infra.security.jwt.TokenService;
 import br.com.tecflix_app.modules.auth.infra.security.jwt.CustomUserDetails;
-import br.com.tecflix_app.modules.refreshToken.infra.dtos.v1.RefreshTokenDTO;
+import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.RefreshTokenDTO;
 import br.com.tecflix_app.service.EmailCodeService;
 import br.com.tecflix_app.service.UserService;
 import br.com.tecflix_app.modules.shared.dto.v1.GenericResponseDTO;

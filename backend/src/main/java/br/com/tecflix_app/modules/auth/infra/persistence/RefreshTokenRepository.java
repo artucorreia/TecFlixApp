@@ -1,4 +1,4 @@
-package br.com.tecflix_app.modules.refreshToken.infra.persistence;
+package br.com.tecflix_app.modules.auth.infra.persistence;
 
 import java.util.Optional;
 import java.util.UUID;
