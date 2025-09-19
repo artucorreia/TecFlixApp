@@ -39,44 +39,11 @@ public class ModuleService {
 
   public ModuleResponseDTO findById(Long id) {
     LOGGER.info("Finding module by id");
-    ModuleResponseDTO module =
-        mapper.map(
-            repository
-                .findById(id)
-                .orElseThrow(
-                    () -> new ResourceNotFoundException("Nenhum módulo encontrado para este id")),
-            ModuleResponseDTO.class);
-
-    return addLiks(module, "modules");
-  }
-
-  public List<ModuleResponseDTO> findByAll() {
-    LOGGER.info("Finding all modules");
-    List<ModuleResponseDTO> modules = mapper.map(repository.findAll(), ModuleResponseDTO.class);
-    return addLiks(modules, "modules");
-  }
-
-//  @Transactional(rollbackFor = Exception.class)
-//  public GenericResponseDTO<Long> create(CreateModuleDTO data) {
-//    LOGGER.info("Creating a new module to course: " + data.getCourse().getId());
-//
-//    moduleValidatorService.validateCourse(data.getCourse().getId());
-//
-//    data.setTitle(data.getTitle().trim());
-//
-//    ModuleEntity entity = mapper.map(data, ModuleEntity.class);
-//    Long id = repository.save(entity).getId();
-//
-//    return new GenericResponseDTO<>(id, "Módulo criado com sucesso", LocalDateTime.now());
-//  }
-
-  private ModuleResponseDTO addLiks(ModuleResponseDTO data, String rel) {
-    data.add(linkTo(methodOn(ModuleController.class).findById(data.getId())).withSelfRel());
-    data.add(linkTo(methodOn(ModuleController.class).findAll()).withRel(rel));
-    return data;
-  }
-
-  private List<ModuleResponseDTO> addLiks(List<ModuleResponseDTO> data, String rel) {
-    return data.stream().map(obj -> obj = addLiks(obj, rel)).toList();
+    return mapper.map(
+        repository
+            .findById(id)
+            .orElseThrow(
+                () -> new ResourceNotFoundException("Nenhum módulo encontrado para este id")),
+        ModuleResponseDTO.class);
   }
 }
