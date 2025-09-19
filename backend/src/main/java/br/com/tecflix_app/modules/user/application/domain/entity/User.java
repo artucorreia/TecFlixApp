@@ -1,10 +1,19 @@
 package br.com.tecflix_app.modules.user.application.domain.entity;
 
+import br.com.tecflix_app.modules.auth.infra.persistence.RefreshTokenEntity;
 import br.com.tecflix_app.modules.course.application.domain.entity.Course;
+import br.com.tecflix_app.modules.course.infra.persistence.CourseEntity;
+import br.com.tecflix_app.modules.emailCode.application.domain.entity.EmailCode;
+import br.com.tecflix_app.modules.emailCode.infra.persistence.EmailCodeEntity;
 import br.com.tecflix_app.modules.professorData.application.domain.entity.ProfessorData;
 import br.com.tecflix_app.modules.auth.domain.entity.RefreshToken;
+import br.com.tecflix_app.modules.professorData.infra.persistence.ProfessorDataEntity;
+import br.com.tecflix_app.modules.review.application.domain.entity.Review;
+import br.com.tecflix_app.modules.review.infra.persistence.ReviewEntity;
 import br.com.tecflix_app.modules.social.application.domain.entity.Social;
+import br.com.tecflix_app.modules.social.infra.persistence.SocialEntity;
 import br.com.tecflix_app.modules.user.application.domain.enums.Role;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,10 +28,12 @@ public class User {
   private LocalDateTime createdAt;
   private Boolean active;
   private RefreshToken refreshToken;
+  private EmailCode emailCode;
   private List<Course> enrolledCourses;
   private ProfessorData professorData;
   private List<Social> socials;
   private List<Course> coursesTaught;
+  private List<Review> reviews;
 
   public User() {}
 
@@ -35,10 +46,12 @@ public class User {
       LocalDateTime createdAt,
       Boolean active,
       RefreshToken refreshToken,
+      EmailCode emailCode,
       List<Course> enrolledCourses,
       ProfessorData professorData,
       List<Social> socials,
-      List<Course> coursesTaught) {
+      List<Course> coursesTaught,
+      List<Review> reviews) {
     this.id = id;
     this.name = name;
     this.email = email;
@@ -47,10 +60,12 @@ public class User {
     this.createdAt = createdAt;
     this.active = active;
     this.refreshToken = refreshToken;
+    this.emailCode = emailCode;
     this.enrolledCourses = enrolledCourses;
     this.professorData = professorData;
     this.socials = socials;
     this.coursesTaught = coursesTaught;
+    this.reviews = reviews;
   }
 
   public UUID getId() {
@@ -117,6 +132,14 @@ public class User {
     this.refreshToken = refreshToken;
   }
 
+  public EmailCode getEmailCode() {
+    return emailCode;
+  }
+
+  public void setEmailCode(EmailCode emailCode) {
+    this.emailCode = emailCode;
+  }
+
   public List<Course> getEnrolledCourses() {
     return enrolledCourses;
   }
@@ -147,5 +170,13 @@ public class User {
 
   public void setCoursesTaught(List<Course> coursesTaught) {
     this.coursesTaught = coursesTaught;
+  }
+
+  public List<Review> getReviews() {
+    return reviews;
+  }
+
+  public void setReviews(List<Review> reviews) {
+    this.reviews = reviews;
   }
 }

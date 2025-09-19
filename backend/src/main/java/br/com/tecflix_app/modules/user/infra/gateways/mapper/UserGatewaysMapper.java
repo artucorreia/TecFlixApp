@@ -16,10 +16,12 @@ public interface UserGatewaysMapper {
         @Mapping(target = "createdAt", ignore = true),
         @Mapping(target = "active", ignore = true),
         @Mapping(target = "refreshToken", ignore = true),
+        @Mapping(target = "emailCode", ignore = true),
         @Mapping(target = "enrolledCourses", ignore = true),
         @Mapping(target = "professorData", ignore = true),
         @Mapping(target = "socials", ignore = true),
         @Mapping(target = "coursesTaught", ignore = true),
+        @Mapping(target = "reviews", ignore = true),
       })
   User basicProjectionToDomain(UserBasicProjection userBasicProjection);
 
