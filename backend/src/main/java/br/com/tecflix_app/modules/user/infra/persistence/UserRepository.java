@@ -20,14 +20,13 @@ public interface UserRepository extends JpaRepository<UserEntity, UUID> {
   @Query("SELECT u FROM UserEntity u WHERE u.email = :email")
   Optional<UserEntity> findByEmail(String email);
 
-  @Query("SELECT u.active FROM UserEntity u WHERE u.email = :email")
-  Optional<Boolean> findActiveByEmail(String email);
+  Optional<Boolean> findEmailVerifiedByEmail(String email);
 
   @Query("SELECT u.email FROM UserEntity u WHERE u.id = :id")
   Optional<String> findEmailById(UUID id);
 
-  @Query("SELECT u.role FROM UserEntity u WHERE u.id = :id")
-  Optional<Role> findRoleById(UUID id);
+//  @Query("SELECT u.role FROM UserEntity u WHERE u.id = :id")
+//  Optional<Role> findRoleById(UUID id);
 
   @Query("SELECT u.id FROM UserEntity u WHERE u.email = :email")
   Optional<UUID> findIdByEmail(String email);

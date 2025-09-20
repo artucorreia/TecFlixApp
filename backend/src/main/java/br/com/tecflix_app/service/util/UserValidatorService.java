@@ -38,12 +38,12 @@ public class UserValidatorService {
         .orElseThrow(() -> new ResourceNotFoundException("Nenhum usuário encontrado para este id"));
   }
 
-  public boolean isRoleNotAllowed(UUID userId, Role role) {
-    return repository
-        .findRoleById(userId)
-        .orElseThrow(() -> new ResourceNotFoundException("Nenhum usuário encontrado para este id"))
-        .equals(role);
-  }
+//  public boolean isRoleNotAllowed(UUID userId, Role role) {
+//    return repository
+//        .findRoleById(userId)
+//        .orElseThrow(() -> new ResourceNotFoundException("Nenhum usuário encontrado para este id"))
+//        .equals(role);
+//  }
 
   public void checkIfUserAlreadyHasProfessorRegistration(UUID userId) {
     if (professorDataService.findIdByUserId(userId).isPresent())

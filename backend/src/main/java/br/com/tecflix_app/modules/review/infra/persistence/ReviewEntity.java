@@ -1,8 +1,8 @@
 package br.com.tecflix_app.modules.review.infra.persistence;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
+import br.com.tecflix_app.modules.shared.persistence.BaseEntity;
 import br.com.tecflix_app.modules.user.infra.persistence.UserEntity;
 import br.com.tecflix_app.modules.course.infra.persistence.CourseEntity;
 import jakarta.persistence.Column;
@@ -25,19 +25,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(of = "id")
-public class ReviewEntity implements Serializable {
+@EqualsAndHashCode(callSuper = true)
+public class ReviewEntity extends BaseEntity implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-
-  @Column(nullable = false)
-  private Integer score;
-
-  @Column private String comment;
-
-  @Column(name = "created_at", nullable = false, updatable = false)
-  private LocalDateTime createdAt;
 
   @ManyToOne
   @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
@@ -46,4 +38,10 @@ public class ReviewEntity implements Serializable {
   @ManyToOne
   @JoinColumn(name = "course_id", referencedColumnName = "id", nullable = false)
   private CourseEntity course;
+
+  @Column(nullable = false)
+  private Integer score;
+
+  @Column(length = 500)
+  private String comment;
 }

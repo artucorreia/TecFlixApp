@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS modules(
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(100) NOT NULL,
+    course_id UUID REFERENCES courses(id) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    created_by UUID REFERENCES users(id),
+    updated_at TIMESTAMP DEFAULT NULL,
+    updated_by UUID REFERENCES users(id),
+    deleted BOOLEAN DEFAULT FALSE NOT NULL
+);

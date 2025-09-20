@@ -1,0 +1,13 @@
+CREATE TABLE IF NOT EXISTS users(
+    id UUID PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    email VARCHAR(60) UNIQUE NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    email_verified BOOLEAN DEFAULT FALSE NOT NULL,
+    email_verified_at TIMESTAMP DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    created_by UUID REFERENCES users(id),
+    updated_at TIMESTAMP DEFAULT NULL,
+    updated_by UUID REFERENCES users(id),
+    deleted BOOLEAN DEFAULT FALSE NOT NULL
+);

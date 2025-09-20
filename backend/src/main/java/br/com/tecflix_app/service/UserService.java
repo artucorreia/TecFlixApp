@@ -91,17 +91,17 @@ public class UserService {
         UserDTO.class);
   }
 
-  public Role findRoleById(UUID id) {
-    LOGGER.info("Finding user's role by id");
-    return repository
-        .findRoleById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("Nenhum usuário encontrado para este id"));
-  }
+//  public Role findRoleById(UUID id) {
+//    LOGGER.info("Finding user's role by id");
+//    return repository
+//        .findRoleById(id)
+//        .orElseThrow(() -> new ResourceNotFoundException("Nenhum usuário encontrado para este id"));
+//  }
 
   public boolean findActiveByEmail(String email) {
     LOGGER.info("Finding user's activity by email");
     return repository
-        .findActiveByEmail(email)
+        .findEmailVerifiedByEmail(email)
         .orElseThrow(
             () -> new ResourceNotFoundException("Nenhum usuário encontrado para este email"));
   }
@@ -135,8 +135,9 @@ public class UserService {
     LOGGER.info("Activating user");
 
     UserEntity entity = findEntityById(userId);
-    if (entity.getActive()) throw new UserAlreadyIsActive("Usuário já está ativo");
-    entity.setActive(true);
+    if (entity.getEmailVerified()) throw new UserAlreadyIsActive("Usuário já está ativo");
+    entity.setEmailVerified(true);
+    entity.setEmailVerifiedAt(LocalDateTime.now());
     repository.save(entity);
 
     return new GenericResponseDTO<>(userId, "Usuário validado com sucesso", LocalDateTime.now());
@@ -208,9 +209,9 @@ public class UserService {
 
   @Transactional(rollbackFor = Exception.class)
   private void updateUserRole(UUID userId, Role role) {
-    UserEntity entity = findEntityById(userId);
-    entity.setRole(role);
-    repository.save(entity);
+//    UserEntity entity = findEntityById(userId);
+//    entity.setRole(role);
+//    repository.save(entity);
   }
 
   public GenericResponseDTO<UUID> createProfessor(UserDTO user, RegisterProfessorDTO data) {
@@ -224,9 +225,9 @@ public class UserService {
       socialService.createAll(user, data.getSocials());
     }
 
-    if (findRoleById(user.getId()).equals(Role.USER)) {
-      updateUserRole(user.getId(), Role.PROFESSOR);
-    }
+//    if (findRoleById(user.getId()).equals(Role.USER)) {
+//      updateUserRole(user.getId(), Role.PROFESSOR);
+//    }
 
     return new GenericResponseDTO<>(
         user.getId(), "Usuário cadastrado como professor", LocalDateTime.now());

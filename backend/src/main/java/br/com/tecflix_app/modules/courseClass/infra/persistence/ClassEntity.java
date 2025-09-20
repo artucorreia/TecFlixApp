@@ -1,10 +1,10 @@
 package br.com.tecflix_app.modules.courseClass.infra.persistence;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 import br.com.tecflix_app.modules.module.infra.persistence.ModuleEntity;
+import br.com.tecflix_app.modules.shared.persistence.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,23 +25,17 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(of = "id")
-public class ClassEntity implements Serializable {
+@EqualsAndHashCode(callSuper = true)
+public class ClassEntity extends BaseEntity implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
-  @Column(nullable = false, length = 20)
+  @Column(nullable = false, length = 60)
   private String title;
 
-  @Column(nullable = false, name = "video_path")
-  private String videoPath;
-
-  @Column(nullable = false)
-  private Boolean active;
-
-  @Column(nullable = false, name = "created_at", updatable = false)
-  private LocalDateTime createdAt;
+  @Column(name = "video_url", nullable = false)
+  private String videoUrl;
 
   @ManyToOne
   @JoinColumn(name = "module_id", referencedColumnName = "id", nullable = false)

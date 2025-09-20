@@ -1,25 +1,12 @@
 package br.com.tecflix_app.modules.user.infra.persistence;
 
-import br.com.tecflix_app.modules.course.infra.persistence.CourseEntity;
-import br.com.tecflix_app.modules.emailCode.infra.persistence.EmailCodeEntity;
-import br.com.tecflix_app.modules.professorData.infra.persistence.ProfessorDataEntity;
-import br.com.tecflix_app.modules.auth.infra.persistence.RefreshTokenEntity;
-import br.com.tecflix_app.modules.review.infra.persistence.ReviewEntity;
-import br.com.tecflix_app.modules.social.infra.persistence.SocialEntity;
-import br.com.tecflix_app.modules.user.application.domain.enums.Role;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import br.com.tecflix_app.modules.role.infra.persistence.RoleEntity;
+import br.com.tecflix_app.modules.shared.persistence.BaseEntity;
+import jakarta.persistence.*;
+
+import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,49 +21,32 @@ import lombok.Setter;
 @AllArgsConstructor
 @Setter
 @Getter
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(callSuper = true)
 @Builder
-public class UserEntity {
+public class UserEntity extends BaseEntity implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
-  @Column(length = 30, nullable = false)
+  @Column(length = 50, nullable = false)
   private String name;
 
-  @Column(length = 50, unique = true, nullable = false)
+  @Column(length = 60, unique = true, nullable = false)
   private String email;
 
   @Column(length = 100, nullable = false)
   private String password;
 
-  @Enumerated(EnumType.STRING)
-  private Role role;
+  @ManyToMany(fetch = FetchType.EAGER)
+  @JoinTable(
+      name = "users_roles",
+      joinColumns = @JoinColumn(name = "user_id"),
+      inverseJoinColumns = @JoinColumn(name = "role_id"))
+  private Set<RoleEntity> roles;
 
-  @Column(name = "created_at", nullable = false, updatable = false)
-  private LocalDateTime createdAt;
+  @Column(name = "email_verified", nullable = false)
+  private Boolean emailVerified;
 
-  @Column(nullable = false)
-  private Boolean active;
-
-  @OneToOne(mappedBy = "user")
-  private RefreshTokenEntity refreshToken;
-
-  @OneToOne(mappedBy = "user")
-  private EmailCodeEntity emailCode;
-
-  @ManyToMany(mappedBy = "students")
-  private List<CourseEntity> enrolledCourses;
-
-  @OneToOne(mappedBy = "user")
-  private ProfessorDataEntity professorData;
-
-  @OneToMany(mappedBy = "user")
-  private List<SocialEntity> socials;
-
-  @OneToMany(mappedBy = "professor")
-  private List<CourseEntity> coursesTaught;
-
-  @OneToMany(mappedBy = "user")
-  private List<ReviewEntity> reviews;
+  @Column(name = "email_verified_at", insertable = false)
+  private LocalDateTime emailVerifiedAt;
 }

@@ -1,12 +1,10 @@
 package br.com.tecflix_app.modules.course.infra.persistence;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
-import br.com.tecflix_app.modules.module.infra.persistence.ModuleEntity;
-import br.com.tecflix_app.modules.review.infra.persistence.ReviewEntity;
+import br.com.tecflix_app.modules.shared.persistence.BaseEntity;
 import br.com.tecflix_app.modules.tag.infra.persistence.TagEntity;
 import br.com.tecflix_app.modules.user.infra.persistence.UserEntity;
 import jakarta.persistence.Column;
@@ -19,7 +17,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -33,34 +30,28 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(of = "id")
-public class CourseEntity implements Serializable {
+@EqualsAndHashCode(callSuper = true)
+public class CourseEntity extends BaseEntity implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
-  @Column(nullable = false, length = 40)
+  @Column(nullable = false, length = 100)
   private String title;
 
-  @Column(name = "description", nullable = false, length = 2000)
+  @Column(nullable = false, length = 2000)
   private String description;
 
-  @Column(name = "cape_image")
-  private String capeImage;
+  @Column(name = "cape_image_url")
+  private String capeImageUrl;
 
-  @Column(nullable = false)
-  private Boolean active;
-
-  @Column(name = "created_at", nullable = false, updatable = false)
-  private LocalDateTime createdAt;
-
-  @Column(name = "total_score")
+  @Column(name = "total_score", nullable = false)
   private Long totalScore;
 
-  @Column(name = "total_reviews")
+  @Column(name = "total_reviews", nullable = false)
   private Long totalReviews;
 
-  @Column(name = "average_score")
+  @Column(name = "average_score", nullable = false)
   private Double averageScore;
 
   @ManyToOne
@@ -72,18 +63,12 @@ public class CourseEntity implements Serializable {
       name = "courses_students",
       joinColumns = @JoinColumn(name = "course_id"),
       inverseJoinColumns = @JoinColumn(name = "student_id"))
-  private List<UserEntity> students;
-
-  @OneToMany(mappedBy = "course")
-  private List<ModuleEntity> modules;
-
-  @OneToMany(mappedBy = "course")
-  private List<ReviewEntity> reviews;
+  private Set<UserEntity> students;
 
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(
       name = "courses_tags",
       joinColumns = @JoinColumn(name = "course_id"),
       inverseJoinColumns = @JoinColumn(name = "tag_id"))
-  private List<TagEntity> tags;
+  private Set<TagEntity> tags;
 }

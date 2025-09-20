@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS occupations(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(150) UNIQUE NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    created_by UUID REFERENCES users(id),
+    updated_at TIMESTAMP DEFAULT NULL,
+    updated_by UUID REFERENCES users(id),
+    deleted BOOLEAN DEFAULT FALSE NOT NULL
+);

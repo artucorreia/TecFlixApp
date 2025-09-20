@@ -22,7 +22,7 @@ public interface CourseRepository extends JpaRepository<CourseEntity, UUID> {
                 SELECT DISTINCT
                     c.id as id,
                     c.title as title,
-                    c.capeImage as capeImage,
+                    c.capeImageUrl as capeImageUrl,
                     c.createdAt as createdAt,
                     c.totalScore as totalScore,
                     c.totalReviews as totalReviews,

@@ -1,6 +1,0 @@
-CREATE TABLE IF NOT EXISTS socials(
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(11) NOT NULL,
-    url VARCHAR(255) NOT NULL,
-    user_id UUID REFERENCES users(id) NOT NULL
-);

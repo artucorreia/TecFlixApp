@@ -3,6 +3,7 @@ package br.com.tecflix_app.modules.auth.infra.persistence;
 import java.io.Serializable;
 import java.time.Instant;
 
+import br.com.tecflix_app.modules.shared.persistence.BaseEntity;
 import br.com.tecflix_app.modules.user.infra.persistence.UserEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,9 +26,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(callSuper = true)
 @Builder
-public class RefreshTokenEntity implements Serializable {
+public class RefreshTokenEntity extends BaseEntity implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;

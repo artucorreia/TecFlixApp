@@ -10,7 +10,7 @@ public interface CourseProjection {
 
   String getTitle();
 
-  String getCapeImage();
+  String getCapeImageUrl();
 
   LocalDateTime getCreatedAt();
 

@@ -1,8 +1,8 @@
 package br.com.tecflix_app.modules.emailCode.infra.persistence;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
+import br.com.tecflix_app.modules.shared.persistence.BaseEntity;
 import br.com.tecflix_app.modules.user.infra.persistence.UserEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,23 +20,20 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "email_codes")
+@Table(name = "codes")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(callSuper = true)
 @Builder
-public class EmailCodeEntity implements Serializable {
+public class EmailCodeEntity extends BaseEntity implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @Column(nullable = false, unique = true)
   private String code;
-
-  @Column(name = "created_at", nullable = false, updatable = false)
-  private LocalDateTime createdAt;
 
   @OneToOne
   @JoinColumn(referencedColumnName = "id", name = "user_id", nullable = false)
