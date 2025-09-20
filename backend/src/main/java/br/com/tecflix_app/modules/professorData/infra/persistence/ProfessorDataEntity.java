@@ -13,8 +13,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Table
-@Entity(name = "professors_data")
+@Entity
+@Table(name = "professors_data")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

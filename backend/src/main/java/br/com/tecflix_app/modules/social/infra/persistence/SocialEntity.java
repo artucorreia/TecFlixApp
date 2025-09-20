@@ -12,8 +12,8 @@ import java.io.Serializable;
 
 import br.com.tecflix_app.modules.social.application.domain.enums.SocialName;
 
-@Table
-@Entity(name = "socials")
+@Entity
+@Table(name = "socials")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
