@@ -3,10 +3,8 @@ package br.com.tecflix_app.modules.shared.persistence;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
@@ -22,8 +20,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@SuperBuilder
 public class BaseEntity {
-
   @CreatedBy
   @Column(name = "created_by", updatable = false)
   private UUID createdBy;
@@ -39,4 +37,6 @@ public class BaseEntity {
   @UpdateTimestamp
   @Column(name = "updated_at", insertable = false)
   private LocalDateTime updatedAt;
+
+  @Column private Boolean deleted;
 }

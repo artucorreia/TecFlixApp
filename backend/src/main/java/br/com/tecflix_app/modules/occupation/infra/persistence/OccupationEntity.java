@@ -3,6 +3,7 @@ package br.com.tecflix_app.modules.occupation.infra.persistence;
 import br.com.tecflix_app.modules.shared.persistence.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
 
@@ -13,6 +14,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
+@SuperBuilder
 public class OccupationEntity extends BaseEntity implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

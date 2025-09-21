@@ -23,6 +23,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "courses")
@@ -31,6 +32,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
+@SuperBuilder
 public class CourseEntity extends BaseEntity implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
@@ -53,6 +55,9 @@ public class CourseEntity extends BaseEntity implements Serializable {
 
   @Column(name = "average_score", nullable = false)
   private Double averageScore;
+
+  @Column(nullable = false)
+  private Boolean approved;
 
   @ManyToOne
   @JoinColumn(name = "professor_id", referencedColumnName = "id", nullable = false)

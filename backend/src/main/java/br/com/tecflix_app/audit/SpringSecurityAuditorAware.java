@@ -7,14 +7,17 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Optional;
+import java.util.UUID;
 
-public class SpringSecurityAuditorAware implements AuditorAware<UserEntity> {
+public class SpringSecurityAuditorAware implements AuditorAware<UUID> {
   @Override
-  public Optional<UserEntity> getCurrentAuditor() {
+  public Optional<UUID> getCurrentAuditor() {
     return Optional.ofNullable(SecurityContextHolder.getContext())
         .map(SecurityContext::getAuthentication)
         .filter(Authentication::isAuthenticated)
         .map(Authentication::getPrincipal)
-        .map(UserEntity.class::cast);
+        .filter(principal -> principal instanceof UserEntity)
+        .map(UserEntity.class::cast)
+        .map(UserEntity::getId);
   }
 }
