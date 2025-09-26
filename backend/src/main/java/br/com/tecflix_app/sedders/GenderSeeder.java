@@ -5,6 +5,7 @@ import br.com.tecflix_app.modules.gender.infra.persistence.GenderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -28,12 +29,38 @@ public class GenderSeeder implements Seeder {
   }
 
   private List<GenderEntity> getEntities() {
-    GenderEntity gender1 = new GenderEntity(null, "HOMEM CISGÊNERO");
-    GenderEntity gender2 = new GenderEntity(null, "MULHER CISGÊNERO");
-    GenderEntity gender3 = new GenderEntity(null, "HOMEM TRANSGÊNERO");
-    GenderEntity gender4 = new GenderEntity(null, "MULHER TRANSGÊNERO");
-    GenderEntity gender5 = new GenderEntity(null, "PREFIRO NÃO DIZER");
-    GenderEntity gender6 = new GenderEntity(null, "OUTRO");
+    GenderEntity gender1 =
+        GenderEntity.builder()
+            .name("HOMEM CISGÊNERO")
+            .createdAt(LocalDateTime.now())
+            .deleted(false)
+            .build();
+    GenderEntity gender2 =
+        GenderEntity.builder()
+            .name("MULHER CISGÊNERO")
+            .createdAt(LocalDateTime.now())
+            .deleted(false)
+            .build();
+    GenderEntity gender3 =
+        GenderEntity.builder()
+            .name("HOMEM TRANSGÊNERO")
+            .createdAt(LocalDateTime.now())
+            .deleted(false)
+            .build();
+    GenderEntity gender4 =
+        GenderEntity.builder()
+            .name("MULHER TRANSGÊNERO")
+            .createdAt(LocalDateTime.now())
+            .deleted(false)
+            .build();
+    GenderEntity gender5 =
+        GenderEntity.builder()
+            .name("PREFIRO NÃO DIZER")
+            .createdAt(LocalDateTime.now())
+            .deleted(false)
+            .build();
+    GenderEntity gender6 =
+        GenderEntity.builder().name("OUTRO").createdAt(LocalDateTime.now()).deleted(false).build();
 
     return List.of(gender1, gender2, gender3, gender4, gender5, gender6);
   }

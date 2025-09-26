@@ -5,6 +5,7 @@ import br.com.tecflix_app.modules.occupation.infra.persistence.OccupationReposit
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -28,13 +29,42 @@ public class OccupationSeeder implements Seeder {
   }
 
   private List<OccupationEntity> getOccupationEntities() {
-    OccupationEntity occupation1 = new OccupationEntity(null, "PROFESSOR");
-    OccupationEntity occupation2 = new OccupationEntity(null, "ADMINISTRADOR");
-    OccupationEntity occupation3 = new OccupationEntity(null, "AUXILIAR DE COZINHA");
-    OccupationEntity occupation4 = new OccupationEntity(null, "DESENVOLVEDOR");
-    OccupationEntity occupation5 = new OccupationEntity(null, "PINTOR");
-    OccupationEntity occupation6 = new OccupationEntity(null, "OUTRA");
-
+    OccupationEntity occupation1 =
+        OccupationEntity.builder()
+            .name("PROFESSOR")
+            .createdAt(LocalDateTime.now())
+            .deleted(false)
+            .build();
+    OccupationEntity occupation2 =
+        OccupationEntity.builder()
+            .name("ADMINISTRADOR")
+            .createdAt(LocalDateTime.now())
+            .deleted(false)
+            .build();
+    OccupationEntity occupation3 =
+        OccupationEntity.builder()
+            .name("AUXILIAR DE COZINHA")
+            .createdAt(LocalDateTime.now())
+            .deleted(false)
+            .build();
+    OccupationEntity occupation4 =
+        OccupationEntity.builder()
+            .name("DESENVOLVEDOR")
+            .createdAt(LocalDateTime.now())
+            .deleted(false)
+            .build();
+    OccupationEntity occupation5 =
+        OccupationEntity.builder()
+            .name("PINTOR")
+            .createdAt(LocalDateTime.now())
+            .deleted(false)
+            .build();
+    OccupationEntity occupation6 =
+        OccupationEntity.builder()
+            .name("OUTRA")
+            .createdAt(LocalDateTime.now())
+            .deleted(false)
+            .build();
     return List.of(occupation1, occupation2, occupation3, occupation4, occupation5, occupation6);
   }
 }

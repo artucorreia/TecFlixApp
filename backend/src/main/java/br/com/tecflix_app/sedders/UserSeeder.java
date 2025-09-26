@@ -46,6 +46,9 @@ public class UserSeeder implements Seeder {
             .email("arthurcorria0109@gmail.com")
             .password(defaultPassword)
             .emailVerified(true)
+            .emailVerifiedAt(LocalDateTime.now())
+            .createdAt(LocalDateTime.now())
+            .deleted(false)
             .roles(allRoles)
             .build();
 
@@ -55,6 +58,9 @@ public class UserSeeder implements Seeder {
             .email("professor@gmail.com")
             .password(defaultPassword)
             .emailVerified(true)
+            .emailVerifiedAt(LocalDateTime.now())
+            .createdAt(LocalDateTime.now())
+            .deleted(false)
             .roles(professorRoles)
             .build();
 
@@ -65,6 +71,8 @@ public class UserSeeder implements Seeder {
             .password(defaultPassword)
             .emailVerified(true)
             .emailVerifiedAt(LocalDateTime.now())
+            .createdAt(LocalDateTime.now())
+            .deleted(false)
             .roles(userRoles)
             .build();
 

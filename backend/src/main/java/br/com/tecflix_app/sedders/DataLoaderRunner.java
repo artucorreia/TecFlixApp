@@ -7,19 +7,26 @@ import java.util.Arrays;
 
 @Component
 public class DataLoaderRunner implements CommandLineRunner {
-  private final Seeder roleSeeder, genderSeeder, userSeeder, tagSeeder, occupationSeeder;
+  private final Seeder roleSeeder,
+      genderSeeder,
+      userSeeder,
+      tagSeeder,
+      occupationSeeder,
+      socialNameSeeder;
 
   public DataLoaderRunner(
       RoleSeeder roleSeeder,
       GenderSeeder genderSeeder,
       UserSeeder userSeeder,
       TagSeeder tagSeeder,
-      OccupationSeeder occupationSeeder) {
+      OccupationSeeder occupationSeeder,
+      SocialNameSeeder socialNameSeeder) {
     this.roleSeeder = roleSeeder;
     this.genderSeeder = genderSeeder;
     this.userSeeder = userSeeder;
     this.tagSeeder = tagSeeder;
     this.occupationSeeder = occupationSeeder;
+    this.socialNameSeeder = socialNameSeeder;
   }
 
   @Override
@@ -30,5 +37,6 @@ public class DataLoaderRunner implements CommandLineRunner {
     genderSeeder.run();
     tagSeeder.run();
     occupationSeeder.run();
+    socialNameSeeder.run();
   }
 }

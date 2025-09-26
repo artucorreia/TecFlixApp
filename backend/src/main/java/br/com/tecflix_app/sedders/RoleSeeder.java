@@ -5,6 +5,7 @@ import br.com.tecflix_app.modules.role.infra.persistence.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -28,9 +29,16 @@ public class RoleSeeder implements Seeder {
   }
 
   private List<RoleEntity> getEntities() {
-    RoleEntity adminRole = new RoleEntity(null, "ADMIN");
-    RoleEntity professorRole = new RoleEntity(null, "PROFESSOR");
-    RoleEntity userRole = new RoleEntity(null, "USER");
+    RoleEntity adminRole =
+        RoleEntity.builder().name("ADMIN").createdAt(LocalDateTime.now()).deleted(false).build();
+    RoleEntity professorRole =
+        RoleEntity.builder()
+            .name("PROFESSOR")
+            .createdAt(LocalDateTime.now())
+            .deleted(false)
+            .build();
+    RoleEntity userRole =
+        RoleEntity.builder().name("USER").createdAt(LocalDateTime.now()).deleted(false).build();
     return List.of(adminRole, professorRole, userRole);
   }
 }
