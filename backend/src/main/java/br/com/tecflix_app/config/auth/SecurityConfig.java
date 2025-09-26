@@ -63,15 +63,15 @@ public class SecurityConfig {
 
                     // courses
                     .requestMatchers(HttpMethod.POST, "/api/v1/courses")
-                    .hasAnyRole("ADMIN", "PROFESSOR")
+                    .hasRole("PROFESSOR")
 
                     // modules
                     .requestMatchers(HttpMethod.POST, "/api/v1/modules")
-                    .hasAnyRole("ADMIN", "PROFESSOR")
+                    .hasRole("PROFESSOR")
 
                     // classes
                     .requestMatchers(HttpMethod.POST, "/api/v1/classes")
-                    .hasAnyRole("ADMIN", "PROFESSOR")
+                    .hasRole("PROFESSOR")
 
                     // swagger
                     .requestMatchers("/")
