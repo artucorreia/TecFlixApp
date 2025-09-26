@@ -6,5 +6,7 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface ClassGatewaysMapper {
-  ClassEntity domainToEntity(Class classCourse);
+  ClassEntity map(Class classCourse);
+
+  Class map(ClassEntity classCourseEntity);
 }

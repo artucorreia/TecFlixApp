@@ -1,34 +1,32 @@
 package br.com.tecflix_app.modules.module.application.domain.entity;
 
 import br.com.tecflix_app.modules.course.application.domain.entity.Course;
-import br.com.tecflix_app.modules.courseClass.application.domain.entity.Class;
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.List;
+import br.com.tecflix_app.modules.shared.application.domain.entity.BaseDomainEntity;
 
-public class Module implements Serializable {
+import java.time.LocalDateTime;
+import java.util.Objects;
+import java.util.UUID;
+
+public class Module extends BaseDomainEntity {
   private Long id;
   private String title;
-  private Boolean active;
-  private LocalDateTime createdAt;
   private Course course;
-  private List<Class> classes;
 
   public Module() {}
 
   public Module(
+      UUID createdBy,
+      LocalDateTime createdAt,
+      UUID updatedBy,
+      LocalDateTime updatedAt,
+      Boolean deleted,
       Long id,
       String title,
-      Boolean active,
-      LocalDateTime createdAt,
-      Course course,
-      List<Class> classes) {
+      Course course) {
+    super(createdBy, createdAt, updatedBy, updatedAt, deleted);
     this.id = id;
     this.title = title;
-    this.active = active;
-    this.createdAt = createdAt;
     this.course = course;
-    this.classes = classes;
   }
 
   public Long getId() {
@@ -47,22 +45,6 @@ public class Module implements Serializable {
     this.title = title;
   }
 
-  public Boolean getActive() {
-    return active;
-  }
-
-  public void setActive(Boolean active) {
-    this.active = active;
-  }
-
-  public LocalDateTime getCreatedAt() {
-    return createdAt;
-  }
-
-  public void setCreatedAt(LocalDateTime createdAt) {
-    this.createdAt = createdAt;
-  }
-
   public Course getCourse() {
     return course;
   }
@@ -71,11 +53,18 @@ public class Module implements Serializable {
     this.course = course;
   }
 
-  public List<Class> getClasses() {
-    return classes;
+  @Override
+  public boolean equals(Object o) {
+    if (o == null || getClass() != o.getClass()) return false;
+    if (!super.equals(o)) return false;
+    Module module = (Module) o;
+    return Objects.equals(id, module.id)
+        && Objects.equals(title, module.title)
+        && Objects.equals(course, module.course);
   }
 
-  public void setClasses(List<Class> classes) {
-    this.classes = classes;
+  @Override
+  public int hashCode() {
+    return Objects.hash(super.hashCode(), id, title, course);
   }
 }

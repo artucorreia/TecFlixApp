@@ -13,6 +13,7 @@ import br.com.tecflix_app.modules.user.application.usecases.FindUserByIdUseCase;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -50,11 +51,12 @@ public class CreateCourseUseCaseImpl implements CreateCourseUseCase {
 
     validateTags(tagIds, tags);
 
-    course.setTags(tags);
+    course.setTags(Set.copyOf(tags));
     course.setTitle(course.getTitle().trim());
     course.setDescription(course.getDescription().trim());
-    course.setActive(true);
     course.setCreatedAt(LocalDateTime.now());
+    course.setApproved(false);
+    course.setDeleted(false);
     course.setTotalScore(0L);
     course.setTotalReviews(0L);
     course.setAverageScore(0D);

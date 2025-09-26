@@ -21,7 +21,7 @@ public class TagJpaRepositoryGateway implements TagRepositoryGateway {
   @Override
   public Optional<Tag> findById(Long tagId) {
     Optional<TagEntity> tagEntity = tagRepository.findById(tagId);
-    return tagEntity.map(tagGatewayMapper::entityToDomain);
+    return tagEntity.map(tagGatewayMapper::map);
   }
 
   @Override
@@ -32,7 +32,7 @@ public class TagJpaRepositoryGateway implements TagRepositoryGateway {
 
   @Override
   public List<Tag> findAll() {
-    List<TagEntity> tagEntities = tagRepository.findAll();
-    return tagEntities.stream().map(tagGatewayMapper::entityToDomain).toList();
+    List<TagEntity> tagEntities = tagRepository.findByDeletedFalse();
+    return tagEntities.stream().map(tagGatewayMapper::map).toList();
   }
 }

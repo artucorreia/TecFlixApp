@@ -1,32 +1,34 @@
 package br.com.tecflix_app.modules.courseClass.application.domain.entity;
 
 import br.com.tecflix_app.modules.module.application.domain.entity.Module;
-import java.io.Serializable;
+import br.com.tecflix_app.modules.shared.application.domain.entity.BaseDomainEntity;
+
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
-public class Class implements Serializable {
+public class Class extends BaseDomainEntity {
   private UUID id;
   private String title;
-  private String videoPath;
-  private Boolean active;
-  private LocalDateTime createdAt;
+  private String videoUrl;
   private Module module;
 
   public Class() {}
 
   public Class(
+      UUID createdBy,
+      LocalDateTime createdAt,
+      UUID updatedBy,
+      LocalDateTime updatedAt,
+      Boolean deleted,
       UUID id,
       String title,
-      String videoPath,
-      Boolean active,
-      LocalDateTime createdAt,
+      String videoUrl,
       Module module) {
+    super(createdBy, createdAt, updatedBy, updatedAt, deleted);
     this.id = id;
     this.title = title;
-    this.videoPath = videoPath;
-    this.active = active;
-    this.createdAt = createdAt;
+    this.videoUrl = videoUrl;
     this.module = module;
   }
 
@@ -46,28 +48,12 @@ public class Class implements Serializable {
     this.title = title;
   }
 
-  public String getVideoPath() {
-    return videoPath;
+  public String getVideoUrl() {
+    return videoUrl;
   }
 
-  public void setVideoPath(String videoPath) {
-    this.videoPath = videoPath;
-  }
-
-  public Boolean getActive() {
-    return active;
-  }
-
-  public void setActive(Boolean active) {
-    this.active = active;
-  }
-
-  public LocalDateTime getCreatedAt() {
-    return createdAt;
-  }
-
-  public void setCreatedAt(LocalDateTime createdAt) {
-    this.createdAt = createdAt;
+  public void setVideoUrl(String videoUrl) {
+    this.videoUrl = videoUrl;
   }
 
   public Module getModule() {
@@ -76,5 +62,21 @@ public class Class implements Serializable {
 
   public void setModule(Module module) {
     this.module = module;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o == null || getClass() != o.getClass()) return false;
+    if (!super.equals(o)) return false;
+    Class aClass = (Class) o;
+    return Objects.equals(id, aClass.id)
+        && Objects.equals(title, aClass.title)
+        && Objects.equals(videoUrl, aClass.videoUrl)
+        && Objects.equals(module, aClass.module);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(super.hashCode(), id, title, videoUrl, module);
   }
 }

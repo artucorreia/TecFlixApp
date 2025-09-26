@@ -1,6 +1,7 @@
 package br.com.tecflix_app.modules.course.infra.presentation.dtos.v1;
 
 import java.util.List;
+import java.util.Set;
 
 import br.com.tecflix_app.modules.shared.dto.v1.IdDTO;
 import jakarta.validation.Valid;
@@ -20,7 +21,7 @@ import lombok.Setter;
 public class CreateCourseDTO {
   @NotNull(message = "O campo 'title' é obrigatório")
   @NotBlank(message = "O campo 'title' não pode estar em branco")
-  @Size(min = 5, max = 40, message = "O campo 'title' deve ter entre 5 e 40 caracteres")
+  @Size(min = 5, max = 100, message = "O campo 'title' deve ter entre 5 e 100 caracteres")
   private String title;
 
   @NotNull(message = "O campo 'description' é obrigatório")
@@ -28,11 +29,10 @@ public class CreateCourseDTO {
   @Size(min = 5, max = 2000, message = "O campo 'description' deve ter entre 5 e 2000 caracteres")
   private String description;
 
-  @Size(max = 255, message = "O campo 'capeImage' deve ter no máximo 255 caracteres")
-  private String capeImage;
+  @Size(max = 255, message = "O campo 'capeImageUrl' deve ter no máximo 255 caracteres")
+  private String capeImageUrl;
 
-  @NotNull(message = "O campo 'tags' é obrigatório")
-  @NotEmpty(message = "O curso deve ter ao menos uma tag")
-  @Valid
-  private List<IdDTO> tags;
+  @NotNull(message = "O campo 'tagIds' é obrigatório")
+  @NotEmpty(message = "O campo 'tagIds' deve ter ao menos um id")
+  private Set<Long> tagIds;
 }

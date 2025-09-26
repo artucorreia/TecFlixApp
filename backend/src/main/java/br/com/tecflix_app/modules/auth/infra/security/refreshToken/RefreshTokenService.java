@@ -9,6 +9,7 @@ import br.com.tecflix_app.modules.shared.exception.general.ResourceNotFoundExcep
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -34,10 +35,11 @@ public class RefreshTokenService {
     LOGGER.info("Creating refresh token");
     RefreshTokenEntity entity =
         RefreshTokenEntity.builder()
-            .id(null)
             .token(UUID.randomUUID().toString())
             .user(getUser(userId))
             .expiresAt(Instant.now().plus(duration))
+            .createdAt(LocalDateTime.now())
+            .deleted(false)
             .build();
     return repository.save(entity);
   }

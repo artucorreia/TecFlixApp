@@ -37,6 +37,7 @@ public class CreateAccountValidationCodeUseCaseImpl implements CreateAccountVali
     emailCode.setUser(user);
     emailCode.setCode(randomCodeGeneratorGateway.generate());
     emailCode.setCreatedAt(LocalDateTime.now());
+    emailCode.setDeleted(false);
 
     return codeRepositoryGateway.save(emailCode);
   }

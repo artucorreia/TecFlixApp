@@ -1,25 +1,28 @@
 package br.com.tecflix_app.modules.tag.application.domain.entity;
 
-import br.com.tecflix_app.modules.course.application.domain.entity.Course;
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.List;
+import br.com.tecflix_app.modules.shared.application.domain.entity.BaseDomainEntity;
 
-public class Tag implements Serializable {
+import java.time.LocalDateTime;
+import java.util.Objects;
+import java.util.UUID;
+
+public class Tag extends BaseDomainEntity {
   private Long id;
   private String name;
-  private Boolean active;
-  private LocalDateTime createdAt;
-  private List<Course> courses;
 
   public Tag() {}
 
-  public Tag(Long id, String name, Boolean active, LocalDateTime createdAt, List<Course> courses) {
+  public Tag(
+      UUID createdBy,
+      LocalDateTime createdAt,
+      UUID updatedBy,
+      LocalDateTime updatedAt,
+      Boolean deleted,
+      Long id,
+      String name) {
+    super(createdBy, createdAt, updatedBy, updatedAt, deleted);
     this.id = id;
     this.name = name;
-    this.active = active;
-    this.createdAt = createdAt;
-    this.courses = courses;
   }
 
   public Long getId() {
@@ -38,27 +41,16 @@ public class Tag implements Serializable {
     this.name = name;
   }
 
-  public Boolean getActive() {
-    return active;
+  @Override
+  public boolean equals(Object o) {
+    if (o == null || getClass() != o.getClass()) return false;
+    if (!super.equals(o)) return false;
+    Tag tag = (Tag) o;
+    return Objects.equals(id, tag.id) && Objects.equals(name, tag.name);
   }
 
-  public void setActive(Boolean active) {
-    this.active = active;
-  }
-
-  public LocalDateTime getCreatedAt() {
-    return createdAt;
-  }
-
-  public void setCreatedAt(LocalDateTime createdAt) {
-    this.createdAt = createdAt;
-  }
-
-  public List<Course> getCourses() {
-    return courses;
-  }
-
-  public void setCourses(List<Course> courses) {
-    this.courses = courses;
+  @Override
+  public int hashCode() {
+    return Objects.hash(super.hashCode(), id, name);
   }
 }

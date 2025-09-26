@@ -41,7 +41,7 @@ public class CreateModuleUseCaseImpl implements CreateModuleUseCase {
     module.setTitle(module.getTitle().trim());
     module.setCourse(course);
     module.setCreatedAt(LocalDateTime.now());
-    module.setActive(true);
+    module.setDeleted(false);
     moduleRepositoryGateway.save(module);
   }
 

@@ -39,9 +39,9 @@ public class CreateClassUseCaseImpl implements CreateClassUseCase {
       throw new ActionNotAllowedException("Módulo não pertence ao usuário logado");
 
     courseClass.setTitle(courseClass.getTitle().trim());
-    courseClass.setVideoPath(courseClass.getVideoPath().trim());
+    courseClass.setVideoUrl(courseClass.getVideoUrl().trim());
     courseClass.setModule(module);
-    courseClass.setActive(true);
+    courseClass.setDeleted(false);
     courseClass.setCreatedAt(LocalDateTime.now());
     classRepositoryGateway.save(courseClass);
   }

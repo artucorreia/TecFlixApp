@@ -12,32 +12,12 @@ public interface UserGatewaysMapper {
       value = {
         @Mapping(target = "email", ignore = true),
         @Mapping(target = "password", ignore = true),
-        @Mapping(target = "role", ignore = true),
+        @Mapping(target = "roles", ignore = true),
         @Mapping(target = "createdAt", ignore = true),
-        @Mapping(target = "active", ignore = true),
-        @Mapping(target = "refreshToken", ignore = true),
-        @Mapping(target = "emailCode", ignore = true),
-        @Mapping(target = "enrolledCourses", ignore = true),
-        @Mapping(target = "professorData", ignore = true),
-        @Mapping(target = "socials", ignore = true),
-        @Mapping(target = "coursesTaught", ignore = true),
-        @Mapping(target = "reviews", ignore = true),
       })
-  User basicProjectionToDomain(UserBasicProjection userBasicProjection);
+  User map(UserBasicProjection userBasicProjection);
 
-  @Named("entityToDomainWithoutCourses")
-  @Mappings(
-      value = {
-        @Mapping(target = "password", ignore = true),
-        @Mapping(target = "role", ignore = true),
-        @Mapping(target = "refreshToken", ignore = true),
-        @Mapping(target = "coursesTaught", ignore = true),
-        @Mapping(target = "socials", ignore = true),
-        @Mapping(target = "enrolledCourses", ignore = true),
-      })
-  User entityToDomain(UserEntity userEntity);
+  User map(UserEntity userEntity);
 
-  User entityToDomainWithCourses(UserEntity userEntity);
-
-  UserEntity domainToEntity(User user);
+  UserEntity map(User user);
 }

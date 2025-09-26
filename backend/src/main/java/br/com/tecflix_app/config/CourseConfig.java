@@ -4,7 +4,6 @@ import br.com.tecflix_app.modules.auth.application.gateways.AuthenticatedUserGat
 import br.com.tecflix_app.modules.course.application.gateways.CourseRepositoryGateway;
 import br.com.tecflix_app.modules.course.application.usecases.*;
 import br.com.tecflix_app.modules.tag.application.usecases.FindAllTagsByIdUseCase;
-import br.com.tecflix_app.modules.tag.application.usecases.FindTagByIdCase;
 import br.com.tecflix_app.modules.user.application.usecases.FindUserByIdUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +21,12 @@ public class CourseConfig {
   public FindCourseDetailsByIdUseCase findCourseDetailsByIdUseCase(
       CourseRepositoryGateway courseRepositoryGateway) {
     return new FindCourseDetailsByIdUseCaseImpl(courseRepositoryGateway);
+  }
+
+  @Bean
+  public FindCoursesProfileByUserIdUseCase findCoursesProfileByUserIdUseCase(
+      CourseRepositoryGateway courseRepositoryGateway) {
+    return new FindCoursesProfileByUserIdUseCaseImpl(courseRepositoryGateway);
   }
 
   @Bean

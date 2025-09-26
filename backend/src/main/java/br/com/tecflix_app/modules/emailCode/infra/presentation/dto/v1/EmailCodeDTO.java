@@ -2,7 +2,7 @@ package br.com.tecflix_app.modules.emailCode.infra.presentation.dto.v1;
 
 import java.time.LocalDateTime;
 
-import br.com.tecflix_app.modules.user.infra.dtos.v1.UserDTO;
+import br.com.tecflix_app.modules.user.infra.presentation.dtos.v1.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

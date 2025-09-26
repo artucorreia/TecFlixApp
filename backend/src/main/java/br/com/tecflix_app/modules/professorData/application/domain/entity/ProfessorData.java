@@ -1,47 +1,56 @@
 package br.com.tecflix_app.modules.professorData.application.domain.entity;
 
-import br.com.tecflix_app.modules.professorData.application.domain.enums.Gender;
-import br.com.tecflix_app.modules.professorData.application.domain.enums.Occupation;
+import br.com.tecflix_app.modules.gender.application.domain.entity.Gender;
+import br.com.tecflix_app.modules.occupation.application.domain.entity.Occupation;
+import br.com.tecflix_app.modules.shared.application.domain.entity.BaseDomainEntity;
 import br.com.tecflix_app.modules.user.application.domain.entity.User;
-import java.io.Serializable;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
+import java.util.UUID;
 
-public class ProfessorData implements Serializable {
+public class ProfessorData extends BaseDomainEntity {
   private Long id;
   private User user;
-  private String cpf;
+  private Occupation occupation;
+  private String otherOccupation;
+  private String biography;
   private LocalDate birthdate;
   private Gender gender;
-  private String contact;
-  private Occupation occupation;
-  private String biography;
-  private String profileImage;
-  private LocalDateTime createdAt;
+  private String otherGender;
+  private String phoneNumber;
+  private String profileImageUrl;
 
   public ProfessorData() {}
 
   public ProfessorData(
+      UUID createdBy,
+      LocalDateTime createdAt,
+      UUID updatedBy,
+      LocalDateTime updatedAt,
+      Boolean deleted,
       Long id,
       User user,
-      String cpf,
+      Occupation occupation,
+      String otherOccupation,
+      String biography,
       LocalDate birthdate,
       Gender gender,
-      String contact,
-      Occupation occupation,
-      String biography,
-      String profileImage,
-      LocalDateTime createdAt) {
+      String otherGender,
+      String phoneNumber,
+      String profileImageUrl) {
+    super(createdBy, createdAt, updatedBy, updatedAt, deleted);
     this.id = id;
     this.user = user;
-    this.cpf = cpf;
+    this.occupation = occupation;
+    this.otherOccupation = otherOccupation;
+    this.biography = biography;
     this.birthdate = birthdate;
     this.gender = gender;
-    this.contact = contact;
-    this.occupation = occupation;
-    this.biography = biography;
-    this.profileImage = profileImage;
-    this.createdAt = createdAt;
+    this.otherGender = otherGender;
+    this.phoneNumber = phoneNumber;
+    this.profileImageUrl = profileImageUrl;
   }
 
   public Long getId() {
@@ -60,12 +69,28 @@ public class ProfessorData implements Serializable {
     this.user = user;
   }
 
-  public String getCpf() {
-    return cpf;
+  public Occupation getOccupation() {
+    return occupation;
   }
 
-  public void setCpf(String cpf) {
-    this.cpf = cpf;
+  public void setOccupation(Occupation occupation) {
+    this.occupation = occupation;
+  }
+
+  public String getOtherOccupation() {
+    return otherOccupation;
+  }
+
+  public void setOtherOccupation(String otherOccupation) {
+    this.otherOccupation = otherOccupation;
+  }
+
+  public String getBiography() {
+    return biography;
+  }
+
+  public void setBiography(String biography) {
+    this.biography = biography;
   }
 
   public LocalDate getBirthdate() {
@@ -84,43 +109,60 @@ public class ProfessorData implements Serializable {
     this.gender = gender;
   }
 
-  public String getContact() {
-    return contact;
+  public String getOtherGender() {
+    return otherGender;
   }
 
-  public void setContact(String contact) {
-    this.contact = contact;
+  public void setOtherGender(String otherGender) {
+    this.otherGender = otherGender;
   }
 
-  public Occupation getOccupation() {
-    return occupation;
+  public String getPhoneNumber() {
+    return phoneNumber;
   }
 
-  public void setOccupation(Occupation occupation) {
-    this.occupation = occupation;
+  public void setPhoneNumber(String phoneNumber) {
+    this.phoneNumber = phoneNumber;
   }
 
-  public String getBiography() {
-    return biography;
+  public String getProfileImageUrl() {
+    return profileImageUrl;
   }
 
-  public void setBiography(String biography) {
-    this.biography = biography;
+  public void setProfileImageUrl(String profileImageUrl) {
+    this.profileImageUrl = profileImageUrl;
   }
 
-  public String getProfileImage() {
-    return profileImage;
+  @Override
+  public boolean equals(Object o) {
+    if (o == null || getClass() != o.getClass()) return false;
+    if (!super.equals(o)) return false;
+    ProfessorData that = (ProfessorData) o;
+    return Objects.equals(id, that.id)
+        && Objects.equals(user, that.user)
+        && Objects.equals(occupation, that.occupation)
+        && Objects.equals(otherOccupation, that.otherOccupation)
+        && Objects.equals(biography, that.biography)
+        && Objects.equals(birthdate, that.birthdate)
+        && Objects.equals(gender, that.gender)
+        && Objects.equals(otherGender, that.otherGender)
+        && Objects.equals(phoneNumber, that.phoneNumber)
+        && Objects.equals(profileImageUrl, that.profileImageUrl);
   }
 
-  public void setProfileImage(String profileImage) {
-    this.profileImage = profileImage;
-  }
-
-  public LocalDateTime getCreatedAt() {
-    return createdAt;
-  }
-
-  public void setCreatedAt(LocalDateTime createdAt) {
-    this.createdAt = createdAt;
+  @Override
+  public int hashCode() {
+    return Objects.hash(
+        super.hashCode(),
+        id,
+        user,
+        occupation,
+        otherOccupation,
+        biography,
+        birthdate,
+        gender,
+        otherGender,
+        phoneNumber,
+        profileImageUrl);
   }
 }

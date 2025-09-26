@@ -20,6 +20,6 @@ public class CreateModuleDTO {
   @Size(min = 5, max = 40, message = "O campo 'title' deve ter entre 5 e 40 caracteres")
   private String title;
 
-  @NotNull(message = "O id do curso é obrigatório")
+  @NotNull(message = "O campo 'courseId' é obrigatório")
   private UUID courseId;
 }

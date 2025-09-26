@@ -11,13 +11,8 @@ public interface AuthPresentationMapper {
   @Mappings(
       value = {
         @Mapping(target = "id", ignore = true),
-        @Mapping(target = "role", ignore = true),
+        @Mapping(target = "roles", ignore = true),
         @Mapping(target = "createdAt", ignore = true),
-        @Mapping(target = "active", ignore = true),
-        @Mapping(target = "refreshToken", ignore = true),
-        @Mapping(target = "enrolledCourses", ignore = true),
-        @Mapping(target = "professorData", ignore = true),
-        @Mapping(target = "socials", ignore = true),
       })
   User map(RegisterDTO user);
 }

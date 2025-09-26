@@ -11,27 +11,16 @@ import org.mapstruct.Named;
 @Mapper(componentModel = "spring")
 public interface ModuleGatewaysMapper {
 
-  @Named("moduleDetailsProjectionToModule")
-  @Mappings(
-      value = {
-        @Mapping(target = "active", ignore = true),
-        @Mapping(target = "createdAt", ignore = true),
-        @Mapping(target = "course", ignore = true)
-      })
-  Module detailsProjectionToDomain(CourseDetailsProjection.ModuleCourseDetailsProjection module);
+  //  @Named("moduleDetailsProjectionToModule")
+  //  @Mappings(
+  //      value = {
+  //        @Mapping(target = "createdAt", ignore = true),
+  //        @Mapping(target = "course", ignore = true)
+  //      })
+  //  Module detailsProjectionToDomain(CourseDetailsProjection.ModuleCourseDetailsProjection
+  // module);
 
-  ModuleEntity domainToEntity(Module module);
+  ModuleEntity map(Module module);
 
-  @Mappings(
-      value = {
-        @Mapping(target = "course.modules", ignore = true),
-        @Mapping(target = "course.professor.coursesTaught", ignore = true),
-        @Mapping(target = "course.professor.enrolledCourses", ignore = true),
-        @Mapping(target = "course.professor.refreshToken", ignore = true),
-        @Mapping(target = "course.professor.socials", ignore = true),
-        @Mapping(target = "course.professor.professorData", ignore = true),
-        @Mapping(target = "course.tags", ignore = true),
-        @Mapping(target = "classes", ignore = true),
-      })
-  Module entityToDomain(ModuleEntity moduleEntity);
+  Module map(ModuleEntity moduleEntity);
 }

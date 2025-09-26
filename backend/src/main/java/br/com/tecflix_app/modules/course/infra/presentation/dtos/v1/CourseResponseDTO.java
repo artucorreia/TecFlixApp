@@ -1,12 +1,12 @@
 package br.com.tecflix_app.modules.course.infra.presentation.dtos.v1;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import br.com.tecflix_app.modules.module.infra.presentation.dtos.v1.ModuleResponseDTO;
 import br.com.tecflix_app.modules.tag.infra.presentation.dtos.v1.response.TagResponseDTO;
-import br.com.tecflix_app.modules.user.infra.dtos.v1.UserDTO;
+import br.com.tecflix_app.modules.user.infra.presentation.dtos.v1.UserDTO;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.hateoas.RepresentationModel;
 
@@ -31,6 +31,6 @@ public class CourseResponseDTO extends RepresentationModel<CourseResponseDTO> {
   private Long totalReviews;
   private Double averageScore;
   private UserDTO professor;
-  private List<ModuleResponseDTO> modules;
-  private List<TagResponseDTO> tags;
+  private Set<ModuleResponseDTO> modules;
+  private Set<TagResponseDTO> tags;
 }

@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 
 import br.com.tecflix_app.modules.auth.application.gateways.AuthenticatedUserGateway;
 import br.com.tecflix_app.modules.shared.exception.general.ResourceNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,12 +15,11 @@ import br.com.tecflix_app.modules.review.infra.dtos.v1.CreateReviewDTO;
 import br.com.tecflix_app.modules.course.infra.presentation.dtos.v1.CourseResponseDTO;
 import br.com.tecflix_app.modules.shared.dto.v1.GenericResponseDTO;
 import br.com.tecflix_app.modules.review.infra.dtos.v1.ReviewDTO;
-import br.com.tecflix_app.modules.user.infra.dtos.v1.UserDTO;
+import br.com.tecflix_app.modules.user.infra.presentation.dtos.v1.UserDTO;
 import br.com.tecflix_app.modules.shared.exception.general.ActionNotAllowedException;
 import br.com.tecflix_app.mapper.contract.IMapperService;
 import br.com.tecflix_app.modules.review.infra.persistence.ReviewEntity;
 import br.com.tecflix_app.modules.review.infra.persistence.ReviewRepository;
-import br.com.tecflix_app.modules.auth.infra.security.jwt.TokenService;
 
 @Service
 public class ReviewService {

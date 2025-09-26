@@ -20,19 +20,19 @@ public class UserJpaRepositoryGateway implements UserRepositoryGateway {
   @Override
   public Optional<User> findById(UUID id) {
     Optional<UserEntity> optionalUserEntity = userRepository.findById(id);
-    return optionalUserEntity.map(userGatewaysMapper::entityToDomain);
+    return optionalUserEntity.map(userGatewaysMapper::map);
   }
 
   @Override
   public Optional<User> findByEmail(String email) {
     Optional<UserEntity> optionalUserEntity = userRepository.findByEmail(email);
-    return optionalUserEntity.map(userGatewaysMapper::entityToDomain);
+    return optionalUserEntity.map(userGatewaysMapper::map);
   }
 
   @Override
   public User save(User user) {
-    UserEntity userEntity = userGatewaysMapper.domainToEntity(user);
+    UserEntity userEntity = userGatewaysMapper.map(user);
     UserEntity savedUserEntity = userRepository.save(userEntity);
-    return userGatewaysMapper.entityToDomain(savedUserEntity);
+    return userGatewaysMapper.map(savedUserEntity);
   }
 }

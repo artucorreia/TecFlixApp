@@ -16,9 +16,7 @@ public interface TagGatewayMapper {
   @Named("tagCourseDetailsProjectionToTag")
   @Mappings(
       value = {
-        @Mapping(target = "active", ignore = true),
         @Mapping(target = "createdAt", ignore = true),
-        @Mapping(target = "courses", ignore = true)
       })
   Tag courseDetailsProjectionToDomain(
       CourseDetailsProjection.TagCourseDetailsProjection tagCourseDetailsProjection);
@@ -28,6 +26,5 @@ public interface TagGatewayMapper {
   @Mappings(value = {@Mapping(target = "courses", ignore = true)})
   List<Tag> entityToDomain(List<TagEntity> tagEntities);
 
-  @Mappings(value = {@Mapping(target = "courses", ignore = true)})
-  Tag entityToDomain(TagEntity tagEntity);
+  Tag map(TagEntity tagEntity);
 }

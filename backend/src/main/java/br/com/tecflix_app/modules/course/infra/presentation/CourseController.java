@@ -1,13 +1,22 @@
 package br.com.tecflix_app.modules.course.infra.presentation;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import br.com.tecflix_app.modules.course.application.domain.entity.Course;
 import br.com.tecflix_app.modules.course.application.usecases.CreateCourseUseCase;
 import br.com.tecflix_app.modules.course.application.usecases.FindCourseDetailsByIdUseCase;
-import br.com.tecflix_app.modules.course.constant.CourseConstant;
+import br.com.tecflix_app.modules.course.infra.presentation.constant.CourseConstant;
 import br.com.tecflix_app.modules.course.infra.presentation.mapper.CoursePresentationMapper;
+import br.com.tecflix_app.modules.courseClass.application.domain.entity.Class;
+import br.com.tecflix_app.modules.courseClass.application.usecases.FindClassesByModuleIdUseCase;
+import br.com.tecflix_app.modules.courseClass.infra.presentation.dtos.v1.ClassDTO;
+import br.com.tecflix_app.modules.courseClass.infra.presentation.mapper.ClassPresentationMapper;
+import br.com.tecflix_app.modules.module.application.domain.entity.Module;
+import br.com.tecflix_app.modules.module.application.usecases.FindModulesByCourseIdUseCase;
+import br.com.tecflix_app.modules.module.infra.presentation.dtos.v1.ModuleResponseDTO;
+import br.com.tecflix_app.modules.module.infra.presentation.mapper.ModulePresentationMapper;
 import br.com.tecflix_app.modules.shared.dto.v1.ResponseDTO;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
@@ -58,9 +67,13 @@ public class CourseController {
 
   private final FindCourseDetailsByIdUseCase findCourseDetailsByIdUseCase;
   private final CreateCourseUseCase createCourseUseCase;
+  private final FindModulesByCourseIdUseCase findModulesByCourseIdUseCase;
+  private final FindClassesByModuleIdUseCase findClassesByModuleIdUseCase;
   private final CourseService service;
   private final ReviewService reviewService;
   private final CoursePresentationMapper coursePresentationMapper;
+  private final ModulePresentationMapper modulePresentationMapper;
+  private final ClassPresentationMapper classPresentationMapper;
 
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   @Operation(
@@ -85,10 +98,18 @@ public class CourseController {
       })
   public ResponseEntity<ResponseDTO<CourseResponseDTO>> findById(@PathVariable UUID id) {
     Course course = findCourseDetailsByIdUseCase.execute(id);
-    CourseResponseDTO courseResponseDTO = coursePresentationMapper.domainToResponseDTO(course);
+    Set<Module> modules = findModulesByCourseIdUseCase.execute(course.getId());
+    CourseResponseDTO courseResponseDTO = coursePresentationMapper.map(course);
+    Set<ModuleResponseDTO> moduleResponseDTOS = modulePresentationMapper.map(modules);
+    moduleResponseDTOS.forEach(
+        moduleResponseDTO -> {
+          Set<Class> classes = findClassesByModuleIdUseCase.execute(moduleResponseDTO.getId());
+          Set<ClassDTO> classDTOS = classPresentationMapper.map(classes);
+          moduleResponseDTO.setClasses(classDTOS);
+        });
+    courseResponseDTO.setModules(moduleResponseDTOS);
     ResponseDTO<CourseResponseDTO> response =
-        new ResponseDTO<>(
-            true, CourseConstant.MESSAGE_200, CourseConstant.CODE_200, courseResponseDTO);
+        new ResponseDTO<>(true, null, CourseConstant.CODE_200, courseResponseDTO);
     return ResponseEntity.ok(response);
   }
 
@@ -180,7 +201,7 @@ public class CourseController {
                           @ExampleObject(
                               value =
                                   """
-                                        { "title": "string", "description": "string", "capeImage": "string", "tags": [{"id": "long"}] }
+                                        { "title": "My Course's Title", "description": "from basico to advanced", "capeImageUrl": "https://image/path/2", "tagIds": [1, 2, 3] }
                                         """))))
   @ApiResponses(
       value = {
@@ -198,7 +219,7 @@ public class CourseController {
       })
   public ResponseEntity<ResponseDTO<Object>> create(
       @Valid @RequestBody CreateCourseDTO createCourseDTO) {
-    Course course = coursePresentationMapper.createDTOToDomain(createCourseDTO);
+    Course course = coursePresentationMapper.map(createCourseDTO);
     createCourseUseCase.execute(course);
     ResponseDTO<Object> responseDTO =
         new ResponseDTO<>(true, CourseConstant.MESSAGE_201, CourseConstant.CODE_201, null);

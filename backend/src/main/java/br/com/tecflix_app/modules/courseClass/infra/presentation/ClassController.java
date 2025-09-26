@@ -2,7 +2,7 @@ package br.com.tecflix_app.modules.courseClass.infra.presentation;
 
 import br.com.tecflix_app.modules.courseClass.application.domain.entity.Class;
 import br.com.tecflix_app.modules.courseClass.application.usecases.CreateClassUseCase;
-import br.com.tecflix_app.modules.courseClass.constant.ClassConstant;
+import br.com.tecflix_app.modules.courseClass.infra.presentation.constant.ClassConstant;
 import br.com.tecflix_app.modules.courseClass.infra.presentation.mapper.ClassPresentationMapper;
 import br.com.tecflix_app.modules.shared.dto.v1.ResponseDTO;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -55,7 +55,7 @@ public class ClassController {
                           @ExampleObject(
                               value =
                                   """
-                    { "title": "string", "videoPath": "string", "moduleId": "long" }
+                    { "title": "The Beginning", "videoUrl": "https://video/path/2", "moduleId": "1" }
                     """))))
   @ApiResponses(
       value = {
@@ -74,7 +74,7 @@ public class ClassController {
       })
   public ResponseEntity<ResponseDTO<Object>> create(
       @Valid @RequestBody CreateClassDTO createClassDTO) {
-    Class courseClass = classPresentationMapper.createDTOToDomain(createClassDTO);
+    Class courseClass = classPresentationMapper.map(createClassDTO);
     createClassUseCase.execute(courseClass);
     ResponseDTO<Object> response =
         new ResponseDTO<>(true, ClassConstant.MESSAGE_201, ClassConstant.CODE_201, null);

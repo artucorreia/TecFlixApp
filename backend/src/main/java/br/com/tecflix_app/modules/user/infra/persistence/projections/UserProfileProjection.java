@@ -20,4 +20,14 @@ public interface UserProfileProjection {
   List<SocialProjection> getSocials();
 
   List<CourseProjection> getCoursesTaught();
+
+  interface SocialProjection {
+    SocialNameProjection getSocialName();
+
+    String getUrl();
+
+    interface SocialNameProjection {
+      String getName();
+    }
+  }
 }

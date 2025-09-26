@@ -1,6 +1,6 @@
 package br.com.tecflix_app.modules.auth.infra.presentation;
 
-import br.com.tecflix_app.modules.auth.constant.AuthConstant;
+import br.com.tecflix_app.modules.auth.infra.presentation.constant.AuthConstant;
 import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.AuthenticationDTO;
 import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.NewPasswordDTO;
 import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.RegisterDTO;
@@ -76,7 +76,7 @@ public class AuthController {
                           @ExampleObject(
                               value =
                                   """
-                                        { "email": "string", "password": "string" }
+                                        { "email": "john@gmail.com", "password": "12345678" }
                                         """))))
   @ApiResponses(
       value = {
@@ -158,7 +158,7 @@ public class AuthController {
       produces = MediaType.APPLICATION_JSON_VALUE)
   @Operation(
       summary = "Register in the system",
-      description = "Register in the system",
+      description = "Register a new user in the system",
       tags = {"Authentication"},
       method = "POST",
       requestBody =
@@ -170,7 +170,7 @@ public class AuthController {
                           @ExampleObject(
                               value =
                                   """
-                                        { "name": "string", "email": "string", "password": "string" }
+                                        { "name": "John Kevin", "email": "john@gmail.com", "password": "12345678" }
                                         """))))
   @ApiResponses(
       value = {

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import br.com.tecflix_app.modules.shared.exception.general.ActionNotAllowedException;
 import br.com.tecflix_app.modules.shared.exception.general.RepeatedDataException;
 import br.com.tecflix_app.modules.shared.exception.general.ResourceNotFoundException;
-import br.com.tecflix_app.modules.user.application.domain.enums.Role;
 import br.com.tecflix_app.modules.user.infra.persistence.UserRepository;
 import br.com.tecflix_app.service.ProfessorDataService;
 

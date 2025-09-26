@@ -1,56 +1,56 @@
 package br.com.tecflix_app.modules.course.application.domain.entity;
 
+import br.com.tecflix_app.modules.shared.application.domain.entity.BaseDomainEntity;
 import br.com.tecflix_app.modules.tag.application.domain.entity.Tag;
 import br.com.tecflix_app.modules.user.application.domain.entity.User;
-import br.com.tecflix_app.modules.module.application.domain.entity.Module;
-import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
-public class Course implements Serializable {
+public class Course extends BaseDomainEntity {
   private UUID id;
   private String title;
   private String description;
-  private String capeImage;
-  private Boolean active;
-  private LocalDateTime createdAt;
+  private String capeImageUrl;
   private Long totalScore;
   private Long totalReviews;
   private Double averageScore;
+  private Boolean approved;
   private User professor;
-  private List<User> students;
-  private List<Module> modules;
-  private List<Tag> tags;
+  private Set<User> students;
+  private Set<Tag> tags;
 
   public Course() {}
 
   public Course(
+      UUID createdBy,
+      LocalDateTime createdAt,
+      UUID updatedBy,
+      LocalDateTime updatedAt,
+      Boolean deleted,
       UUID id,
       String title,
       String description,
-      String capeImage,
-      Boolean active,
-      LocalDateTime createdAt,
+      String capeImageUrl,
       Long totalScore,
       Long totalReviews,
       Double averageScore,
+      Boolean approved,
       User professor,
-      List<User> students,
-      List<Module> modules,
-      List<Tag> tags) {
+      Set<User> students,
+      Set<Tag> tags) {
+    super(createdBy, createdAt, updatedBy, updatedAt, deleted);
     this.id = id;
     this.title = title;
     this.description = description;
-    this.capeImage = capeImage;
-    this.active = active;
-    this.createdAt = createdAt;
+    this.capeImageUrl = capeImageUrl;
     this.totalScore = totalScore;
     this.totalReviews = totalReviews;
     this.averageScore = averageScore;
+    this.approved = approved;
     this.professor = professor;
     this.students = students;
-    this.modules = modules;
     this.tags = tags;
   }
 
@@ -78,28 +78,12 @@ public class Course implements Serializable {
     this.description = description;
   }
 
-  public String getCapeImage() {
-    return capeImage;
+  public String getCapeImageUrl() {
+    return capeImageUrl;
   }
 
-  public void setCapeImage(String capeImage) {
-    this.capeImage = capeImage;
-  }
-
-  public Boolean getActive() {
-    return active;
-  }
-
-  public void setActive(Boolean active) {
-    this.active = active;
-  }
-
-  public LocalDateTime getCreatedAt() {
-    return createdAt;
-  }
-
-  public void setCreatedAt(LocalDateTime createdAt) {
-    this.createdAt = createdAt;
+  public void setCapeImageUrl(String capeImageUrl) {
+    this.capeImageUrl = capeImageUrl;
   }
 
   public Long getTotalScore() {
@@ -126,6 +110,14 @@ public class Course implements Serializable {
     this.averageScore = averageScore;
   }
 
+  public Boolean getApproved() {
+    return approved;
+  }
+
+  public void setApproved(Boolean approved) {
+    this.approved = approved;
+  }
+
   public User getProfessor() {
     return professor;
   }
@@ -134,27 +126,54 @@ public class Course implements Serializable {
     this.professor = professor;
   }
 
-  public List<User> getStudents() {
+  public Set<User> getStudents() {
     return students;
   }
 
-  public void setStudents(List<User> students) {
+  public void setStudents(Set<User> students) {
     this.students = students;
   }
 
-  public List<Module> getModules() {
-    return modules;
-  }
-
-  public void setModules(List<Module> modules) {
-    this.modules = modules;
-  }
-
-  public List<Tag> getTags() {
+  public Set<Tag> getTags() {
     return tags;
   }
 
-  public void setTags(List<Tag> tags) {
+  public void setTags(Set<Tag> tags) {
     this.tags = tags;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o == null || getClass() != o.getClass()) return false;
+    if (!super.equals(o)) return false;
+    Course course = (Course) o;
+    return Objects.equals(id, course.id)
+        && Objects.equals(title, course.title)
+        && Objects.equals(description, course.description)
+        && Objects.equals(capeImageUrl, course.capeImageUrl)
+        && Objects.equals(totalScore, course.totalScore)
+        && Objects.equals(totalReviews, course.totalReviews)
+        && Objects.equals(averageScore, course.averageScore)
+        && Objects.equals(approved, course.approved)
+        && Objects.equals(professor, course.professor)
+        && Objects.equals(students, course.students)
+        && Objects.equals(tags, course.tags);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(
+        super.hashCode(),
+        id,
+        title,
+        description,
+        capeImageUrl,
+        totalScore,
+        totalReviews,
+        averageScore,
+        approved,
+        professor,
+        students,
+        tags);
   }
 }

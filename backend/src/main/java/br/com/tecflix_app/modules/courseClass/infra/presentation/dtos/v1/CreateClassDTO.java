@@ -21,7 +21,7 @@ public class CreateClassDTO {
   @NotNull(message = "O campo 'videoPath' é obrigatório")
   @NotBlank(message = "O campo 'videoPath' não pode estar em branco")
   @Size(max = 255, message = "O campo 'videoPath' deve ter no máximo 255 caracteres")
-  private String videoPath;
+  private String videoUrl;
 
   @NotNull(message = "O id do módulo é obrigatório")
   private Long moduleId;

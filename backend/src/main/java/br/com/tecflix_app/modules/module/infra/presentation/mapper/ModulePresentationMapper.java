@@ -8,19 +8,21 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
 import java.util.List;
+import java.util.Set;
 
 @Mapper(componentModel = "spring")
 public interface ModulePresentationMapper {
-  ModuleResponseDTO domainToResponseDTO(Module module);
+  ModuleResponseDTO map(Module module);
 
-  List<ModuleResponseDTO> domainToResponseDTO(List<Module> modules);
+  List<ModuleResponseDTO> map(List<Module> modules);
+
+  Set<ModuleResponseDTO> map(Set<Module> modules);
 
   @Mappings(
       value = {
         @Mapping(target = "id", ignore = true),
-        @Mapping(target = "active", ignore = true),
         @Mapping(target = "createdAt", ignore = true),
         @Mapping(target = "course.id", source = "courseId")
       })
-  Module createDTOToDomain(CreateModuleDTO createModuleDTO);
+  Module map(CreateModuleDTO createModuleDTO);
 }

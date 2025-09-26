@@ -3,10 +3,7 @@ package br.com.tecflix_app.config;
 import br.com.tecflix_app.modules.auth.application.gateways.AuthenticatedUserGateway;
 import br.com.tecflix_app.modules.course.application.usecases.FindCourseByIdUseCase;
 import br.com.tecflix_app.modules.module.application.gateways.ModuleRepositoryGateway;
-import br.com.tecflix_app.modules.module.application.usecases.CreateModuleUseCase;
-import br.com.tecflix_app.modules.module.application.usecases.CreateModuleUseCaseImpl;
-import br.com.tecflix_app.modules.module.application.usecases.FindModuleByIdUseCase;
-import br.com.tecflix_app.modules.module.application.usecases.FindModuleByIdUseCaseImpl;
+import br.com.tecflix_app.modules.module.application.usecases.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,6 +14,13 @@ public class ModuleConfig {
   public FindModuleByIdUseCase findModuleByIdUseCase(
       ModuleRepositoryGateway moduleRepositoryGateway) {
     return new FindModuleByIdUseCaseImpl(moduleRepositoryGateway);
+  }
+
+  @Bean
+  public FindModulesByCourseIdUseCase findModulesByCourseIdUseCase(
+      ModuleRepositoryGateway moduleRepositoryGateway,
+      FindCourseByIdUseCase findCourseByIdUseCase) {
+    return new FindModulesByCourseIdUseCaseImpl(moduleRepositoryGateway, findCourseByIdUseCase);
   }
 
   @Bean

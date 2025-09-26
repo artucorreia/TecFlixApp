@@ -16,6 +16,7 @@ import lombok.Setter;
 public class TagResponseDTO {
   private Long id;
   private String name;
-  private Boolean active;
+  private Boolean deleted;
   private LocalDateTime createdAt;
+  private LocalDateTime updatedAt;
 }

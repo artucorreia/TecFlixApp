@@ -2,8 +2,12 @@ package br.com.tecflix_app.modules.course.infra.persistence;
 
 import br.com.tecflix_app.modules.course.infra.persistence.projections.CourseDetailsProjection;
 import br.com.tecflix_app.modules.course.infra.persistence.projections.CourseProjection;
+
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import br.com.tecflix_app.modules.course.infra.persistence.projections.CourseUserProfileProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -68,6 +72,8 @@ public interface CourseRepository extends JpaRepository<CourseEntity, UUID> {
                     UPPER(CONCAT('%', :term, '%'))
             """)
   Page<CourseProjection> findByTagIdsAndTerm(Long[] tagIds, String term, Pageable pageable);
+
+  List<CourseUserProfileProjection> findCourseUserProfileProjectionByProfessorId(UUID userId);
 
   @Modifying
   @Query(nativeQuery = true, value = "CALL update_courses_reviews()")

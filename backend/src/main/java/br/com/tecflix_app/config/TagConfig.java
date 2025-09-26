@@ -8,8 +8,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class TagConfig {
   @Bean
-  public FindTagByIdCase findTagByIdCase(TagRepositoryGateway tagRepositoryGateway) {
-    return new FindTagByIdCaseImpl(tagRepositoryGateway);
+  public FindTagByIdUseCase findTagByIdCase(TagRepositoryGateway tagRepositoryGateway) {
+    return new FindTagByIdUseCaseImpl(tagRepositoryGateway);
   }
 
   @Bean
@@ -18,7 +18,7 @@ public class TagConfig {
   }
 
   @Bean
-  public FindAllTagsCase findAllTagsCase(TagRepositoryGateway tagRepositoryGateway) {
-    return new FindAllTagsCaseImpl(tagRepositoryGateway);
+  public FindAllTagsUseCase findAllTagsCase(TagRepositoryGateway tagRepositoryGateway) {
+    return new FindAllTagsUseCaseImpl(tagRepositoryGateway);
   }
 }

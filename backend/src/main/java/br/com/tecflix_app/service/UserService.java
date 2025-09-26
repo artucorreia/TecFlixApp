@@ -3,23 +3,17 @@ package br.com.tecflix_app.service;
 import br.com.tecflix_app.mapper.contract.IMapperService;
 import br.com.tecflix_app.modules.auth.application.gateways.AuthenticatedUserGateway;
 import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.NewPasswordDTO;
-import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.RegisterDTO;
-import br.com.tecflix_app.modules.auth.infra.security.jwt.TokenService;
-import br.com.tecflix_app.modules.user.application.domain.enums.Role;
 import br.com.tecflix_app.modules.user.infra.persistence.UserEntity;
 import br.com.tecflix_app.modules.user.infra.persistence.UserRepository;
-import br.com.tecflix_app.modules.user.infra.dtos.v1.RegisterProfessorDTO;
-import br.com.tecflix_app.modules.user.infra.dtos.v1.UserDTO;
+import br.com.tecflix_app.modules.user.infra.presentation.dtos.v1.UserDTO;
 import br.com.tecflix_app.service.util.UserValidatorService;
 import br.com.tecflix_app.modules.shared.dto.v1.GenericResponseDTO;
 import br.com.tecflix_app.modules.shared.exception.auth.UserAlreadyIsActive;
-import br.com.tecflix_app.modules.shared.exception.general.InaccessibleResource;
 import br.com.tecflix_app.modules.shared.exception.general.ResourceNotFoundException;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -157,27 +151,27 @@ public class UserService {
         UserDTO.class);
   }
 
-  public UserDTO findProfileById(UUID id) {
-    UserDTO user = findById(id);
-
-    if (!user.getActive()) throw new InaccessibleResource("Este perfil está atualmente inativo");
-
-    if (user.getRole().equals(Role.USER))
-      throw new InaccessibleResource("Este usuário não possui perfil de professor");
-
-    UserDTO response =
-        mapper.map(
-            repository
-                .findProfileById(id)
-                .orElseThrow(
-                    () -> new ResourceNotFoundException("Nenhum perfil encontrado para este id")),
-            UserDTO.class);
-
-    if (response.getProfessorData() == null)
-      throw new InaccessibleResource("Este usuário não possui perfil de professor");
-
-    return response;
-  }
+//  public UserDTO findProfileById(UUID id) {
+//    UserDTO user = findById(id);
+//
+//    if (!user.getActive()) throw new InaccessibleResource("Este perfil está atualmente inativo");
+//
+//    if (user.getRole().equals(Role.USER))
+//      throw new InaccessibleResource("Este usuário não possui perfil de professor");
+//
+//    UserDTO response =
+//        mapper.map(
+//            repository
+//                .findProfileById(id)
+//                .orElseThrow(
+//                    () -> new ResourceNotFoundException("Nenhum perfil encontrado para este id")),
+//            UserDTO.class);
+//
+//    if (response.getProfessorData() == null)
+//      throw new InaccessibleResource("Este usuário não possui perfil de professor");
+//
+//    return response;
+//  }
 
   // change password
   @Transactional(rollbackFor = Exception.class)
@@ -207,29 +201,29 @@ public class UserService {
     return new GenericResponseDTO<>(id, "Senha redefinida com sucesso", LocalDateTime.now());
   }
 
-  @Transactional(rollbackFor = Exception.class)
-  private void updateUserRole(UUID userId, Role role) {
-//    UserEntity entity = findEntityById(userId);
-//    entity.setRole(role);
-//    repository.save(entity);
-  }
+//  @Transactional(rollbackFor = Exception.class)
+//  private void updateUserRole(UUID userId, Role role) {
+////    UserEntity entity = findEntityById(userId);
+////    entity.setRole(role);
+////    repository.save(entity);
+//  }
 
-  public GenericResponseDTO<UUID> createProfessor(UserDTO user, RegisterProfessorDTO data) {
-    LOGGER.info("Changing user type to 'professor'");
-
-    validatorService.checkIfUserExists(user.getId());
-    validatorService.checkIfUserAlreadyHasProfessorRegistration(user.getId());
-
-    professorDataService.create(user, data.getCreatedAt(), data.getProfessorData());
-    if (!data.getSocials().isEmpty()) {
-      socialService.createAll(user, data.getSocials());
-    }
-
-//    if (findRoleById(user.getId()).equals(Role.USER)) {
-//      updateUserRole(user.getId(), Role.PROFESSOR);
+//  public GenericResponseDTO<UUID> createProfessor(UserDTO user, RegisterProfessorDTO data) {
+//    LOGGER.info("Changing user type to 'professor'");
+//
+//    validatorService.checkIfUserExists(user.getId());
+//    validatorService.checkIfUserAlreadyHasProfessorRegistration(user.getId());
+//
+//    professorDataService.create(user, data.getCreatedAt(), data.getProfessorData());
+//    if (!data.getSocials().isEmpty()) {
+//      socialService.createAll(user, data.getSocials());
 //    }
-
-    return new GenericResponseDTO<>(
-        user.getId(), "Usuário cadastrado como professor", LocalDateTime.now());
-  }
+//
+////    if (findRoleById(user.getId()).equals(Role.USER)) {
+////      updateUserRole(user.getId(), Role.PROFESSOR);
+////    }
+//
+//    return new GenericResponseDTO<>(
+//        user.getId(), "Usuário cadastrado como professor", LocalDateTime.now());
+//  }
 }

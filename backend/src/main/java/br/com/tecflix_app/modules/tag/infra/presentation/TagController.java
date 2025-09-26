@@ -1,8 +1,10 @@
 package br.com.tecflix_app.modules.tag.infra.presentation;
 
+import br.com.tecflix_app.modules.shared.dto.v1.ResponseDTO;
 import br.com.tecflix_app.modules.tag.application.domain.entity.Tag;
-import br.com.tecflix_app.modules.tag.application.usecases.FindAllTagsCase;
-import br.com.tecflix_app.modules.tag.application.usecases.FindTagByIdCase;
+import br.com.tecflix_app.modules.tag.application.usecases.FindAllTagsUseCase;
+import br.com.tecflix_app.modules.tag.application.usecases.FindTagByIdUseCase;
+import br.com.tecflix_app.modules.tag.infra.presentation.constant.TagConstant;
 import br.com.tecflix_app.modules.tag.infra.presentation.dtos.v1.response.TagResponseDTO;
 import br.com.tecflix_app.modules.tag.infra.presentation.mapper.TagPresentationMapper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,7 +13,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import java.util.List;
+
+import java.util.Set;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
@@ -30,8 +33,8 @@ import org.springframework.web.bind.annotation.RestController;
 @io.swagger.v3.oas.annotations.tags.Tag(name = "Tag", description = "Endpoints to manager tags")
 @RequiredArgsConstructor
 public class TagController {
-  private final FindTagByIdCase findTagByIdCase;
-  private final FindAllTagsCase findAllTagsCase;
+  private final FindTagByIdUseCase findTagByIdUseCase;
+  private final FindAllTagsUseCase findAllTagsUseCase;
   private final TagPresentationMapper tagPresentationMapper;
 
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -48,17 +51,19 @@ public class TagController {
             content =
                 @Content(
                     mediaType = "application/json",
-                    schema = @Schema(implementation = TagResponseDTO.class))),
+                    schema = @Schema(implementation = ResponseDTO.class))),
         @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
         @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
         @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
         @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
       })
-  public ResponseEntity<TagResponseDTO> findById(@PathVariable Long id) {
-    Tag tag = findTagByIdCase.execute(id);
-    TagResponseDTO tagResponseDTO = tagPresentationMapper.toResponse(tag);
-    return ResponseEntity.ok(tagResponseDTO);
+  public ResponseEntity<ResponseDTO<TagResponseDTO>> findById(@PathVariable Long id) {
+    Tag tag = findTagByIdUseCase.execute(id);
+    TagResponseDTO tagResponseDTO = tagPresentationMapper.map(tag);
+    ResponseDTO<TagResponseDTO> response =
+        new ResponseDTO<>(true, null, TagConstant.CODE_200, tagResponseDTO);
+    return ResponseEntity.ok(response);
   }
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -75,14 +80,17 @@ public class TagController {
             content =
                 @Content(
                     mediaType = "application/json",
-                    array = @ArraySchema(schema = @Schema(implementation = TagResponseDTO.class)))),
+                    array = @ArraySchema(schema = @Schema(implementation = ResponseDTO.class)))),
         @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
         @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
         @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
       })
-  public ResponseEntity<List<TagResponseDTO>> findAll() {
-    List<Tag> tags = findAllTagsCase.execute();
-    return ResponseEntity.ok(tagPresentationMapper.toResponse(tags));
+  public ResponseEntity<ResponseDTO<Set<TagResponseDTO>>> findAll() {
+    Set<Tag> tags = findAllTagsUseCase.execute();
+    Set<TagResponseDTO> tagResponseDTOS = tagPresentationMapper.map(tags);
+    ResponseDTO<Set<TagResponseDTO>> response =
+        new ResponseDTO<>(true, null, TagConstant.CODE_200, tagResponseDTOS);
+    return ResponseEntity.ok(response);
   }
 }

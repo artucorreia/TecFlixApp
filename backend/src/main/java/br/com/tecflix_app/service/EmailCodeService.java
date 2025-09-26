@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.tecflix_app.modules.emailCode.infra.presentation.dto.v1.EmailCodeDTO;
 import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.NewPasswordDTO;
 import br.com.tecflix_app.modules.shared.dto.v1.GenericResponseDTO;
-import br.com.tecflix_app.modules.user.infra.dtos.v1.UserDTO;
+import br.com.tecflix_app.modules.user.infra.presentation.dtos.v1.UserDTO;
 import br.com.tecflix_app.modules.shared.exception.auth.UserAlreadyIsActive;
 import br.com.tecflix_app.modules.shared.exception.general.ResourceNotFoundException;
 import br.com.tecflix_app.mapper.contract.IMapperService;

@@ -27,25 +27,11 @@ public interface CourseDetailsProjection {
 
   UserBasicProjection getProfessor();
 
-  List<ModuleCourseDetailsProjection> getModules();
-
   List<TagCourseDetailsProjection> getTags();
 
   public interface TagCourseDetailsProjection {
     Long getId();
 
     String getName();
-  }
-
-  public interface ModuleCourseDetailsProjection {
-    Long getId();
-
-    String getTitle();
-
-    List<ClassCourseDetailsProjection> getClasses();
-  }
-
-  public interface ClassCourseDetailsProjection {
-    String getTitle();
   }
 }

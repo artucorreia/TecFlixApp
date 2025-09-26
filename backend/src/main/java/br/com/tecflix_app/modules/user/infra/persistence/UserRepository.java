@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import br.com.tecflix_app.modules.user.application.domain.enums.Role;
 import br.com.tecflix_app.modules.user.infra.persistence.projections.UserAccountProjection;
 import br.com.tecflix_app.modules.user.infra.persistence.projections.UserBasicProjection;
 import br.com.tecflix_app.modules.user.infra.persistence.projections.UserProfileProjection;
@@ -20,6 +19,7 @@ public interface UserRepository extends JpaRepository<UserEntity, UUID> {
   @Query("SELECT u FROM UserEntity u WHERE u.email = :email")
   Optional<UserEntity> findByEmail(String email);
 
+  @Query("SELECT u.emailVerified FROM UserEntity u WHERE UPPER(u.email) = UPPER(:email)")
   Optional<Boolean> findEmailVerifiedByEmail(String email);
 
   @Query("SELECT u.email FROM UserEntity u WHERE u.id = :id")

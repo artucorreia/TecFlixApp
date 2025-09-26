@@ -1,11 +1,8 @@
 package br.com.tecflix_app.modules.module.infra.presentation;
 
-import java.util.List;
-
 import br.com.tecflix_app.modules.module.application.domain.entity.Module;
 import br.com.tecflix_app.modules.module.application.usecases.CreateModuleUseCase;
-import br.com.tecflix_app.modules.module.constant.ModuleConstant;
-import br.com.tecflix_app.modules.module.infra.presentation.dtos.v1.ModuleResponseDTO;
+import br.com.tecflix_app.modules.module.infra.presentation.constant.ModuleConstant;
 import br.com.tecflix_app.modules.module.infra.presentation.mapper.ModulePresentationMapper;
 import br.com.tecflix_app.modules.shared.dto.v1.ResponseDTO;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -56,7 +53,7 @@ public class ModuleController {
                           @ExampleObject(
                               value =
                                   """
-                    { "title": "string", "courseId": "uuid" }
+                    { "title": "Basic Module", "courseId": "6f0af909-3d33-46db-856a-fc7e780a64ac" }
                     """))))
   @ApiResponses(
       value = {
@@ -75,7 +72,7 @@ public class ModuleController {
       })
   public ResponseEntity<ResponseDTO<Object>> create(
       @Valid @RequestBody CreateModuleDTO createModuleDTO) {
-    Module module = modulePresentationMapper.createDTOToDomain(createModuleDTO);
+    Module module = modulePresentationMapper.map(createModuleDTO);
     createModuleUseCase.execute(module);
     ResponseDTO<Object> response =
         new ResponseDTO<>(true, ModuleConstant.MESSAGE_201, ModuleConstant.CODE_201, null);
