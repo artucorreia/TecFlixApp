@@ -29,6 +29,14 @@ public class ProfessorDataConfig {
   }
 
   @Bean
+  public FindAuthenticatedUserProfessorDataByUserIdUseCase
+      findAuthenticatedUserProfessorDataByUserIdUseCase(
+          ProfessorDataRepositoryGateway professorDataRepositoryGateway) {
+    return new FindAuthenticatedUserProfessorDataByUserIdUseCaseImpl(
+        professorDataRepositoryGateway);
+  }
+
+  @Bean
   public PrepareProfessorDataForCreationUseCase createProfessorDataUseCase(
       FindProfessorDataByPhoneNumberUseCase findProfessorDataByPhoneNumberUseCase,
       FindGenderByIdUseCase findGenderByIdUseCase,

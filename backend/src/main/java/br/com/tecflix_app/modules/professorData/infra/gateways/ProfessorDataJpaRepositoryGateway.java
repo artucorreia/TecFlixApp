@@ -40,6 +40,15 @@ public class ProfessorDataJpaRepositoryGateway implements ProfessorDataRepositor
   }
 
   @Override
+  public Optional<ProfessorData> findAuthenticatedByUserId(UUID userId) {
+    Optional<ProfessorDataEntity> optionalProfessorDataEntity =
+        professorDataRepository
+            .findAuthenticatedUserProfessorDataProjectionByUserIdAndDeletedFalse(userId)
+            .map(professorDataGatewaysMapper::map);
+    return optionalProfessorDataEntity.map(professorDataGatewaysMapper::map);
+  }
+
+  @Override
   public void save(ProfessorData professorData) {
     ProfessorDataEntity professorDataEntity = professorDataGatewaysMapper.map(professorData);
     professorDataRepository.save(professorDataEntity);

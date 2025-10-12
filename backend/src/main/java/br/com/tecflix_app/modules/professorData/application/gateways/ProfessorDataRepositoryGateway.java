@@ -12,5 +12,7 @@ public interface ProfessorDataRepositoryGateway {
 
   Optional<ProfessorData> findProfileByUserId(UUID userId);
 
+  Optional<ProfessorData> findAuthenticatedByUserId(UUID userId);
+
   void save(ProfessorData professorData);
 }

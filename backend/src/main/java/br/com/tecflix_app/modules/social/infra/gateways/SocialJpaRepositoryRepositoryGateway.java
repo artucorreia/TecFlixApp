@@ -26,6 +26,13 @@ public class SocialJpaRepositoryRepositoryGateway implements SocialRepositoryGat
   }
 
   @Override
+  public List<Social> findAuthenticatedByUserId(UUID userId) {
+    return socialRepository.findSocialAuthenticatedUserProjectionByUserIdAndDeletedFalse(userId).stream()
+        .map(socialGatewayMapper::map)
+        .toList();
+  }
+
+  @Override
   @Transactional(rollbackFor = Exception.class)
   public void save(Social social) {
     SocialEntity socialEntity = socialGatewayMapper.map(social);

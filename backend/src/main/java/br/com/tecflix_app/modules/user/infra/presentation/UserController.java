@@ -5,23 +5,29 @@ import br.com.tecflix_app.modules.course.application.usecases.FindCoursesProfile
 import br.com.tecflix_app.modules.course.infra.presentation.dtos.v1.CourseUserProfileResponseDTO;
 import br.com.tecflix_app.modules.course.infra.presentation.mapper.CoursePresentationMapper;
 import br.com.tecflix_app.modules.professorData.application.domain.entity.ProfessorData;
+import br.com.tecflix_app.modules.professorData.application.usecases.FindAuthenticatedUserProfessorDataByUserIdUseCase;
 import br.com.tecflix_app.modules.professorData.application.usecases.FindProfessorDataProfileByUserIdUseCase;
+import br.com.tecflix_app.modules.professorData.infra.presentation.dtos.v1.AuthenticatedUserProfessorDataResponseDTO;
 import br.com.tecflix_app.modules.professorData.infra.presentation.dtos.v1.ProfessorDataUserProfileResponseDTO;
 import br.com.tecflix_app.modules.professorData.infra.presentation.mapper.ProfessorDataPresentationMapper;
 import br.com.tecflix_app.modules.shared.dto.v1.ResponseDTO;
 import br.com.tecflix_app.modules.social.application.domain.entity.Social;
+import br.com.tecflix_app.modules.social.application.usecases.FindSocialsAuthenticatedUserByUserIdUseCase;
 import br.com.tecflix_app.modules.social.application.usecases.FindSocialsProfileByUserIdUseCase;
+import br.com.tecflix_app.modules.social.infra.presentation.dtos.v1.AuthenticatedUserSocialResponseDTO;
 import br.com.tecflix_app.modules.social.infra.presentation.dtos.v1.SocialUserProfileResponseDTO;
 import br.com.tecflix_app.modules.social.infra.presentation.mapper.SocialPresentationMapper;
+import br.com.tecflix_app.modules.user.application.domain.entity.User;
 import br.com.tecflix_app.modules.user.application.usecases.CreateProfessorUseCase;
+import br.com.tecflix_app.modules.user.application.usecases.FindMeUseCase;
+import br.com.tecflix_app.modules.user.infra.presentation.dtos.v1.AuthenticatedUserResponseDTO;
 import br.com.tecflix_app.modules.user.infra.presentation.dtos.v1.ProfessorProfileResponseDTO;
 import br.com.tecflix_app.modules.user.infra.presentation.dtos.v1.RegisterProfessorDTO;
 import br.com.tecflix_app.modules.shared.dto.v1.GenericResponseDTO;
-import br.com.tecflix_app.modules.user.infra.presentation.dtos.v1.UserDTO;
 import br.com.tecflix_app.modules.user.infra.persistence.projections.UserAccountProjection;
 import br.com.tecflix_app.modules.user.infra.persistence.projections.UserProfileProjection;
 import br.com.tecflix_app.modules.user.infra.presentation.constant.UserConstant;
-import br.com.tecflix_app.service.UserService;
+import br.com.tecflix_app.modules.user.infra.presentation.mapper.UserPresentationMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -55,11 +61,16 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "User", description = "Endpoints to manager users")
 @RequiredArgsConstructor
 public class UserController {
-  private final UserService service;
+  private final FindMeUseCase findMeUseCase;
+  private final FindAuthenticatedUserProfessorDataByUserIdUseCase
+      findAuthenticatedUserProfessorDataByUserIdUseCase;
+  private final FindSocialsAuthenticatedUserByUserIdUseCase
+      findSocialsAuthenticatedUserByUserIdUseCase;
   private final FindProfessorDataProfileByUserIdUseCase findProfessorDataProfileByUserIdUseCase;
   private final FindSocialsProfileByUserIdUseCase findSocialsProfileByUserIdUseCase;
   private final FindCoursesProfileByUserIdUseCase findCoursesProfileByUserIdUseCase;
   private final CreateProfessorUseCase createProfessorUseCase;
+  private final UserPresentationMapper userPresentationMapper;
   private final SocialPresentationMapper socialPresentationMapper;
   private final ProfessorDataPresentationMapper professorDataPresentationMapper;
   private final CoursePresentationMapper coursePresentationMapper;
@@ -85,8 +96,27 @@ public class UserController {
         @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
       })
-  public ResponseEntity<UserDTO> findMe() {
-    return ResponseEntity.ok(service.findMe());
+  public ResponseEntity<ResponseDTO<AuthenticatedUserResponseDTO>> findMe() {
+    User user = findMeUseCase.execute();
+    AuthenticatedUserResponseDTO authenticatedUserResponseDTO = userPresentationMapper.map(user);
+
+    ProfessorData professorData =
+        findAuthenticatedUserProfessorDataByUserIdUseCase.execute(user.getId());
+    AuthenticatedUserProfessorDataResponseDTO authenticatedUserProfessorDataResponseDTO =
+        professorDataPresentationMapper.toAuthenticatedUserProfessorDataResponseDTO(professorData);
+    authenticatedUserResponseDTO.setProfessorData(authenticatedUserProfessorDataResponseDTO);
+    Boolean userIsProfessor = authenticatedUserResponseDTO.getProfessorData() != null;
+    authenticatedUserResponseDTO.setIsProfessor(userIsProfessor);
+
+    if (userIsProfessor) {
+      List<Social> socials = findSocialsAuthenticatedUserByUserIdUseCase.execute(user.getId());
+      List<AuthenticatedUserSocialResponseDTO> authenticatedUserSocialResponseDTOS =
+          socialPresentationMapper.mapAuthenticated(socials);
+      authenticatedUserResponseDTO.setSocials(authenticatedUserSocialResponseDTOS);
+    }
+    ResponseDTO<AuthenticatedUserResponseDTO> response =
+        new ResponseDTO<>(true, null, UserConstant.CODE_200, authenticatedUserResponseDTO);
+    return ResponseEntity.ok(response);
   }
 
   @GetMapping(value = "/profile/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

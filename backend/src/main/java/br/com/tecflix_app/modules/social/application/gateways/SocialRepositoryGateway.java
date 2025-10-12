@@ -7,6 +7,8 @@ import java.util.UUID;
 public interface SocialRepositoryGateway {
   List<Social> findProfileByUserId(UUID userId);
 
+  List<Social> findAuthenticatedByUserId(UUID userId);
+
   void save(Social social);
 
   void saveAll(List<Social> socials);

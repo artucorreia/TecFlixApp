@@ -1,6 +1,7 @@
 package br.com.tecflix_app.modules.professorData.infra.presentation.mapper;
 
 import br.com.tecflix_app.modules.professorData.application.domain.entity.ProfessorData;
+import br.com.tecflix_app.modules.professorData.infra.presentation.dtos.v1.AuthenticatedUserProfessorDataResponseDTO;
 import br.com.tecflix_app.modules.professorData.infra.presentation.dtos.v1.CreateProfessorDataDTO;
 import br.com.tecflix_app.modules.professorData.infra.presentation.dtos.v1.ProfessorDataUserProfileResponseDTO;
 import org.mapstruct.Mapper;
@@ -23,6 +24,14 @@ public interface ProfessorDataPresentationMapper {
         @Mapping(target = "gender.id", source = "genderId"),
       })
   ProfessorData map(CreateProfessorDataDTO createProfessorDataDTO);
+
+  @Mappings(
+      value = {
+        @Mapping(target = "occupationName", source = "occupation.name"),
+        @Mapping(target = "genderName", source = "gender.name")
+      })
+  AuthenticatedUserProfessorDataResponseDTO toAuthenticatedUserProfessorDataResponseDTO(
+      ProfessorData professorData);
 
   @Mappings(
       value = {

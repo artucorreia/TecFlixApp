@@ -17,6 +17,11 @@ import org.springframework.context.annotation.Configuration;
 public class UserConfig {
 
   @Bean
+  public FindMeUseCase findMeUseCase(AuthenticatedUserGateway authenticatedUserGateway) {
+    return new FindMeUseCaseImpl(authenticatedUserGateway);
+  }
+
+  @Bean
   public FindUserByIdUseCase findUserByIdUseCase(UserRepositoryGateway userRepositoryGateway) {
     return new FindUserByIdUseCaseImpl(userRepositoryGateway);
   }

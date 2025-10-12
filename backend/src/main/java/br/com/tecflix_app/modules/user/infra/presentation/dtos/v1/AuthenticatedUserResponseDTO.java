@@ -4,9 +4,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import br.com.tecflix_app.modules.professorData.infra.presentation.dtos.v1.ProfessorDataDTO;
+import br.com.tecflix_app.modules.professorData.infra.presentation.dtos.v1.AuthenticatedUserProfessorDataResponseDTO;
+import br.com.tecflix_app.modules.social.infra.presentation.dtos.v1.AuthenticatedUserSocialResponseDTO;
 import br.com.tecflix_app.modules.social.infra.presentation.dtos.v1.SocialResponseDTO;
-import br.com.tecflix_app.modules.course.infra.presentation.dtos.v1.CourseResponseDTO;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,14 +18,13 @@ import lombok.Setter;
 @Setter
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UserDTO {
+public class AuthenticatedUserResponseDTO {
   private UUID id;
   private String name;
   private String email;
   private LocalDateTime createdAt;
-  private Boolean active;
-  private List<CourseResponseDTO> enrolledCourses;
-  private ProfessorDataDTO professorData;
-  private List<SocialResponseDTO> socials;
-  private List<CourseResponseDTO> coursesTaught;
+  private LocalDateTime updatedAt;
+  private Boolean isProfessor;
+  private AuthenticatedUserProfessorDataResponseDTO professorData;
+  private List<AuthenticatedUserSocialResponseDTO> socials;
 }

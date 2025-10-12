@@ -3,6 +3,7 @@ package br.com.tecflix_app.modules.professorData.infra.persistence;
 import java.util.Optional;
 import java.util.UUID;
 
+import br.com.tecflix_app.modules.professorData.infra.persistence.projection.AuthenticatedUserProfessorDataProjection;
 import br.com.tecflix_app.modules.professorData.infra.persistence.projection.ProfessorDataUserProfileProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,4 +22,7 @@ public interface ProfessorDataRepository extends JpaRepository<ProfessorDataEnti
 
   Optional<ProfessorDataUserProfileProjection> findProfessorDataUserProfileProjectionByUserId(
       UUID userId);
+
+  Optional<AuthenticatedUserProfessorDataProjection>
+      findAuthenticatedUserProfessorDataProjectionByUserIdAndDeletedFalse(UUID userId);
 }

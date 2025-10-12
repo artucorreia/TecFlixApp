@@ -1,7 +1,9 @@
 package br.com.tecflix_app.modules.social.infra.presentation.mapper;
 
 import br.com.tecflix_app.modules.social.application.domain.entity.Social;
+import br.com.tecflix_app.modules.social.infra.presentation.dtos.v1.AuthenticatedUserSocialResponseDTO;
 import br.com.tecflix_app.modules.social.infra.presentation.dtos.v1.CreateSocialDTO;
+import br.com.tecflix_app.modules.social.infra.presentation.dtos.v1.SocialResponseDTO;
 import br.com.tecflix_app.modules.social.infra.presentation.dtos.v1.SocialUserProfileResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -33,6 +35,14 @@ public interface SocialPresentationMapper {
         @Mapping(target = "socialName", source = "socialName.name"),
       })
   SocialUserProfileResponseDTO map(Social social);
+
+  @Mappings(
+      value = {
+        @Mapping(target = "socialName", source = "socialName.name"),
+      })
+  AuthenticatedUserSocialResponseDTO mapAuthenticated(Social social);
+
+  List<AuthenticatedUserSocialResponseDTO> mapAuthenticated(List<Social> social);
 
   List<SocialUserProfileResponseDTO> map(List<Social> social);
 }
