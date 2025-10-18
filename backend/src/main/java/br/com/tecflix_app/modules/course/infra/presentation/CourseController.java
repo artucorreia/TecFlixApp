@@ -67,13 +67,18 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Course", description = "Endpoints to manager courses")
 @RequiredArgsConstructor
 public class CourseController {
-
+  // usecases
   private final FindCourseDetailsByIdUseCase findCourseDetailsByIdUseCase;
+  private final FindAllCoursesUseCase findAllCoursesUseCase;
   private final CreateCourseUseCase createCourseUseCase;
   private final FindModulesByCourseIdUseCase findModulesByCourseIdUseCase;
   private final FindClassesByModuleIdUseCase findClassesByModuleIdUseCase;
+
+  // services
   private final CourseService service;
   private final ReviewService reviewService;
+
+  // mappers
   private final CoursePresentationMapper coursePresentationMapper;
   private final ModulePresentationMapper modulePresentationMapper;
   private final ClassPresentationMapper classPresentationMapper;
@@ -92,7 +97,7 @@ public class CourseController {
             content =
                 @Content(
                     mediaType = "application/json",
-                    schema = @Schema(implementation = CourseDetailsProjection.class))),
+                    schema = @Schema(implementation = ResponseDTO.class))),
         @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
         @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
         @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
