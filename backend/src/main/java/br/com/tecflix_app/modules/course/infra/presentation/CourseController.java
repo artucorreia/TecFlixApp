@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import br.com.tecflix_app.modules.course.application.domain.entity.Course;
 import br.com.tecflix_app.modules.course.application.usecases.CreateCourseUseCase;
+import br.com.tecflix_app.modules.course.application.usecases.FindAllCoursesUseCase;
 import br.com.tecflix_app.modules.course.application.usecases.FindCourseDetailsByIdUseCase;
 import br.com.tecflix_app.modules.course.infra.presentation.constant.CourseConstant;
 import br.com.tecflix_app.modules.course.infra.presentation.mapper.CoursePresentationMapper;
@@ -17,6 +18,8 @@ import br.com.tecflix_app.modules.module.application.domain.entity.Module;
 import br.com.tecflix_app.modules.module.application.usecases.FindModulesByCourseIdUseCase;
 import br.com.tecflix_app.modules.module.infra.presentation.dtos.v1.ModuleResponseDTO;
 import br.com.tecflix_app.modules.module.infra.presentation.mapper.ModulePresentationMapper;
+import br.com.tecflix_app.modules.shared.application.domain.entity.CustomPageResult;
+import br.com.tecflix_app.modules.shared.dto.v1.CustomPageResponseDTO;
 import br.com.tecflix_app.modules.shared.dto.v1.ResponseDTO;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
@@ -116,7 +119,7 @@ public class CourseController {
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   @Operation(
       summary = "Find all courses",
-      description = "Find all courses with pagination sorted by total reviews score",
+      description = "Find all courses with pagination sorting, sorted by average score by default",
       tags = {"Course"},
       method = "GET")
   @ApiResponses(
@@ -127,23 +130,34 @@ public class CourseController {
             content =
                 @Content(
                     mediaType = "application/json",
-                    schema = @Schema(implementation = CustomPagedResponse.class))),
+                    schema = @Schema(implementation = ResponseDTO.class))),
         @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
         @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
         @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
       })
-  public ResponseEntity<CustomPagedResponse<CourseResponseDTO>> findAll(
+  public ResponseEntity<ResponseDTO<CustomPageResponseDTO<CourseResponseDTO>>> findAll(
       @RequestParam(name = "page", defaultValue = "0") Integer page,
       @RequestParam(name = "size", defaultValue = "10") Integer size,
       @RequestParam(name = "direction", defaultValue = "averageScore,asc") String direction) {
-
     String[] sortOptions = direction.split(",");
-    Direction sortDirection =
-        "desc".equalsIgnoreCase(sortOptions[1]) ? Sort.Direction.DESC : Sort.Direction.ASC;
-    Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortOptions[0]));
+    CustomPageResult<Course> coursesCustomPage =
+        findAllCoursesUseCase.execute(page, size, sortOptions[0], sortOptions[1]);
 
-    return ResponseEntity.ok(service.findAll(pageable));
+    List<CourseResponseDTO> content =
+        coursesCustomPage.getContent().stream().map(coursePresentationMapper::map).toList();
+    CustomPageResponseDTO<CourseResponseDTO> courseResponseDTOCustomPage =
+        new CustomPageResponseDTO<>(
+            content,
+            coursesCustomPage.getPageNumber(),
+            coursesCustomPage.getPageSize(),
+            coursesCustomPage.getTotalElements(),
+            coursesCustomPage.getTotalPages(),
+            coursesCustomPage.isHasNext(),
+            coursesCustomPage.isHasPrevious());
+    ResponseDTO<CustomPageResponseDTO<CourseResponseDTO>> response =
+        new ResponseDTO<>(true, null, CourseConstant.CODE_200, courseResponseDTOCustomPage);
+    return ResponseEntity.ok(response);
   }
 
   @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)

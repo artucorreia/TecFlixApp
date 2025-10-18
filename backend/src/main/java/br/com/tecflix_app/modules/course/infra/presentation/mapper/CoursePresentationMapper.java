@@ -48,4 +48,6 @@ public interface CoursePresentationMapper {
   CourseUserProfileResponseDTO mapCourseUserProfileResponseDTO(Course course);
 
   List<CourseUserProfileResponseDTO> map(List<Course> courses);
+
+  List<CourseResponseDTO> domainToCourseResponseDTO(List<Course> courses);
 }

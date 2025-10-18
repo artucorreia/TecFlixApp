@@ -30,6 +30,11 @@ public class CourseConfig {
   }
 
   @Bean
+  public FindAllCoursesUseCase findAllCoursesUseCase(CourseRepositoryGateway courseRepositoryGateway) {
+    return new FindAllCoursesUseCaseImpl(courseRepositoryGateway);
+  }
+
+  @Bean
   public CreateCourseUseCase createCourseUseCase(
       CourseRepositoryGateway courseRepositoryGateway,
       AuthenticatedUserGateway authenticatedUserGateway,

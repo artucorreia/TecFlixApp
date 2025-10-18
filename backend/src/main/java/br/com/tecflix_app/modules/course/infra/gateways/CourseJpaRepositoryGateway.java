@@ -6,7 +6,13 @@ import br.com.tecflix_app.modules.course.infra.gateways.mapper.CourseGatewaysMap
 import br.com.tecflix_app.modules.course.infra.persistence.CourseEntity;
 import br.com.tecflix_app.modules.course.infra.persistence.CourseRepository;
 import br.com.tecflix_app.modules.course.infra.persistence.projections.CourseDetailsProjection;
+import br.com.tecflix_app.modules.course.infra.persistence.projections.CourseProjection;
+import br.com.tecflix_app.modules.shared.application.domain.entity.CustomPageResult;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -39,6 +45,29 @@ public class CourseJpaRepositoryGateway implements CourseRepositoryGateway {
             .map(courseGatewaysMapper::map)
             .toList();
     return courseEntities.stream().map(courseGatewaysMapper::map).toList();
+  }
+
+  @Override
+  public CustomPageResult<Course> findAll(
+      int page, int size, String sortProperty, String direction) {
+    Sort.Direction sortDirection =
+        "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
+
+    Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortProperty));
+    Page<CourseEntity> courseEntityPage =
+        courseRepository
+            .findAllByDeletedFalseAndApprovedTrue(pageable)
+            .map(courseGatewaysMapper::map);
+    List<Course> content =
+        courseEntityPage.getContent().stream().map(courseGatewaysMapper::map).toList();
+    return new CustomPageResult<>(
+        content,
+        courseEntityPage.getNumber(),
+        courseEntityPage.getSize(),
+        courseEntityPage.getTotalElements(),
+        courseEntityPage.getTotalPages(),
+        courseEntityPage.hasNext(),
+        courseEntityPage.hasPrevious());
   }
 
   @Override

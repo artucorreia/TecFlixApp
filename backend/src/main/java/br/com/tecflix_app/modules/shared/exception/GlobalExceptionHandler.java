@@ -5,10 +5,8 @@ import br.com.tecflix_app.modules.auth.domain.exception.InvalidTokenException;
 import br.com.tecflix_app.modules.auth.domain.exception.JwtCreationTokenException;
 import br.com.tecflix_app.modules.shared.exception.auth.*;
 import br.com.tecflix_app.modules.shared.exception.email.EmailSendingException;
-import br.com.tecflix_app.modules.shared.exception.general.ActionNotAllowedException;
-import br.com.tecflix_app.modules.shared.exception.general.InaccessibleResource;
-import br.com.tecflix_app.modules.shared.exception.general.RepeatedDataException;
-import br.com.tecflix_app.modules.shared.exception.general.ResourceNotFoundException;
+import br.com.tecflix_app.modules.shared.exception.general.*;
+
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -116,6 +114,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler(InaccessibleResource.class)
   public final ResponseEntity<ExceptionResponse> handleInaccessibleResourceExceptions(
+      Exception exception, WebRequest request) {
+    ExceptionResponse response =
+        ExceptionResponse.builder()
+            .success(false)
+            .message(exception.getMessage())
+            .uri(request.getDescription(false))
+            .code(HttpStatus.BAD_REQUEST.value())
+            .timestamp(LocalDateTime.now())
+            .build();
+    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(PaginationException.class)
+  public final ResponseEntity<ExceptionResponse> handlePaginationExceptions(
       Exception exception, WebRequest request) {
     ExceptionResponse response =
         ExceptionResponse.builder()

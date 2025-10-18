@@ -61,7 +61,7 @@ public class CourseService {
   public CustomPagedResponse<CourseResponseDTO> findAll(Pageable pageable) {
     LOGGER.info("Finding all courses");
 
-    Page<CourseProjection> entities = repository.findAllBy(pageable);
+    Page<CourseProjection> entities = repository.findAllByDeletedFalseAndApprovedTrue(pageable);
     Page<CourseResponseDTO> courses = entities.map(course -> mapper.map(course, CourseResponseDTO.class));
 
     courses = addLiks(courses, "courses");

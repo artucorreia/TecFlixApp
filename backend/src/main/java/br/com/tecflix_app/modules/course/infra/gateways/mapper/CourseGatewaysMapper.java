@@ -3,6 +3,7 @@ package br.com.tecflix_app.modules.course.infra.gateways.mapper;
 import br.com.tecflix_app.modules.course.application.domain.entity.Course;
 import br.com.tecflix_app.modules.course.infra.persistence.CourseEntity;
 import br.com.tecflix_app.modules.course.infra.persistence.projections.CourseDetailsProjection;
+import br.com.tecflix_app.modules.course.infra.persistence.projections.CourseProjection;
 import br.com.tecflix_app.modules.course.infra.persistence.projections.CourseUserProfileProjection;
 import br.com.tecflix_app.modules.module.infra.gateways.mapper.ModuleGatewaysMapper;
 import br.com.tecflix_app.modules.tag.infra.gateways.mapper.TagGatewayMapper;
@@ -44,6 +45,10 @@ public interface CourseGatewaysMapper {
   Course map(CourseEntity courseEntity);
 
   CourseEntity map(Course course);
+
+  CourseEntity map(CourseProjection courseProjection);
+
+  UserEntity map(CourseProjection.ProfessorProjection professorProjection);
 
   CourseEntity map(CourseUserProfileProjection courseUserProfileProjection);
 

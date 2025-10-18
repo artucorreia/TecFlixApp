@@ -19,7 +19,7 @@ import org.springframework.stereotype.Repository;
 public interface CourseRepository extends JpaRepository<CourseEntity, UUID> {
   Optional<CourseDetailsProjection> findDetailsById(UUID id);
 
-  Page<CourseProjection> findAllBy(Pageable pageable);
+  Page<CourseProjection> findAllByDeletedFalseAndApprovedTrue(Pageable pageable);
 
   @Query(
       """
