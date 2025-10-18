@@ -14,13 +14,12 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class TagJpaRepositoryGateway implements TagRepositoryGateway {
-
   private final TagRepository tagRepository;
   private final TagGatewayMapper tagGatewayMapper;
 
   @Override
   public Optional<Tag> findById(Long tagId) {
-    Optional<TagEntity> tagEntity = tagRepository.findById(tagId);
+    Optional<TagEntity> tagEntity = tagRepository.findByIdAndDeletedFalse(tagId);
     return tagEntity.map(tagGatewayMapper::map);
   }
 
