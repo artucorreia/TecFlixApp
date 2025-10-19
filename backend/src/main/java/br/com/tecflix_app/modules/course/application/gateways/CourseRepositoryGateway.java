@@ -14,6 +14,15 @@ public interface CourseRepositoryGateway {
 
   CustomPageResult<Course> findAll(int page, int size, String sortProperty, String direction);
 
+  CustomPageResult<Course> searchByTags(
+      Long[] tags, int page, int size, String sortProperty, String direction);
+
+  CustomPageResult<Course> searchByTerm(
+      String term, int page, int size, String sortProperty, String direction);
+
+  CustomPageResult<Course> searchByTagsAndTerm(
+      Long[] tags, String term, int page, int size, String sortProperty, String direction);
+
   List<Course> findProfileByUserId(UUID userId);
 
   void save(Course course);

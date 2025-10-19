@@ -50,10 +50,7 @@ public class CourseJpaRepositoryGateway implements CourseRepositoryGateway {
   @Override
   public CustomPageResult<Course> findAll(
       int page, int size, String sortProperty, String direction) {
-    Sort.Direction sortDirection =
-        "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
-
-    Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortProperty));
+    Pageable pageable = generatePageable(page, size, sortProperty, direction);
     Page<CourseEntity> courseEntityPage =
         courseRepository
             .findAllByDeletedFalseAndApprovedTrue(pageable)
@@ -71,8 +68,65 @@ public class CourseJpaRepositoryGateway implements CourseRepositoryGateway {
   }
 
   @Override
+  public CustomPageResult<Course> searchByTags(
+      Long[] tags, int page, int size, String sortProperty, String direction) {
+    Pageable pageable = generatePageable(page, size, sortProperty, direction);
+    Page<CourseEntity> courseEntityPage =
+        courseRepository.findByTagIds(tags, pageable).map(courseGatewaysMapper::map);
+    List<Course> content = courseEntityPage.stream().map(courseGatewaysMapper::map).toList();
+    return new CustomPageResult<>(
+        content,
+        courseEntityPage.getNumber(),
+        courseEntityPage.getSize(),
+        courseEntityPage.getTotalElements(),
+        courseEntityPage.getTotalPages(),
+        courseEntityPage.hasNext(),
+        courseEntityPage.hasPrevious());
+  }
+
+  @Override
+  public CustomPageResult<Course> searchByTerm(
+      String term, int page, int size, String sortProperty, String direction) {
+    Pageable pageable = generatePageable(page, size, sortProperty, direction);
+    Page<CourseEntity> courseEntityPage =
+        courseRepository.findByTerm(term, pageable).map(courseGatewaysMapper::map);
+    List<Course> content = courseEntityPage.stream().map(courseGatewaysMapper::map).toList();
+    return new CustomPageResult<>(
+        content,
+        courseEntityPage.getNumber(),
+        courseEntityPage.getSize(),
+        courseEntityPage.getTotalElements(),
+        courseEntityPage.getTotalPages(),
+        courseEntityPage.hasNext(),
+        courseEntityPage.hasPrevious());
+  }
+
+  @Override
+  public CustomPageResult<Course> searchByTagsAndTerm(
+      Long[] tags, String term, int page, int size, String sortProperty, String direction) {
+    Pageable pageable = generatePageable(page, size, sortProperty, direction);
+    Page<CourseEntity> courseEntityPage =
+        courseRepository.findByTagIdsAndTerm(tags, term, pageable).map(courseGatewaysMapper::map);
+    List<Course> content = courseEntityPage.stream().map(courseGatewaysMapper::map).toList();
+    return new CustomPageResult<>(
+        content,
+        courseEntityPage.getNumber(),
+        courseEntityPage.getSize(),
+        courseEntityPage.getTotalElements(),
+        courseEntityPage.getTotalPages(),
+        courseEntityPage.hasNext(),
+        courseEntityPage.hasPrevious());
+  }
+
+  @Override
   public void save(Course course) {
     CourseEntity courseEntity = courseGatewaysMapper.map(course);
     courseRepository.save(courseEntity);
+  }
+
+  private Pageable generatePageable(int page, int size, String sortProperty, String direction) {
+    Sort.Direction sortDirection =
+        "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
+    return PageRequest.of(page, size, Sort.by(sortDirection, sortProperty));
   }
 }

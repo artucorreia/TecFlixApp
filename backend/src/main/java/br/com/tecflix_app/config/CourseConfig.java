@@ -35,6 +35,13 @@ public class CourseConfig {
   }
 
   @Bean
+  public FindCoursesBySearchUseCase findCoursesBySearchUseCase(
+      CourseRepositoryGateway courseRepositoryGateway,
+      FindAllCoursesUseCase findAllCoursesUseCase) {
+    return new FindCoursesBySearchUseCaseImpl(courseRepositoryGateway, findAllCoursesUseCase);
+  }
+
+  @Bean
   public CreateCourseUseCase createCourseUseCase(
       CourseRepositoryGateway courseRepositoryGateway,
       AuthenticatedUserGateway authenticatedUserGateway,

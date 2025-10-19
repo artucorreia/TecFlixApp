@@ -8,6 +8,7 @@ import br.com.tecflix_app.modules.course.application.domain.entity.Course;
 import br.com.tecflix_app.modules.course.application.usecases.CreateCourseUseCase;
 import br.com.tecflix_app.modules.course.application.usecases.FindAllCoursesUseCase;
 import br.com.tecflix_app.modules.course.application.usecases.FindCourseDetailsByIdUseCase;
+import br.com.tecflix_app.modules.course.application.usecases.FindCoursesBySearchUseCase;
 import br.com.tecflix_app.modules.course.infra.presentation.constant.CourseConstant;
 import br.com.tecflix_app.modules.course.infra.presentation.mapper.CoursePresentationMapper;
 import br.com.tecflix_app.modules.courseClass.application.domain.entity.Class;
@@ -70,6 +71,7 @@ public class CourseController {
   // usecases
   private final FindCourseDetailsByIdUseCase findCourseDetailsByIdUseCase;
   private final FindAllCoursesUseCase findAllCoursesUseCase;
+  private final FindCoursesBySearchUseCase findCoursesBySearchUseCase;
   private final CreateCourseUseCase createCourseUseCase;
   private final FindModulesByCourseIdUseCase findModulesByCourseIdUseCase;
   private final FindClassesByModuleIdUseCase findClassesByModuleIdUseCase;
@@ -179,14 +181,13 @@ public class CourseController {
             content =
                 @Content(
                     mediaType = "application/json",
-                    array =
-                        @ArraySchema(schema = @Schema(implementation = CourseProjection.class)))),
+                    array = @ArraySchema(schema = @Schema(implementation = ResponseDTO.class)))),
         @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
         @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
         @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
       })
-  public ResponseEntity<CustomPagedResponse<CourseResponseDTO>> search(
+  public ResponseEntity<ResponseDTO<CustomPageResponseDTO<CourseResponseDTO>>> search(
       @RequestParam(name = "tags", required = false) Long[] tags,
       @RequestParam(name = "term", required = false) String term,
       @RequestParam(name = "page", defaultValue = "0") Integer page,
@@ -194,13 +195,23 @@ public class CourseController {
       @RequestParam(name = "direction", defaultValue = "averageScore,asc") String direction) {
 
     String[] sortOptions = direction.split(",");
-    Direction sortDirection =
-        "desc".equalsIgnoreCase(sortOptions[1]) ? Sort.Direction.DESC : Sort.Direction.ASC;
-    Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortOptions[0]));
-
-    if (tags != null || term != null)
-      return ResponseEntity.ok(service.findByFilter(tags, term, pageable));
-    return ResponseEntity.ok(service.findAll(pageable));
+    CustomPageResult<Course> courseCustomPageResult =
+        findCoursesBySearchUseCase.execute(tags, term, page, size, sortOptions[0], sortOptions[1]);
+    List<CourseResponseDTO> content =
+        courseCustomPageResult.getContent().stream().map(coursePresentationMapper::map).toList();
+    CustomPageResponseDTO<CourseResponseDTO> courseResponseDTOCustomPageResponseDTO =
+        new CustomPageResponseDTO<>(
+            content,
+            courseCustomPageResult.getPageNumber(),
+            courseCustomPageResult.getPageSize(),
+            courseCustomPageResult.getTotalElements(),
+            courseCustomPageResult.getTotalPages(),
+            courseCustomPageResult.isHasNext(),
+            courseCustomPageResult.isHasPrevious());
+    ResponseDTO<CustomPageResponseDTO<CourseResponseDTO>> response =
+        new ResponseDTO<>(
+            true, null, CourseConstant.CODE_200, courseResponseDTOCustomPageResponseDTO);
+    return ResponseEntity.ok(response);
   }
 
   @PostMapping(
