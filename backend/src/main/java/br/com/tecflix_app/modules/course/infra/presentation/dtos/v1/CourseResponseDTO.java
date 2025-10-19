@@ -23,10 +23,10 @@ import lombok.Setter;
 public class CourseResponseDTO extends RepresentationModel<CourseResponseDTO> {
   private UUID id;
   private String title;
+  private String capeImageUrl;
   private String description;
-  private String capeImage;
-  private Boolean active;
   private LocalDateTime createdAt;
+  private LocalDateTime updatedAt;
   private Long totalScore;
   private Long totalReviews;
   private Double averageScore;
