@@ -28,6 +28,7 @@ public interface CourseRepository extends JpaRepository<CourseEntity, UUID> {
                     c.title as title,
                     c.capeImageUrl as capeImageUrl,
                     c.createdAt as createdAt,
+                    c.updatedAt as updatedAt,
                     c.totalScore as totalScore,
                     c.totalReviews as totalReviews,
                     c.averageScore as averageScore,
@@ -39,6 +40,10 @@ public interface CourseRepository extends JpaRepository<CourseEntity, UUID> {
                 JOIN
                     c.professor p
                 WHERE
+                    c.approved = true
+                AND
+                    c.deleted = false
+                AND
                     t.id IN :tagIds
             """)
   Page<CourseProjection> findByTagIds(Long[] tagIds, Pageable pageable);
@@ -50,6 +55,10 @@ public interface CourseRepository extends JpaRepository<CourseEntity, UUID> {
                 FROM
                     CourseEntity c
                 WHERE
+                    c.approved = true
+                AND
+                    c.deleted = false
+                AND
                     UPPER(CONCAT(c.title, c.description))
                 LIKE
                     UPPER(CONCAT('%', :term, '%'))
@@ -58,13 +67,17 @@ public interface CourseRepository extends JpaRepository<CourseEntity, UUID> {
 
   @Query(
       """
-                SELECT
+                SELECT DISTINCT
                     c
                 FROM
                     CourseEntity c
                 JOIN
                     c.tags t
                 WHERE
+                    c.approved = true
+                AND
+                    c.deleted = false
+                AND
                     t.id IN :tagIds
                 AND
                     UPPER(CONCAT(c.title, c.description))
