@@ -1,17 +1,24 @@
 package br.com.tecflix_app.modules.review.infra.persistence.projections;
 
-import br.com.tecflix_app.modules.user.infra.persistence.projections.UserBasicProjection;
-
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public interface ReviewProjection {
   Long getId();
 
-  Double getScore();
+  UserProjection getUser();
+
+  Integer getScore();
 
   String getComment();
 
   LocalDateTime getCreatedAt();
 
-  UserBasicProjection getUser();
+  LocalDateTime getUpdatedAt();
+
+  interface UserProjection {
+    UUID getId();
+
+    String getName();
+  }
 }

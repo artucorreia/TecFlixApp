@@ -19,16 +19,16 @@ import br.com.tecflix_app.modules.module.application.domain.entity.Module;
 import br.com.tecflix_app.modules.module.application.usecases.FindModulesByCourseIdUseCase;
 import br.com.tecflix_app.modules.module.infra.presentation.dtos.v1.ModuleResponseDTO;
 import br.com.tecflix_app.modules.module.infra.presentation.mapper.ModulePresentationMapper;
+import br.com.tecflix_app.modules.review.application.domain.entity.Review;
+import br.com.tecflix_app.modules.review.application.usecases.FindReviewsByCourseIdUseCase;
+import br.com.tecflix_app.modules.review.infra.presentation.dtos.v1.ReviewResponseDTO;
+import br.com.tecflix_app.modules.review.infra.presentation.mapper.ReviewPresentationMapper;
 import br.com.tecflix_app.modules.shared.application.domain.entity.CustomPageResult;
 import br.com.tecflix_app.modules.shared.dto.v1.CustomPageResponseDTO;
 import br.com.tecflix_app.modules.shared.dto.v1.ResponseDTO;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -41,13 +41,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.tecflix_app.modules.course.infra.presentation.dtos.v1.CreateCourseDTO;
-import br.com.tecflix_app.modules.review.infra.dtos.v1.CreateReviewDTO;
+import br.com.tecflix_app.modules.review.infra.presentation.dtos.v1.CreateReviewDTO;
 import br.com.tecflix_app.modules.course.infra.presentation.dtos.v1.CourseResponseDTO;
-import br.com.tecflix_app.modules.shared.dto.v1.CustomPagedResponse;
 import br.com.tecflix_app.modules.shared.dto.v1.GenericResponseDTO;
-import br.com.tecflix_app.modules.review.infra.dtos.v1.ReviewDTO;
-import br.com.tecflix_app.modules.course.infra.persistence.projections.CourseDetailsProjection;
-import br.com.tecflix_app.modules.course.infra.persistence.projections.CourseProjection;
 import br.com.tecflix_app.modules.review.infra.persistence.projections.ReviewProjection;
 import br.com.tecflix_app.service.CourseService;
 import br.com.tecflix_app.service.ReviewService;
@@ -75,6 +71,7 @@ public class CourseController {
   private final CreateCourseUseCase createCourseUseCase;
   private final FindModulesByCourseIdUseCase findModulesByCourseIdUseCase;
   private final FindClassesByModuleIdUseCase findClassesByModuleIdUseCase;
+  private final FindReviewsByCourseIdUseCase findReviewsByCourseIdUseCase;
 
   // services
   private final CourseService service;
@@ -84,6 +81,7 @@ public class CourseController {
   private final CoursePresentationMapper coursePresentationMapper;
   private final ModulePresentationMapper modulePresentationMapper;
   private final ClassPresentationMapper classPresentationMapper;
+  private final ReviewPresentationMapper reviewPresentationMapper;
 
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   @Operation(
@@ -275,15 +273,21 @@ public class CourseController {
                 @Content(
                     mediaType = "application/json",
                     array =
-                        @ArraySchema(schema = @Schema(implementation = ReviewProjection.class)))),
+                        @ArraySchema(schema = @Schema(implementation = ResponseDTO.class)))),
         @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
         @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
         @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
         @ApiResponse(responseCode = "404", description = "Course Not Found", content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
       })
-  public ResponseEntity<List<ReviewDTO>> findByCourseId(@PathVariable UUID id) {
-    return ResponseEntity.ok(reviewService.findByCourseId(id));
+  public ResponseEntity<ResponseDTO<List<ReviewResponseDTO>>> findByCourseId(@PathVariable UUID id) {
+    List<Review> reviews = findReviewsByCourseIdUseCase.execute(id);
+    List<ReviewResponseDTO> reviewResponseDTOS =
+        reviews.stream().map(reviewPresentationMapper::toResponseDTO).toList();
+
+    ResponseDTO<List<ReviewResponseDTO>> response =
+        new ResponseDTO<>(true, null, CourseConstant.CODE_200, reviewResponseDTOS);
+    return ResponseEntity.ok(response);
   }
 
   @PostMapping(

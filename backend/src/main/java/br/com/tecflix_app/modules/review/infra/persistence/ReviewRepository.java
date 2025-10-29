@@ -12,8 +12,7 @@ import br.com.tecflix_app.modules.review.infra.persistence.projections.ReviewPro
 
 @Repository
 public interface ReviewRepository extends JpaRepository<ReviewEntity, Long> {
-  @Query("SELECT r.id FROM ReviewEntity r WHERE r.course.id = :courseId")
-  List<ReviewProjection> findByCourseEntityId(UUID courseId);
+  List<ReviewProjection> findByCourseIdAndDeletedFalse(UUID courseId);
 
   @Query("SELECT r.id FROM ReviewEntity r WHERE r.course.id = :courseId AND r.user.id = :userId")
   Optional<Long> findIdByCourseIdAndUserId(UUID courseId, UUID userId);
