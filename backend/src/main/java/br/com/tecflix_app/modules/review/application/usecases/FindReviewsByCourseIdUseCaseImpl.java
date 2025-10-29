@@ -22,7 +22,7 @@ public class FindReviewsByCourseIdUseCaseImpl implements FindReviewsByCourseIdUs
 
   @Override
   public List<Review> execute(UUID courseId) {
-    LOGGER.info("Finding reviews by course id: " + courseId.toString());
+    LOGGER.info("Finding reviews by course id: " + courseId);
     Course course =findCourseByIdUseCase.execute(courseId);
     if (course.getDeleted()) throw new ActionNotAllowedException("Não é possível resgatar avaliações de cursos não ativos");
     if (!course.getApproved()) throw new ActionNotAllowedException("Não é possível resgatar avaliações de cursos não aprovados");
