@@ -61,16 +61,16 @@ public class ReviewService {
         authenticatedUserGateway
             .findId()
             .orElseThrow(() -> new ResourceNotFoundException("Erro ao resgatar usuário logado"));
-    Optional<Long> entityId = repository.findIdByCourseIdAndUserId(courseId, userId);
+    Optional<ReviewEntity> entityId = repository.findByCourseIdAndUserIdAndDeletedFalse(courseId, userId);
     if (entityId.isPresent()) throw new ActionNotAllowedException("Você já avaliou este curso");
 
     UserDTO user = new UserDTO();
     user.setId(userId);
-    data.setUser(user);
+//    data.setUser(user);
 
     CourseResponseDTO course = new CourseResponseDTO();
     course.setId(courseId);
-    data.setCourse(course);
+//    data.setCourse(course);
 
     ReviewEntity entity = mapper.map(data, ReviewEntity.class);
 

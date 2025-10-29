@@ -17,6 +17,8 @@ public interface ReviewGatewaysMapper {
   })
   ReviewEntity toEntity(ReviewProjection reviewProjection);
 
+  ReviewEntity toEntity(Review review);
+
   UserEntity userProjectionToUserEntity(ReviewProjection.UserProjection userProjection);
 
   Review toDomain(ReviewEntity reviewEntity);

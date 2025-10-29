@@ -20,6 +20,7 @@ import br.com.tecflix_app.modules.module.application.usecases.FindModulesByCours
 import br.com.tecflix_app.modules.module.infra.presentation.dtos.v1.ModuleResponseDTO;
 import br.com.tecflix_app.modules.module.infra.presentation.mapper.ModulePresentationMapper;
 import br.com.tecflix_app.modules.review.application.domain.entity.Review;
+import br.com.tecflix_app.modules.review.application.usecases.CreateReviewUseCase;
 import br.com.tecflix_app.modules.review.application.usecases.FindReviewsByCourseIdUseCase;
 import br.com.tecflix_app.modules.review.infra.presentation.dtos.v1.ReviewResponseDTO;
 import br.com.tecflix_app.modules.review.infra.presentation.mapper.ReviewPresentationMapper;
@@ -72,6 +73,7 @@ public class CourseController {
   private final FindModulesByCourseIdUseCase findModulesByCourseIdUseCase;
   private final FindClassesByModuleIdUseCase findClassesByModuleIdUseCase;
   private final FindReviewsByCourseIdUseCase findReviewsByCourseIdUseCase;
+  private final CreateReviewUseCase createReviewUseCase;
 
   // services
   private final CourseService service;
@@ -272,15 +274,15 @@ public class CourseController {
             content =
                 @Content(
                     mediaType = "application/json",
-                    array =
-                        @ArraySchema(schema = @Schema(implementation = ResponseDTO.class)))),
+                    array = @ArraySchema(schema = @Schema(implementation = ResponseDTO.class)))),
         @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
         @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
         @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
         @ApiResponse(responseCode = "404", description = "Course Not Found", content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
       })
-  public ResponseEntity<ResponseDTO<List<ReviewResponseDTO>>> findByCourseId(@PathVariable UUID id) {
+  public ResponseEntity<ResponseDTO<List<ReviewResponseDTO>>> findByCourseId(
+      @PathVariable UUID id) {
     List<Review> reviews = findReviewsByCourseIdUseCase.execute(id);
     List<ReviewResponseDTO> reviewResponseDTOS =
         reviews.stream().map(reviewPresentationMapper::toResponseDTO).toList();
@@ -308,7 +310,7 @@ public class CourseController {
                           @ExampleObject(
                               value =
                                   """
-                                        { "score": "integer", "comment": "string" }
+                                        { "score": 5, "comment": "Amazing!" }
                                         """))))
   @ApiResponses(
       value = {
@@ -322,11 +324,15 @@ public class CourseController {
         @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
         @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
         @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
-        @ApiResponse(responseCode = "404", description = "Course Not Found", content = @Content),
+        @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
       })
-  public ResponseEntity<GenericResponseDTO<Long>> create(
-      @PathVariable UUID id, @Valid @RequestBody CreateReviewDTO data) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(reviewService.create(id, data));
+  public ResponseEntity<ResponseDTO<Object>> create(
+      @PathVariable UUID id, @Valid @RequestBody CreateReviewDTO createReviewDTO) {
+    Review review = reviewPresentationMapper.toDomain(createReviewDTO);
+    createReviewUseCase.execute(id, review);
+    ResponseDTO<Object> response =
+        new ResponseDTO<>(true, CourseConstant.MESSAGE_201, CourseConstant.CODE_201, null);
+    return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 }
