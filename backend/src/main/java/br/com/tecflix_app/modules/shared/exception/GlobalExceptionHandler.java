@@ -1,8 +1,8 @@
 package br.com.tecflix_app.modules.shared.exception;
 
-import br.com.tecflix_app.modules.auth.domain.exception.InvalidApiKeyException;
-import br.com.tecflix_app.modules.auth.domain.exception.InvalidTokenException;
-import br.com.tecflix_app.modules.auth.domain.exception.JwtCreationTokenException;
+import br.com.tecflix_app.modules.auth.application.domain.exception.InvalidApiKeyException;
+import br.com.tecflix_app.modules.auth.application.domain.exception.InvalidTokenException;
+import br.com.tecflix_app.modules.auth.application.domain.exception.JwtCreationTokenException;
 import br.com.tecflix_app.modules.shared.exception.auth.*;
 import br.com.tecflix_app.modules.shared.exception.email.EmailSendingException;
 import br.com.tecflix_app.modules.shared.exception.general.*;

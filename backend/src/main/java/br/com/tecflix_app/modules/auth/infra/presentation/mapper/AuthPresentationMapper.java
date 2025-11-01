@@ -1,6 +1,8 @@
 package br.com.tecflix_app.modules.auth.infra.presentation.mapper;
 
+import br.com.tecflix_app.modules.auth.application.domain.entity.TokenJwt;
 import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.RegisterDTO;
+import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.TokenResponseDTO;
 import br.com.tecflix_app.modules.user.application.domain.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -15,4 +17,7 @@ public interface AuthPresentationMapper {
         @Mapping(target = "createdAt", ignore = true),
       })
   User map(RegisterDTO user);
+
+
+  TokenResponseDTO map(TokenJwt tokenJwt);
 }

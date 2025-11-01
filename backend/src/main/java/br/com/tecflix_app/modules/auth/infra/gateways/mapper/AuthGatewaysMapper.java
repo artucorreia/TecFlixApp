@@ -1,4 +1,4 @@
-package br.com.tecflix_app.modules.auth.infra.gateways;
+package br.com.tecflix_app.modules.auth.infra.gateways.mapper;
 
 import br.com.tecflix_app.modules.user.application.domain.entity.User;
 import br.com.tecflix_app.modules.user.infra.persistence.UserEntity;

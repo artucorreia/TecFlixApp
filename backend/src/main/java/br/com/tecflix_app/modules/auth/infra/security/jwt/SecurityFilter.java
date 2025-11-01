@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import br.com.tecflix_app.modules.auth.infra.gateways.TokenAuth0Gateway;
 import br.com.tecflix_app.modules.shared.exception.ExceptionResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.springframework.beans.factory.annotation.Autowired;
+import br.com.tecflix_app.modules.user.application.domain.entity.User;
+import br.com.tecflix_app.modules.user.application.usecases.FindUserByIdUseCase;
+import br.com.tecflix_app.modules.user.infra.gateways.mapper.UserGatewaysMapper;
+import br.com.tecflix_app.modules.user.infra.persistence.UserEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,27 +18,18 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import br.com.tecflix_app.modules.shared.exception.auth.InactiveUserException;
-import br.com.tecflix_app.modules.auth.domain.exception.InvalidTokenException;
-import br.com.tecflix_app.service.UserService;
+import br.com.tecflix_app.modules.auth.application.domain.exception.InvalidTokenException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Component
+@RequiredArgsConstructor
 public class SecurityFilter extends OncePerRequestFilter {
-  private final TokenService tokenService;
-  private final UserService userService;
-  private final ObjectMapper objectMapper =
-      new ObjectMapper()
-          .registerModule(new JavaTimeModule())
-          .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-
-  @Autowired
-  public SecurityFilter(TokenService tokenService, UserService userService) {
-    this.tokenService = tokenService;
-    this.userService = userService;
-  }
+  private final FindUserByIdUseCase findUserByIdUseCase;
+  private final TokenAuth0Gateway tokenAuth0Gateway;
+  private final UserGatewaysMapper userGatewaysMapper;
 
   @SuppressWarnings("null")
   @Override
@@ -47,16 +40,15 @@ public class SecurityFilter extends OncePerRequestFilter {
       String token = recoverToken(request);
 
       if (token != null) {
-        UUID userId = tokenService.validateToken(token);
+        UUID userId = tokenAuth0Gateway.validate(token);
         if (userId == null) throw new InvalidTokenException("Token inválido ou expirado");
 
-        String userEmail = userService.findEmailById(userId);
+        User user = findUserByIdUseCase.execute(userId);
+        if (!user.getEmailVerified()) throw new InactiveUserException("O usuário ainda não verificou seu email");
+        if (user.getDeleted()) throw new InactiveUserException("O usuário está inativo");
 
-        if (!userService.findActiveByEmail(userEmail))
-          throw new InactiveUserException("O usuário está inativo");
-
-        CustomUserDetails customUserDetails =
-            new CustomUserDetails(userService.findUserDetailsByEmail(userEmail));
+        UserEntity userEntity = userGatewaysMapper.map(user);
+        CustomUserDetails customUserDetails = new CustomUserDetails(userEntity);
 
         UsernamePasswordAuthenticationToken authentication =
             new UsernamePasswordAuthenticationToken(
@@ -65,7 +57,7 @@ public class SecurityFilter extends OncePerRequestFilter {
       }
 
       filterChain.doFilter(request, response);
-    } catch (InvalidTokenException ex) {
+    } catch (InvalidTokenException | InactiveUserException ex) {
       handleException(request, response, ex);
     }
   }
@@ -77,7 +69,7 @@ public class SecurityFilter extends OncePerRequestFilter {
   }
 
   private void handleException(
-      HttpServletRequest request, HttpServletResponse response, InvalidTokenException ex)
+      HttpServletRequest request, HttpServletResponse response, RuntimeException ex)
       throws IOException {
     response.setStatus(HttpStatus.FORBIDDEN.value());
     response.setContentType("application/json; charset=UTF-8");
@@ -91,7 +83,23 @@ public class SecurityFilter extends OncePerRequestFilter {
             .code(HttpStatus.FORBIDDEN.value())
             .timestamp(LocalDateTime.now())
             .build();
-    String json = objectMapper.writeValueAsString(exceptionResponse);
-    response.getWriter().write(json);
+    response
+        .getWriter()
+        .write(
+            """
+            {
+                "success": %s,
+                "message": "%s",
+                "uri": "%s",
+                "code": %d,
+                "timestamp": "%s"
+            }
+            """
+                .formatted(
+                    exceptionResponse.getSuccess(),
+                    exceptionResponse.getMessage(),
+                    exceptionResponse.getUri(),
+                    exceptionResponse.getCode(),
+                    exceptionResponse.getTimestamp()));
   }
 }

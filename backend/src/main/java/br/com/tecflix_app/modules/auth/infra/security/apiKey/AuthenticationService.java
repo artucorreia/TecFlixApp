@@ -5,7 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Service;
 
-import br.com.tecflix_app.modules.auth.domain.exception.InvalidApiKeyException;
+import br.com.tecflix_app.modules.auth.application.domain.exception.InvalidApiKeyException;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Service

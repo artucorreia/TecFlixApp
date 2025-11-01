@@ -1,5 +1,7 @@
 package br.com.tecflix_app.modules.auth.infra.presentation;
 
+import br.com.tecflix_app.modules.auth.application.domain.entity.TokenJwt;
+import br.com.tecflix_app.modules.auth.application.gateways.TokenGateway;
 import br.com.tecflix_app.modules.auth.infra.presentation.constant.AuthConstant;
 import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.AuthenticationDTO;
 import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.NewPasswordDTO;
@@ -51,13 +53,16 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
   // usecases
   private final FindUserByEmailUseCase findUserByEmailUseCase;
+  private final TokenGateway tokenGateway;
 
+  // services
   private final UserService userService;
   private final EmailCodeService emailCodeService;
   private final AuthenticationManager authenticationManager;
   private final TokenService tokenService;
   private final RefreshTokenService refreshTokenService;
 
+  // mappers
   private final RegisterUserUseCase registerUserUseCase;
   private final AuthPresentationMapper authPresentationMapper;
 
@@ -89,31 +94,37 @@ public class AuthController {
             content =
                 @Content(
                     mediaType = "application/json",
-                    schema = @Schema(implementation = TokenResponseDTO.class))),
+                    schema = @Schema(implementation = ResponseDTO.class))),
         @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
         @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
         @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
         @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
       })
-  public ResponseEntity<TokenResponseDTO> login(@Valid @RequestBody AuthenticationDTO data) {
+  public ResponseEntity<ResponseDTO<TokenResponseDTO>> login(
+      @Valid @RequestBody AuthenticationDTO authenticationDTO) {
     User user = findUserByEmailUseCase.execute(authenticationDTO.getEmail().trim());
     if (!user.getEmailVerified()) throw new InactiveUserException("O usuário ainda não verificou seu email");
     if (user.getDeleted()) throw new InactiveUserException("O usuário está inativo");
 
     UsernamePasswordAuthenticationToken usernamePassword =
-        new UsernamePasswordAuthenticationToken(data.getEmail(), data.getPassword());
+        new UsernamePasswordAuthenticationToken(
+            authenticationDTO.getEmail().trim(), authenticationDTO.getPassword());
 
-    TokenResponseDTO token;
+    TokenJwt token;
     try {
       Authentication auth = authenticationManager.authenticate(usernamePassword);
       CustomUserDetails customUserDetails = (CustomUserDetails) auth.getPrincipal();
-      token = tokenService.generateToken(customUserDetails.getUser().getId());
+      token = tokenGateway.generate(customUserDetails.getUser().getId());
     } catch (AuthenticationException e) {
       throw new WrongPasswordException("Senha incorreta");
     }
+    String refreshToken = refreshTokenService.create(user.getId()).getToken();
+    token.setRefreshToken(refreshToken);
 
-    return ResponseEntity.ok(token);
+    TokenResponseDTO tokenResponseDTO = authPresentationMapper.map(token);
+    ResponseDTO<TokenResponseDTO> response = new ResponseDTO<>(true, null, AuthConstant.CODE_200, tokenResponseDTO);
+    return ResponseEntity.ok(response);
   }
 
   @PostMapping(

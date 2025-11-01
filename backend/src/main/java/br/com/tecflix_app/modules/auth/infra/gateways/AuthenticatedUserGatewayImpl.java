@@ -1,8 +1,8 @@
 package br.com.tecflix_app.modules.auth.infra.gateways;
 
 import br.com.tecflix_app.modules.auth.application.gateways.AuthenticatedUserGateway;
+import br.com.tecflix_app.modules.auth.infra.gateways.mapper.AuthGatewaysMapper;
 import br.com.tecflix_app.modules.user.application.domain.entity.User;
-import br.com.tecflix_app.modules.user.infra.gateways.mapper.UserGatewaysMapper;
 import br.com.tecflix_app.modules.user.infra.persistence.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;

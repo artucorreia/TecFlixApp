@@ -16,7 +16,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 
 import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.TokenResponseDTO;
-import br.com.tecflix_app.modules.auth.domain.exception.JwtCreationTokenException;
+import br.com.tecflix_app.modules.auth.application.domain.exception.JwtCreationTokenException;
 
 @Service
 @RequiredArgsConstructor

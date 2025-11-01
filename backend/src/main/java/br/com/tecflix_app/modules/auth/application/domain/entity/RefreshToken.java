@@ -1,4 +1,4 @@
-package br.com.tecflix_app.modules.auth.domain.entity;
+package br.com.tecflix_app.modules.auth.application.domain.entity;
 
 import br.com.tecflix_app.modules.shared.application.domain.entity.BaseDomainEntity;
 import br.com.tecflix_app.modules.user.application.domain.entity.User;

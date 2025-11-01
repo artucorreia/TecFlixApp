@@ -1,4 +1,4 @@
-package br.com.tecflix_app.modules.auth.domain.exception;
+package br.com.tecflix_app.modules.auth.application.domain.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
