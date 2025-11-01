@@ -106,10 +106,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             .success(false)
             .message(exception.getMessage())
             .uri(request.getDescription(false))
-            .code(HttpStatus.FORBIDDEN.value())
+            .code(HttpStatus.UNAUTHORIZED.value())
             .timestamp(LocalDateTime.now())
             .build();
-    return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+    return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
   }
 
   @ExceptionHandler(InaccessibleResource.class)
