@@ -45,9 +45,6 @@ import br.com.tecflix_app.modules.course.infra.presentation.dtos.v1.CreateCourse
 import br.com.tecflix_app.modules.review.infra.presentation.dtos.v1.CreateReviewDTO;
 import br.com.tecflix_app.modules.course.infra.presentation.dtos.v1.CourseResponseDTO;
 import br.com.tecflix_app.modules.shared.dto.v1.GenericResponseDTO;
-import br.com.tecflix_app.modules.review.infra.persistence.projections.ReviewProjection;
-import br.com.tecflix_app.service.CourseService;
-import br.com.tecflix_app.service.ReviewService;
 import jakarta.validation.Valid;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -74,10 +71,6 @@ public class CourseController {
   private final FindClassesByModuleIdUseCase findClassesByModuleIdUseCase;
   private final FindReviewsByCourseIdUseCase findReviewsByCourseIdUseCase;
   private final CreateReviewUseCase createReviewUseCase;
-
-  // services
-  private final CourseService service;
-  private final ReviewService reviewService;
 
   // mappers
   private final CoursePresentationMapper coursePresentationMapper;
