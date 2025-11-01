@@ -34,8 +34,10 @@ import jakarta.validation.Valid;
 @Tag(name = "Class", description = "Endpoints to manager classes")
 @RequiredArgsConstructor
 public class ClassController {
-
+  // usecases
   private final CreateClassUseCase createClassUseCase;
+
+  // mappers
   private final ClassPresentationMapper classPresentationMapper;
 
   @PostMapping(

@@ -33,8 +33,11 @@ import org.springframework.web.bind.annotation.RestController;
 @io.swagger.v3.oas.annotations.tags.Tag(name = "Tag", description = "Endpoints to manager tags")
 @RequiredArgsConstructor
 public class TagController {
+  // usecases
   private final FindTagByIdUseCase findTagByIdUseCase;
   private final FindAllTagsUseCase findAllTagsUseCase;
+
+  // mappers
   private final TagPresentationMapper tagPresentationMapper;
 
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

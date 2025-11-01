@@ -33,7 +33,10 @@ import jakarta.validation.Valid;
 @Tag(name = "Module", description = "Endpoints to manager modules")
 @RequiredArgsConstructor
 public class ModuleController {
+  // usecases
   private final CreateModuleUseCase createModuleUseCase;
+
+  // mappers
   private final ModulePresentationMapper modulePresentationMapper;
 
   @PostMapping(

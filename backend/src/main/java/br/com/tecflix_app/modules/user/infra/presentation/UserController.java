@@ -61,6 +61,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "User", description = "Endpoints to manager users")
 @RequiredArgsConstructor
 public class UserController {
+  // usecases
   private final FindMeUseCase findMeUseCase;
   private final FindAuthenticatedUserProfessorDataByUserIdUseCase
       findAuthenticatedUserProfessorDataByUserIdUseCase;
@@ -70,6 +71,8 @@ public class UserController {
   private final FindSocialsProfileByUserIdUseCase findSocialsProfileByUserIdUseCase;
   private final FindCoursesProfileByUserIdUseCase findCoursesProfileByUserIdUseCase;
   private final CreateProfessorUseCase createProfessorUseCase;
+
+  // mappers
   private final UserPresentationMapper userPresentationMapper;
   private final SocialPresentationMapper socialPresentationMapper;
   private final ProfessorDataPresentationMapper professorDataPresentationMapper;
