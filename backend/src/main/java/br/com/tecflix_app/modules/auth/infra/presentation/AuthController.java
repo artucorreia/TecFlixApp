@@ -13,6 +13,7 @@ import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.RefreshTokenDT
 import br.com.tecflix_app.modules.shared.dto.v1.ResponseDTO;
 import br.com.tecflix_app.modules.shared.exception.auth.WrongPasswordException;
 import br.com.tecflix_app.modules.user.application.domain.entity.User;
+import br.com.tecflix_app.modules.user.application.usecases.FindUserByEmailUseCase;
 import br.com.tecflix_app.modules.user.application.usecases.RegisterUserUseCase;
 import br.com.tecflix_app.service.EmailCodeService;
 import br.com.tecflix_app.service.UserService;
@@ -48,6 +49,8 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "Authentication", description = "Endpoints for registration and login to the system")
 @RequiredArgsConstructor
 public class AuthController {
+  // usecases
+  private final FindUserByEmailUseCase findUserByEmailUseCase;
 
   private final UserService userService;
   private final EmailCodeService emailCodeService;
@@ -94,8 +97,9 @@ public class AuthController {
         @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
       })
   public ResponseEntity<TokenResponseDTO> login(@Valid @RequestBody AuthenticationDTO data) {
-    if (!userService.findActiveByEmail(data.getEmail()))
-      throw new InactiveUserException("O usuário está inativo");
+    User user = findUserByEmailUseCase.execute(authenticationDTO.getEmail().trim());
+    if (!user.getEmailVerified()) throw new InactiveUserException("O usuário ainda não verificou seu email");
+    if (user.getDeleted()) throw new InactiveUserException("O usuário está inativo");
 
     UsernamePasswordAuthenticationToken usernamePassword =
         new UsernamePasswordAuthenticationToken(data.getEmail(), data.getPassword());

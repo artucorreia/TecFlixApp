@@ -27,6 +27,12 @@ public class UserConfig {
   }
 
   @Bean
+  public FindUserByEmailUseCase findUserByEmailUseCase(
+      UserRepositoryGateway userRepositoryGateway) {
+    return new FindUserByEmailUseCaseImpl(userRepositoryGateway);
+  }
+
+  @Bean
   public RegisterUserUseCase registerUserUseCase(
       UserRepositoryGateway userRepositoryGateway,
       CreateAccountValidationCodeUseCase createAccountValidationCodeUseCase,
