@@ -59,7 +59,6 @@ public class AuthController {
   private final ResolveRefreshTokenUseCase resolveRefreshTokenUseCase;
   private final TokenGateway tokenGateway;
 
-
   // services
   private final UserService userService;
   private final EmailCodeService emailCodeService;
@@ -109,7 +108,8 @@ public class AuthController {
   public ResponseEntity<ResponseDTO<TokenResponseDTO>> login(
       @Valid @RequestBody AuthenticationDTO authenticationDTO) {
     User user = findUserByEmailUseCase.execute(authenticationDTO.getEmail().trim());
-    if (!user.getEmailVerified()) throw new InactiveUserException("O usuário ainda não verificou seu email");
+    if (!user.getEmailVerified())
+      throw new InactiveUserException("O usuário ainda não verificou seu email");
     if (user.getDeleted()) throw new InactiveUserException("O usuário está inativo");
 
     UsernamePasswordAuthenticationToken usernamePassword =
@@ -128,7 +128,8 @@ public class AuthController {
     token.setRefreshToken(refreshToken);
 
     TokenResponseDTO tokenResponseDTO = authPresentationMapper.map(token);
-    ResponseDTO<TokenResponseDTO> response = new ResponseDTO<>(true, null, AuthConstant.CODE_200, tokenResponseDTO);
+    ResponseDTO<TokenResponseDTO> response =
+        new ResponseDTO<>(true, null, AuthConstant.CODE_200, tokenResponseDTO);
     return ResponseEntity.ok(response);
   }
 
