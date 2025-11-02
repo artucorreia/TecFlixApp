@@ -3,6 +3,7 @@ package br.com.tecflix_app.modules.auth.infra.presentation;
 import br.com.tecflix_app.modules.auth.application.domain.entity.TokenJwt;
 import br.com.tecflix_app.modules.auth.application.gateways.TokenGateway;
 import br.com.tecflix_app.modules.auth.application.usecases.CreateRefreshTokenUseCase;
+import br.com.tecflix_app.modules.auth.application.usecases.ResolveRefreshTokenUseCase;
 import br.com.tecflix_app.modules.auth.infra.presentation.constant.AuthConstant;
 import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.AuthenticationDTO;
 import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.NewPasswordDTO;
@@ -55,6 +56,7 @@ public class AuthController {
   // usecases
   private final FindUserByEmailUseCase findUserByEmailUseCase;
   private final CreateRefreshTokenUseCase createRefreshTokenUseCase;
+  private final ResolveRefreshTokenUseCase resolveRefreshTokenUseCase;
   private final TokenGateway tokenGateway;
 
 
@@ -148,7 +150,7 @@ public class AuthController {
                           @ExampleObject(
                               value =
                                   """
-                                        { "token": "string" }
+                                        { "token": "faa637aa-7520-477c-8212-d831f4baa3de" }
                                         """))))
   @ApiResponses(
       value = {
@@ -158,16 +160,25 @@ public class AuthController {
             content =
                 @Content(
                     mediaType = "application/json",
-                    schema = @Schema(implementation = TokenResponseDTO.class))),
+                    schema = @Schema(implementation = ResponseDTO.class))),
         @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
         @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
         @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
         @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
       })
-  public ResponseEntity<TokenResponseDTO> refreshToken(@Valid @RequestBody RefreshTokenDTO data) {
-    UUID userId = refreshTokenService.resolve(data.getToken());
-    return ResponseEntity.ok(tokenService.generateToken(userId));
+  public ResponseEntity<ResponseDTO<TokenResponseDTO>> refreshToken(
+      @Valid @RequestBody RefreshTokenDTO refreshTokenDTO) {
+    User user = resolveRefreshTokenUseCase.execute(refreshTokenDTO.getToken());
+
+    TokenJwt token = tokenGateway.generate(user.getId());
+    String refreshToken = createRefreshTokenUseCase.execute(user);
+    token.setRefreshToken(refreshToken);
+
+    TokenResponseDTO tokenResponseDTO = authPresentationMapper.map(token);
+    ResponseDTO<TokenResponseDTO> response =
+        new ResponseDTO<>(true, null, AuthConstant.CODE_200, tokenResponseDTO);
+    return ResponseEntity.ok(response);
   }
 
   @PostMapping(

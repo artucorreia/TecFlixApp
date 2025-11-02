@@ -4,6 +4,8 @@ import br.com.tecflix_app.config.provider.ConfigProvider;
 import br.com.tecflix_app.modules.auth.application.gateways.RefreshTokenRepositoryGateway;
 import br.com.tecflix_app.modules.auth.application.usecases.CreateRefreshTokenUseCase;
 import br.com.tecflix_app.modules.auth.application.usecases.CreateRefreshTokenUseCaseImpl;
+import br.com.tecflix_app.modules.auth.application.usecases.ResolveRefreshTokenUseCase;
+import br.com.tecflix_app.modules.auth.application.usecases.ResolveRefreshTokenUseCaseImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,5 +15,11 @@ public class RefreshTokenConfig {
   CreateRefreshTokenUseCase createRefreshTokenUseCase(
       RefreshTokenRepositoryGateway refreshTokenRepositoryGateway, ConfigProvider configProvider) {
     return new CreateRefreshTokenUseCaseImpl(refreshTokenRepositoryGateway, configProvider);
+  }
+
+  @Bean
+  ResolveRefreshTokenUseCase resolveRefreshTokenUseCase(
+      RefreshTokenRepositoryGateway refreshTokenRepositoryGateway) {
+    return new ResolveRefreshTokenUseCaseImpl(refreshTokenRepositoryGateway);
   }
 }
