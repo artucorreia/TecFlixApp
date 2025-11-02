@@ -63,8 +63,6 @@ public class AuthController {
   private final UserService userService;
   private final EmailCodeService emailCodeService;
   private final AuthenticationManager authenticationManager;
-  private final TokenService tokenService;
-  private final RefreshTokenService refreshTokenService;
 
   // mappers
   private final RegisterUserUseCase registerUserUseCase;
