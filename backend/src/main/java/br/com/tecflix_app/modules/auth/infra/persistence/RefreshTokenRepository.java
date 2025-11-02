@@ -13,6 +13,6 @@ public interface RefreshTokenRepository extends JpaRepository<RefreshTokenEntity
   Optional<RefreshTokenEntity> findByToken(String token);
 
   @Modifying
-  @Query(nativeQuery = true, value = "DELETE FROM refresh_tokens WHERE user_id = :userId")
+  @Query("DELETE FROM RefreshTokenEntity WHERE user.id = :userId")
   void deleteByUserId(UUID userId);
 }

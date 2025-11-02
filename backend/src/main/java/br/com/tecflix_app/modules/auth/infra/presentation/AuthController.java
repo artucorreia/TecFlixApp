@@ -2,6 +2,7 @@ package br.com.tecflix_app.modules.auth.infra.presentation;
 
 import br.com.tecflix_app.modules.auth.application.domain.entity.TokenJwt;
 import br.com.tecflix_app.modules.auth.application.gateways.TokenGateway;
+import br.com.tecflix_app.modules.auth.application.usecases.CreateRefreshTokenUseCase;
 import br.com.tecflix_app.modules.auth.infra.presentation.constant.AuthConstant;
 import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.AuthenticationDTO;
 import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.NewPasswordDTO;
@@ -53,7 +54,9 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
   // usecases
   private final FindUserByEmailUseCase findUserByEmailUseCase;
+  private final CreateRefreshTokenUseCase createRefreshTokenUseCase;
   private final TokenGateway tokenGateway;
+
 
   // services
   private final UserService userService;
@@ -119,7 +122,7 @@ public class AuthController {
     } catch (AuthenticationException e) {
       throw new WrongPasswordException("Senha incorreta");
     }
-    String refreshToken = refreshTokenService.create(user.getId()).getToken();
+    String refreshToken = createRefreshTokenUseCase.execute(user);
     token.setRefreshToken(refreshToken);
 
     TokenResponseDTO tokenResponseDTO = authPresentationMapper.map(token);

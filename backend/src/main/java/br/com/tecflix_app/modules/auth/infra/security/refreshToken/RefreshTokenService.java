@@ -72,6 +72,6 @@ public class RefreshTokenService {
 
   private void deleteByUserId(UUID userId) {
     LOGGER.info("Deleting old user refresh token");
-    repository.deleteByUserId(userId);
+//    repository.deleteByUserId(userId);
   }
 }
