@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import br.com.tecflix_app.modules.auth.application.usecases.ValidateTokenUseCase;
 import br.com.tecflix_app.modules.auth.infra.gateways.TokenAuth0Gateway;
 import br.com.tecflix_app.modules.shared.exception.ExceptionResponse;
 import br.com.tecflix_app.modules.user.application.domain.entity.User;
@@ -28,7 +29,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @RequiredArgsConstructor
 public class SecurityFilter extends OncePerRequestFilter {
   private final FindUserByIdUseCase findUserByIdUseCase;
-  private final TokenAuth0Gateway tokenAuth0Gateway;
+  private final ValidateTokenUseCase validateTokenUseCase;
   private final UserGatewaysMapper userGatewaysMapper;
 
   @SuppressWarnings("null")
@@ -40,7 +41,7 @@ public class SecurityFilter extends OncePerRequestFilter {
       String token = recoverToken(request);
 
       if (token != null) {
-        UUID userId = tokenAuth0Gateway.validate(token);
+        UUID userId = validateTokenUseCase.execute(token);
         if (userId == null) throw new InvalidTokenException("Token inválido ou expirado");
 
         User user = findUserByIdUseCase.execute(userId);

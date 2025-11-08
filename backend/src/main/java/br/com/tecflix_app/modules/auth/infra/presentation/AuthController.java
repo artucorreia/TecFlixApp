@@ -1,8 +1,8 @@
 package br.com.tecflix_app.modules.auth.infra.presentation;
 
 import br.com.tecflix_app.modules.auth.application.domain.entity.TokenJwt;
-import br.com.tecflix_app.modules.auth.application.gateways.TokenGateway;
 import br.com.tecflix_app.modules.auth.application.usecases.CreateRefreshTokenUseCase;
+import br.com.tecflix_app.modules.auth.application.usecases.GenerateTokenUseCase;
 import br.com.tecflix_app.modules.auth.application.usecases.ResolveRefreshTokenUseCase;
 import br.com.tecflix_app.modules.auth.infra.presentation.constant.AuthConstant;
 import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.AuthenticationDTO;
@@ -10,8 +10,6 @@ import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.NewPasswordDTO
 import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.RegisterDTO;
 import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.TokenResponseDTO;
 import br.com.tecflix_app.modules.auth.infra.presentation.mapper.AuthPresentationMapper;
-import br.com.tecflix_app.modules.auth.infra.security.refreshToken.RefreshTokenService;
-import br.com.tecflix_app.modules.auth.infra.security.jwt.TokenService;
 import br.com.tecflix_app.modules.auth.infra.security.jwt.CustomUserDetails;
 import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.RefreshTokenDTO;
 import br.com.tecflix_app.modules.shared.dto.v1.ResponseDTO;
@@ -57,7 +55,7 @@ public class AuthController {
   private final FindUserByEmailUseCase findUserByEmailUseCase;
   private final CreateRefreshTokenUseCase createRefreshTokenUseCase;
   private final ResolveRefreshTokenUseCase resolveRefreshTokenUseCase;
-  private final TokenGateway tokenGateway;
+  private final GenerateTokenUseCase generateTokenUseCase;
 
   // services
   private final UserService userService;
@@ -118,7 +116,7 @@ public class AuthController {
     try {
       Authentication auth = authenticationManager.authenticate(usernamePassword);
       CustomUserDetails customUserDetails = (CustomUserDetails) auth.getPrincipal();
-      token = tokenGateway.generate(customUserDetails.getUser().getId());
+      token = generateTokenUseCase.execute(customUserDetails.getUser().getId());
     } catch (AuthenticationException e) {
       throw new WrongPasswordException("Senha incorreta");
     }
@@ -170,7 +168,7 @@ public class AuthController {
       @Valid @RequestBody RefreshTokenDTO refreshTokenDTO) {
     User user = resolveRefreshTokenUseCase.execute(refreshTokenDTO.getToken());
 
-    TokenJwt token = tokenGateway.generate(user.getId());
+    TokenJwt token = generateTokenUseCase.execute(user.getId());
     String refreshToken = createRefreshTokenUseCase.execute(user);
     token.setRefreshToken(refreshToken);
 
