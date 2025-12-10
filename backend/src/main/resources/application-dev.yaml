@@ -35,8 +35,7 @@ spring:
         ddl-auto: none
       show-sql: false
   flyway:
-    locations:
-      filesystem: src/test/resources/db/migration
+    locations: classpath:db/migration
   mail:
     host: sandbox.smtp.mailtrap.io
     port: 587
