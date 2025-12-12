@@ -8,6 +8,7 @@ import br.com.tecflix_app.modules.emailCode.infra.persistence.EmailCodeRepositor
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -15,6 +16,13 @@ import java.util.UUID;
 public class CodeJpaRepositoryGateway implements CodeRepositoryGateway {
   private final EmailCodeRepository emailCodeRepository;
   private final CodeGatewaysMapper codeGatewaysMapper;
+
+  @Override
+  public Optional<EmailCode> findByCodeAndUserId(String code, UUID userId) {
+    Optional<EmailCodeEntity> emailCodeEntityOptional =
+        emailCodeRepository.findByCodeAndUserId(code, userId);
+    return emailCodeEntityOptional.map(codeGatewaysMapper::map);
+  }
 
   @Override
   public EmailCode save(EmailCode code) {

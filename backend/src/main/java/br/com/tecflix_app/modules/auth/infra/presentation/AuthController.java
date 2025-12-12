@@ -12,6 +12,7 @@ import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.TokenResponseD
 import br.com.tecflix_app.modules.auth.infra.presentation.mapper.AuthPresentationMapper;
 import br.com.tecflix_app.modules.auth.infra.security.jwt.CustomUserDetails;
 import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.RefreshTokenDTO;
+import br.com.tecflix_app.modules.emailCode.application.usecases.ValidateAccountCodeUseCase;
 import br.com.tecflix_app.modules.shared.dto.v1.ResponseDTO;
 import br.com.tecflix_app.modules.shared.exception.auth.WrongPasswordException;
 import br.com.tecflix_app.modules.user.application.domain.entity.User;
@@ -56,6 +57,7 @@ public class AuthController {
   private final CreateRefreshTokenUseCase createRefreshTokenUseCase;
   private final ResolveRefreshTokenUseCase resolveRefreshTokenUseCase;
   private final GenerateTokenUseCase generateTokenUseCase;
+  private final ValidateAccountCodeUseCase validateAccountCodeUseCase;
 
   // services
   private final UserService userService;
@@ -270,9 +272,12 @@ public class AuthController {
         @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
       })
-  public ResponseEntity<GenericResponseDTO<UUID>> validateEmailCode(
-      @RequestParam(required = true) String code, @RequestParam(required = true) UUID userId) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(emailCodeService.validate(code, userId));
+  public ResponseEntity<ResponseDTO<Object>> validateEmailCode(
+      @RequestParam String code, @RequestParam UUID userId) {
+    validateAccountCodeUseCase.execute(userId, code);
+    ResponseDTO<Object> responseDTO =
+        new ResponseDTO<>(true, AuthConstant.MESSAGE_200, AuthConstant.CODE_200, null);
+    return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
   }
 
   @PostMapping(

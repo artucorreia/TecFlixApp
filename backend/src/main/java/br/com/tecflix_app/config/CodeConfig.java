@@ -4,12 +4,25 @@ import br.com.tecflix_app.modules.emailCode.application.gateways.CodeRepositoryG
 import br.com.tecflix_app.modules.emailCode.application.gateways.RandomCodeGeneratorGateway;
 import br.com.tecflix_app.modules.emailCode.application.usecases.CreateAccountValidationCodeUseCase;
 import br.com.tecflix_app.modules.emailCode.application.usecases.CreateAccountValidationCodeUseCaseImpl;
+import br.com.tecflix_app.modules.emailCode.application.usecases.ValidateAccountCodeUseCase;
+import br.com.tecflix_app.modules.emailCode.application.usecases.ValidateAccountCodeUseCaseImpl;
+import br.com.tecflix_app.modules.user.application.gateways.UserRepositoryGateway;
 import br.com.tecflix_app.modules.user.application.usecases.FindUserByIdUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class CodeConfig {
+
+  @Bean
+  public ValidateAccountCodeUseCase validateAccountCodeUseCase(
+      CodeRepositoryGateway codeRepositoryGateway,
+      FindUserByIdUseCase findUserByIdUseCase,
+      UserRepositoryGateway userRepositoryGateway) {
+    return new ValidateAccountCodeUseCaseImpl(
+        codeRepositoryGateway, findUserByIdUseCase, userRepositoryGateway);
+  }
+
   @Bean
   public CreateAccountValidationCodeUseCase createAccountValidationCodeUseCase(
       CodeRepositoryGateway codeRepositoryGateway,
