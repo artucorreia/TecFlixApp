@@ -50,11 +50,11 @@ public class SecurityConfig {
                     .permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/auth/refresh-token")
                     .permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/auth/send-code/{userId}")
-                    .permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/auth/validate-code")
                     .permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/auth/reset-password")
+                    .requestMatchers(HttpMethod.POST, "/api/auth/password/send-reset-code")
+                    .permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/auth/password/reset")
                     .permitAll()
 
                     // users

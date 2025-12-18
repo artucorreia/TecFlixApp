@@ -5,13 +5,10 @@ import br.com.tecflix_app.modules.auth.application.usecases.CreateRefreshTokenUs
 import br.com.tecflix_app.modules.auth.application.usecases.GenerateTokenUseCase;
 import br.com.tecflix_app.modules.auth.application.usecases.ResolveRefreshTokenUseCase;
 import br.com.tecflix_app.modules.auth.infra.presentation.constant.AuthConstant;
-import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.AuthenticationDTO;
-import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.NewPasswordDTO;
-import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.RegisterDTO;
-import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.TokenResponseDTO;
+import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.*;
 import br.com.tecflix_app.modules.auth.infra.presentation.mapper.AuthPresentationMapper;
 import br.com.tecflix_app.modules.auth.infra.security.jwt.CustomUserDetails;
-import br.com.tecflix_app.modules.auth.infra.presentation.dtos.v1.RefreshTokenDTO;
+import br.com.tecflix_app.modules.emailCode.application.usecases.CreatePasswordResetCodeUseCase;
 import br.com.tecflix_app.modules.emailCode.application.usecases.ValidateAccountCodeUseCase;
 import br.com.tecflix_app.modules.shared.dto.v1.ResponseDTO;
 import br.com.tecflix_app.modules.shared.exception.auth.WrongPasswordException;
@@ -58,6 +55,7 @@ public class AuthController {
   private final ResolveRefreshTokenUseCase resolveRefreshTokenUseCase;
   private final GenerateTokenUseCase generateTokenUseCase;
   private final ValidateAccountCodeUseCase validateAccountCodeUseCase;
+  private final CreatePasswordResetCodeUseCase createPasswordResetCodeUseCase;
 
   // services
   private final UserService userService;
@@ -223,34 +221,6 @@ public class AuthController {
     return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
   }
 
-  @PostMapping(value = "/send-code/{userId}")
-  @Operation(
-      summary = "Send email code",
-      description = "Send email code to validate email or reset password",
-      tags = {"Authentication"},
-      method = "POST")
-  @ApiResponses(
-      value = {
-        @ApiResponse(
-            responseCode = "200",
-            description = "Success",
-            content =
-                @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = GenericResponseDTO.class))),
-        @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
-        @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
-        @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
-        @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
-        @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
-      })
-  public ResponseEntity<GenericResponseDTO<Long>> sendEmailCode(
-      @PathVariable UUID userId,
-      @RequestParam(name = "resetPassword", required = false, defaultValue = "false")
-          boolean resetPassword) {
-    return ResponseEntity.ok(emailCodeService.create(userId, resetPassword));
-  }
-
   @PostMapping(value = "/validate-code")
   @Operation(
       summary = "Validate email code",
@@ -281,7 +251,7 @@ public class AuthController {
   }
 
   @PostMapping(
-      value = "/change-password",
+      value = "/password/change",
       consumes = MediaType.APPLICATION_JSON_VALUE,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @Operation(
@@ -298,8 +268,8 @@ public class AuthController {
                           @ExampleObject(
                               value =
                                   """
-                                        { "newPassword": "string" }
-                                        """))))
+                            { "newPassword": "string" }
+                            """))))
   @ApiResponses(
       value = {
         @ApiResponse(
@@ -320,8 +290,37 @@ public class AuthController {
     return ResponseEntity.ok(userService.changePassword(data));
   }
 
+  @PostMapping(value = "/password/send-reset-code")
+  @Operation(
+      summary = "Send email code to reset password",
+      description = "Send email code to reset password",
+      tags = {"Authentication"},
+      method = "POST")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Success",
+            content =
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = GenericResponseDTO.class))),
+        @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+        @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
+        @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
+        @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
+      })
+  public ResponseEntity<ResponseDTO<Object>> sendResetCode(
+      @Valid @RequestBody ResetPasswordEmailDTO resetPasswordEmailDTO) {
+    createPasswordResetCodeUseCase.execute(resetPasswordEmailDTO.getEmail());
+    ResponseDTO<Object> response =
+        new ResponseDTO<>(true, AuthConstant.MESSAGE_200, AuthConstant.CODE_200, null);
+    return ResponseEntity.ok(response);
+  }
+
   @PostMapping(
-      value = "/reset-password",
+      value = "/password/reset",
       consumes = MediaType.APPLICATION_JSON_VALUE,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @Operation(
@@ -356,8 +355,8 @@ public class AuthController {
         @ApiResponse(responseCode = "500", description = "Internal Error", content = @Content)
       })
   public ResponseEntity<GenericResponseDTO<UUID>> resetPassword(
-      @RequestParam(required = true) String code,
-      @RequestParam(required = true) UUID userId,
+      @RequestParam String code,
+      @RequestParam UUID userId,
       @Valid @RequestBody NewPasswordDTO data) {
     return ResponseEntity.status(HttpStatus.CREATED)
         .body(emailCodeService.validate(code, userId, data));

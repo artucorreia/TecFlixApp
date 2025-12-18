@@ -7,6 +7,7 @@ import br.com.tecflix_app.modules.emailCode.infra.persistence.EmailCodeEntity;
 import br.com.tecflix_app.modules.emailCode.infra.persistence.EmailCodeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -32,6 +33,7 @@ public class CodeJpaRepositoryGateway implements CodeRepositoryGateway {
   }
 
   @Override
+  @Transactional(rollbackFor = Exception.class)
   public void deleteByUserId(UUID userId) {
     emailCodeRepository.deleteByUserId(userId);
   }
