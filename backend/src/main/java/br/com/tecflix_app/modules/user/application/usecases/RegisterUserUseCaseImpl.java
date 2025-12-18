@@ -2,7 +2,7 @@ package br.com.tecflix_app.modules.user.application.usecases;
 
 import br.com.tecflix_app.modules.emailCode.application.domain.entity.EmailCode;
 import br.com.tecflix_app.modules.emailCode.application.gateways.CodeSenderGateway;
-import br.com.tecflix_app.modules.emailCode.application.usecases.CreateAccountValidationCodeUseCase;
+import br.com.tecflix_app.modules.emailCode.application.usecases.CreateCodeUseCase;
 import br.com.tecflix_app.modules.role.application.domain.entity.Role;
 import br.com.tecflix_app.modules.role.application.gateways.RoleRepositoryGateway;
 import br.com.tecflix_app.modules.shared.exception.general.RepeatedDataException;
@@ -19,17 +19,17 @@ public class RegisterUserUseCaseImpl implements RegisterUserUseCase {
   private final Logger LOGGER = Logger.getLogger(RegisterUserUseCaseImpl.class.getName());
 
   private final UserRepositoryGateway userRepositoryGateway;
-  private final CreateAccountValidationCodeUseCase createAccountValidationCodeUseCase;
+  private final CreateCodeUseCase createCodeUseCase;
   private final RoleRepositoryGateway roleRepositoryGateway;
   private final CodeSenderGateway codeSenderGateway;
 
   public RegisterUserUseCaseImpl(
       UserRepositoryGateway userRepositoryGateway,
-      CreateAccountValidationCodeUseCase createAccountValidationCodeUseCase,
+      CreateCodeUseCase createCodeUseCase,
       RoleRepositoryGateway roleRepositoryGateway,
       CodeSenderGateway codeSenderGateway) {
     this.userRepositoryGateway = userRepositoryGateway;
-    this.createAccountValidationCodeUseCase = createAccountValidationCodeUseCase;
+    this.createCodeUseCase = createCodeUseCase;
     this.roleRepositoryGateway = roleRepositoryGateway;
     this.codeSenderGateway = codeSenderGateway;
   }
@@ -52,7 +52,7 @@ public class RegisterUserUseCaseImpl implements RegisterUserUseCase {
     user.setCreatedAt(LocalDateTime.now());
     User savedUser = userRepositoryGateway.save(user);
 
-    EmailCode savedEmailCode = createAccountValidationCodeUseCase.execute(savedUser.getId());
+    EmailCode savedEmailCode = createCodeUseCase.execute(savedUser.getId());
     codeSenderGateway.sendCodeToValidateUser(
         savedUser.getId(), user.getEmail(), user.getName(), savedEmailCode.getCode());
   }

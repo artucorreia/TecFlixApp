@@ -2,7 +2,7 @@ package br.com.tecflix_app.config;
 
 import br.com.tecflix_app.modules.auth.application.gateways.AuthenticatedUserGateway;
 import br.com.tecflix_app.modules.emailCode.application.gateways.CodeSenderGateway;
-import br.com.tecflix_app.modules.emailCode.application.usecases.CreateAccountValidationCodeUseCase;
+import br.com.tecflix_app.modules.emailCode.application.usecases.CreateCodeUseCase;
 import br.com.tecflix_app.modules.professorData.application.usecases.PrepareProfessorDataForCreationUseCase;
 import br.com.tecflix_app.modules.professorData.application.usecases.FindProfessorDataByUserIdUseCase;
 import br.com.tecflix_app.modules.role.application.gateways.RoleRepositoryGateway;
@@ -35,12 +35,12 @@ public class UserConfig {
   @Bean
   public RegisterUserUseCase registerUserUseCase(
       UserRepositoryGateway userRepositoryGateway,
-      CreateAccountValidationCodeUseCase createAccountValidationCodeUseCase,
+      CreateCodeUseCase createCodeUseCase,
       RoleRepositoryGateway roleRepositoryGateway,
       CodeSenderGateway codeSenderGateway) {
     return new RegisterUserUseCaseImpl(
         userRepositoryGateway,
-        createAccountValidationCodeUseCase,
+        createCodeUseCase,
         roleRepositoryGateway,
         codeSenderGateway);
   }

@@ -10,14 +10,14 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-public class CreateAccountValidationCodeUseCaseImpl implements CreateAccountValidationCodeUseCase {
+public class CreateCodeUseCaseImpl implements CreateCodeUseCase {
   private final Logger LOGGER =
-      Logger.getLogger(CreateAccountValidationCodeUseCaseImpl.class.getName());
+      Logger.getLogger(CreateCodeUseCaseImpl.class.getName());
   private final CodeRepositoryGateway codeRepositoryGateway;
   private final RandomCodeGeneratorGateway randomCodeGeneratorGateway;
   private final FindUserByIdUseCase findUserByIdUseCase;
 
-  public CreateAccountValidationCodeUseCaseImpl(
+  public CreateCodeUseCaseImpl(
       CodeRepositoryGateway codeRepositoryGateway,
       RandomCodeGeneratorGateway randomCodeGeneratorGateway,
       FindUserByIdUseCase findUserByIdUseCase) {

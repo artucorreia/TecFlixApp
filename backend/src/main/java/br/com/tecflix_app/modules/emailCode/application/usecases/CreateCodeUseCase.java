@@ -11,7 +11,7 @@ import java.util.UUID;
  * with a specific user, as a step in the account registration process. The generated code
  * is intended to be sent to the user (e.g., via email) for verification.
  */
-public interface CreateAccountValidationCodeUseCase {
+public interface CreateCodeUseCase {
 
   /**
    * Executes the use case to create a new validation code for a given user ID.
